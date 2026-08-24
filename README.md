@@ -147,4 +147,4 @@ Add screenshots of the game here.
 
 This project is licensed under the MIT License.
 
-See the `LICENSE` file for more information.
+See the [LICENCE](./LICENCE) file for more information.
