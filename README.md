@@ -42,7 +42,7 @@ I will go for the base but add more features if needed or wanted.
 Clone the repository:
 
 ```bash
-git clone https://github.com/USERNAME/REPOSITORY.git
+git clone [https://github.com/USERNAME/REPOSITORY.git](https://github.com/Mommy-Of-Light/SpaceShooter.git)
 ```
 
 Enter the project directory:
