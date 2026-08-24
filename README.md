@@ -141,7 +141,7 @@ Add screenshots of the game here.
 
 ## Contributors
 
-* **Mommy Of Light** — Developer - [mail](empress.mommy.of.light@gmail.com)
+* **Mommy Of Light** — Developer - empress.mommy.of.light@gmail.com
 
 ## License
 
