@@ -441,3 +441,4 @@ FodyWeavers.xsd
 
 # VS Code
 .vscode/
+/SpaceShooter/SpaceShooter/obj
