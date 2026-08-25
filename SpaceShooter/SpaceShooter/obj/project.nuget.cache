@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "/bnLNkqbQQs=",
+  "dgSpecHash": "+GpXvYZSkpg=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Admin\\Documents\\26-27\\At_Projet_26-27\\Projet Space Shooter\\SpaceShooter\\SpaceShooter\\SpaceShooter.csproj",
+  "projectFilePath": "C:\\Users\\Admin\\Documents\\Personel\\SpaceShooter\\SpaceShooter\\SpaceShooter\\SpaceShooter.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.netcore.app\\2.1.30\\microsoft.netcore.app.2.1.30.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.netcore.dotnetapphost\\2.1.30\\microsoft.netcore.dotnetapphost.2.1.30.nupkg.sha512",

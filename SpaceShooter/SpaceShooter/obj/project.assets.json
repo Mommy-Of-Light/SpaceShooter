@@ -4165,11 +4165,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Admin\\Documents\\26-27\\At_Projet_26-27\\Projet Space Shooter\\SpaceShooter\\SpaceShooter\\SpaceShooter.csproj",
+      "projectUniqueName": "C:\\Users\\Admin\\Documents\\Personel\\SpaceShooter\\SpaceShooter\\SpaceShooter\\SpaceShooter.csproj",
       "projectName": "SpaceShooter",
-      "projectPath": "C:\\Users\\Admin\\Documents\\26-27\\At_Projet_26-27\\Projet Space Shooter\\SpaceShooter\\SpaceShooter\\SpaceShooter.csproj",
+      "projectPath": "C:\\Users\\Admin\\Documents\\Personel\\SpaceShooter\\SpaceShooter\\SpaceShooter\\SpaceShooter.csproj",
       "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Admin\\Documents\\26-27\\At_Projet_26-27\\Projet Space Shooter\\SpaceShooter\\SpaceShooter\\obj\\",
+      "outputPath": "C:\\Users\\Admin\\Documents\\Personel\\SpaceShooter\\SpaceShooter\\SpaceShooter\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
