@@ -83,24 +83,22 @@ Ctrl + F5
 ## Project Structure
 
 ```text
-GameName/
-├── Content/
-│   ├── Fonts/
-│   ├── Music/
-│   ├── Sounds/
-│   └── Textures/
-│
-├── Game/
-│   ├── Player.cs
-│   ├── Enemy.cs
-│   ├── Projectile.cs
-│   └── ...
-│
-├── Game1.cs
-├── Program.cs
-├── GlobalUsings.cs
-├── GameName.csproj
-├── GameName.sln
+SpaceShooter/
+├── SpaceShooter/
+│   ├── SpaceShooter/
+│   │   ├── Content/
+│   │   │   ├── Fonts/
+│   │   │   ├── Music/
+│   │   │   │   ├── Sounds/
+│   │   │   └── Textures/
+│   │   ├── Player.cs
+│   │   ├── Enemy.cs
+│   │   ├── Projectile.cs
+│   │   ├── Game1.cs
+│   │   ├── Program.cs
+│   │   ├── GlobalUsings.cs
+│   │   └──  SpaceShooter.csproj
+│   └── SpaceShooter.sln
 └── README.md
 ```
 
