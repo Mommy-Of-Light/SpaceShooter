@@ -40,14 +40,14 @@
 
 ### 2. Temps consacré aux différentes tâches
 
-| Catégorie                     | Tâche               | Temps consacré |
-| ----------------------------- | ------------------- | -------------: |
-| Documentation                 | Mandat              |    1,5 période |
-| Documentation                 | Questions au client |    1,5 période |
-| Documentation                 | Cahier des charges  |      1 période |
-| Création de la base du projet | Application         |     2 périodes |
-| Contenu                       | Sprites             |     2 périodes |
-| **Total**                     |                     | **8 périodes** |
+| Catégorie                     | Tâche               | Temps consacré (1:45m) |
+| ----------------------------- | ------------------- | ---------------------: |
+| Documentation                 | Mandat              |            1,5 période |
+| Documentation                 | Questions au client |            1,5 période |
+| Documentation                 | Cahier des charges  |              1 période |
+| Création de la base du projet | Application         |             2 périodes |
+| Contenu                       | Sprites             |             2 périodes |
+| **Total**                     |                     |         **8 périodes** |
 
 ---
 
@@ -117,12 +117,12 @@
 
 ### 2. Temps consacré aux différentes tâches
 
-| Catégorie     | Tâche                         |  Temps consacré |
-| ------------- | ----------------------------- | --------------: |
-| Développement | Système de gestion des écrans |     À compléter |
-| Développement | Menu principal                |     À compléter |
-| Contenu       | Graphismes et sprites         |     À compléter |
-| **Total**     |                               | **À compléter** |
+| Catégorie     | Tâche                         | Temps consacré (1:45m) |
+| ------------- | ----------------------------- | ---------------------: |
+| Développement | Système de gestion des écrans |              1 période |
+| Développement | Menu principal                |              1 période |
+| Contenu       | Graphismes et sprites         |            0.3 période |
+| **Total**     |                               |        **À compléter** |
 
 ---
 
