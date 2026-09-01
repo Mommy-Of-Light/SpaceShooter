@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XnaContent xmlns:Graphics="Microsoft.Xna.Framework.Content.Pipeline.Graphics">
+	<Asset Type="Graphics:FontDescription">
+		<FontName>Space Invaders Full Version</FontName>
+		<Size>16</Size>
+		<Spacing>0</Spacing>
+		<UseKerning>true</UseKerning>
+		<Style>Regular</Style>
+		<CharacterRegions>
+			<CharacterRegion>
+				<Start>&#x20;</Start>
+				<End>&#x7E;</End>
+			</CharacterRegion>
+			<CharacterRegion>
+				<Start>&#xA9;</Start>
+				<End>&#xA9;</End>
+			</CharacterRegion>
+			<CharacterRegion>
+				<Start>&#xD7;</Start>
+				<End>&#xD7;</End>
+			</CharacterRegion>
+			<CharacterRegion>
+				<Start>&#x2018;</Start>
+				<End>&#x2019;</End>
+			</CharacterRegion>
+			<CharacterRegion>
+				<Start>&#x201C;</Start>
+				<End>&#x201D;</End>
+			</CharacterRegion>
+		</CharacterRegions>
+	</Asset>
+</XnaContent>

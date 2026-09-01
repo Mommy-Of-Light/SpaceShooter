@@ -86,8 +86,9 @@
 * Sélectionner des ressources correspondant au style graphique recherché.
 * Prévoir la possibilité de modifier ou de remplacer les sprites sélectionnés si ceux-ci ne répondent finalement pas aux besoins du projet.
 
+---
 
-## 25/08/2026
+## 01/09/2026
 
 ### 1. Étapes réalisées
 
@@ -159,3 +160,6 @@
 * Intégrer les ressources graphiques sélectionnées lors de la phase de recherche.
 * Adapter les dimensions et l'affichage des sprites aux besoins du jeu.
 * Conserver une cohérence visuelle entre les différents éléments graphiques du projet.
+
+---
+
