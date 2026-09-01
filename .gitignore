@@ -443,3 +443,4 @@ FodyWeavers.xsd
 .vscode/
 /SpaceShooter/SpaceShooter/obj
 /SpaceShooter/SpaceShooter/bin
+SpaceShooter/SpaceShooter/Content/obj/Windows/net8.0-windows/Content/.mgstats
