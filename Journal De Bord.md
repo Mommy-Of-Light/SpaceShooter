@@ -163,3 +163,44 @@
 
 ---
 
+## 07/09/2026
+
+### 1. Étapes réalisées
+
+#### Exercice
+
+* Réalisation d’un exercice durant les deux premières heures de la journée.
+
+#### Développement
+
+* Avancement des écrans de l'application
+
+  * Poursuite du développement des différents écrans de l'application.
+  * **Finalisation de l'écran du menu principal.**
+  * Ajout et modification des éléments nécessaires au fonctionnement et à la navigation entre les écrans.
+  * Amélioration de la structure des écrans afin de préparer l'intégration des prochaines fonctionnalités.
+
+### **2. Temps consacré aux différentes tâches**
+
+| Catégorie     | Tâche                                  | Temps consacré (1:45m) |
+| ------------- | -------------------------------------- | ---------------------: |
+| Exercice      | Exercice pratique                      |             2 périodes |
+| Développement | Avancement des écrans de l'application |        2 périodes |
+| **Total**     |                                        |        **4 périodes** |
+
+### 3. Problèmes rencontrés et solutions apportées
+
+* Organisation et développement des différents écrans
+
+  * Ajustement de la structure des écrans afin de conserver une organisation claire.
+  * Poursuite du travail à partir du système de gestion des écrans mis en place précédemment.
+  * Vérification du fonctionnement et de l'affichage du menu principal après sa finalisation.
+
+### 4. Options envisagées et choix effectués
+
+#### Écrans de l'application
+
+* Continuer à développer les écrans déjà commencés.
+* **Finaliser le menu principal afin de disposer d'un premier écran fonctionnel et terminé.**
+* Conserver une séparation claire entre les différents écrans et leur logique.
+* Préparer les écrans restants afin de pouvoir intégrer progressivement les fonctionnalités restantes.
