@@ -16,6 +16,7 @@ namespace SpaceShooter
 
         public MenuScreen(Game1 game) : base(game)
         {
+            Game.ChangeScreenSize(500, 500);
         }
 
         public override void Initialize()
@@ -36,23 +37,23 @@ namespace SpaceShooter
 
             _buttons.Add(new Button(
                 "New Game",
-                new Rectangle(x, startY, buttonWidth, buttonHeight)));
+                new XnaRectangle(x, startY, buttonWidth, buttonHeight)));
 
             _buttons.Add(new Button(
                 "Save",
-                new Rectangle(x, startY + spacing, buttonWidth, buttonHeight)));
+                new XnaRectangle(x, startY + spacing, buttonWidth, buttonHeight)));
 
             _buttons.Add(new Button(
                 "Archive",
-                new Rectangle(x, startY + spacing * 2, buttonWidth, buttonHeight)));
+                new XnaRectangle(x, startY + spacing * 2, buttonWidth, buttonHeight)));
 
             _buttons.Add(new Button(
                 "Ranking",
-                new Rectangle(x, startY + spacing * 3, buttonWidth, buttonHeight)));
+                new XnaRectangle(x, startY + spacing * 3, buttonWidth, buttonHeight)));
 
             _buttons.Add(new Button(
                 "Exit",
-                new Rectangle(x, startY + spacing * 4, buttonWidth, buttonHeight)));
+                new XnaRectangle(x, startY + spacing * 4, buttonWidth, buttonHeight)));
         }
 
         public override void Update(GameTime gameTime)
@@ -108,7 +109,7 @@ namespace SpaceShooter
         {
             spriteBatch.Begin();
 
-            spriteBatch.Draw(Game.Content.Load<Texture2D>("Textures/Background/black"), Vector2.Zero, Color.White);
+            spriteBatch.Draw(Game.Content.Load<Texture2D>("Textures/Background/black"), Vector2.Zero, XnaColor.White);
 
             int screenWidth = Game.GraphicsDevice.Viewport.Width;
 
@@ -122,7 +123,7 @@ namespace SpaceShooter
                 new Vector2(
                     (screenWidth - titleSize.X) / 2,
                     50),
-                Color.White);
+                XnaColor.White);
 
             foreach (Button button in _buttons)
             {

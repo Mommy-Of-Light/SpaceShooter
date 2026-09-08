@@ -40,7 +40,7 @@ namespace SpaceShooter
 
             if (_waitForMouseRelease)
             {
-                if (mouse.LeftButton == ButtonState.Released)
+                if (mouse.LeftButton == XnaButtonState.Released)
                 {
                     _waitForMouseRelease = false;
                 }

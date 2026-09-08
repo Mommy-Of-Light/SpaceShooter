@@ -204,3 +204,76 @@
 * **Finaliser le menu principal afin de disposer d'un premier écran fonctionnel et terminé.**
 * Conserver une séparation claire entre les différents écrans et leur logique.
 * Préparer les écrans restants afin de pouvoir intégrer progressivement les fonctionnalités restantes.
+
+## 08/09/2026
+
+### 1. Étapes réalisées
+
+#### Développement
+
+* Joueur
+
+  * Création et intégration du joueur dans le jeu.
+  * Mise en place de la structure nécessaire pour gérer le joueur.
+  * Intégration du sprite du joueur dans l'environnement de jeu.
+
+* **Mouvements du joueur**
+
+  * Mise en place des déplacements du joueur.
+  * Gestion des commandes permettant de déplacer le joueur.
+  * Vérification du fonctionnement des mouvements dans l'environnement de jeu.
+
+* **Système de tir**
+
+  * Début de la mise en place du système de tir du joueur.
+  * Ajout de la possibilité pour le joueur de lancer des projectiles.
+  * Travail sur la gestion des tirs afin de préparer leur utilisation dans le gameplay.
+
+---
+
+### 2. Temps consacré aux différentes tâches
+
+| Catégorie     | Tâche                             | Temps consacré (1:45m) |
+| ------------- | --------------------------------- | ---------------------: |
+| Développement | Création et intégration du joueur |              1 période |
+| Développement | Mouvements du joueur              |              1 période |
+| Développement | Système de tir                    |              1 période |
+| **Total**     |                                   |         **3 périodes** |
+
+---
+
+### 3. Problèmes rencontrés et solutions apportées
+
+* **Gestion des déplacements du joueur**
+
+  * Réflexion sur la manière de gérer les différentes directions de déplacement.
+  * Mise en place d'une gestion des contrôles permettant de déplacer le joueur de manière fluide.
+  * Tests des mouvements afin de vérifier leur bon fonctionnement.
+
+* **Mise en place du système de tir**
+
+  * Réflexion sur la manière de créer et de gérer les projectiles.
+  * Mise en place d'une première version du système de tir.
+  * Tests du fonctionnement des tirs et ajustements nécessaires.
+
+---
+
+### 4. Options envisagées et choix effectués
+
+#### Joueur
+
+* Intégrer le joueur directement dans l'environnement de jeu.
+* Utiliser le système de gestion des entrées pour contrôler ses actions.
+* Préparer la structure du joueur afin de pouvoir lui ajouter d'autres fonctionnalités par la suite.
+
+#### Mouvements
+
+* Permettre au joueur de se déplacer dans les différentes directions nécessaires au gameplay.
+* Séparer la gestion des mouvements du reste de la logique du joueur afin de conserver une structure claire.
+* Prévoir la possibilité d'améliorer les déplacements et d'ajouter des interactions avec l'environnement par la suite.
+
+#### Système de tir
+
+* Mettre en place un système permettant au joueur de tirer des projectiles.
+* Gérer la création et le déplacement des projectiles.
+* Préparer le système afin de pouvoir ajouter ultérieurement des ennemis, des collisions et des dégâts.

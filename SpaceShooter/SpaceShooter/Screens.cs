@@ -36,11 +36,11 @@ namespace SpaceShooter
 
             _buttons.Add(new Button(
                 "Create a new game",
-                new Rectangle(x, startY, buttonWidth, buttonHeight)));
+                new XnaRectangle(x, startY, buttonWidth, buttonHeight)));
 
             _buttons.Add(new Button(
                 "Return",
-                new Rectangle(x, startY + spacing * 1, buttonWidth, buttonHeight)));
+                new XnaRectangle(x, startY + spacing * 1, buttonWidth, buttonHeight)));
         }
 
         public override void Update(GameTime gameTime)
@@ -80,7 +80,7 @@ namespace SpaceShooter
         {
             spriteBatch.Begin();
 
-            spriteBatch.Draw(Game.Content.Load<Texture2D>("Textures/Background/black"), Vector2.Zero, Color.White);
+            spriteBatch.Draw(Game.Content.Load<Texture2D>("Textures/Background/black"), Vector2.Zero, XnaColor.White);
 
             int screenWidth = Game.GraphicsDevice.Viewport.Width;
 
@@ -94,7 +94,7 @@ namespace SpaceShooter
                 new Vector2(
                     (screenWidth - titleSize.X) / 2,
                     50),
-                Color.White);
+                XnaColor.White);
 
             foreach (Button button in _buttons)
             {
@@ -136,7 +136,7 @@ namespace SpaceShooter
 
             _buttons.Add(new Button(
                 "Return",
-                new Rectangle(x, startY, buttonWidth, buttonHeight)));
+                new XnaRectangle(x, startY, buttonWidth, buttonHeight)));
         }
 
         public override void Update(GameTime gameTime)
@@ -171,7 +171,7 @@ namespace SpaceShooter
         {
             spriteBatch.Begin();
 
-            spriteBatch.Draw(Game.Content.Load<Texture2D>("Textures/Background/black"), Vector2.Zero, Color.White);
+            spriteBatch.Draw(Game.Content.Load<Texture2D>("Textures/Background/black"), Vector2.Zero, XnaColor.White);
 
             int screenWidth = Game.GraphicsDevice.Viewport.Width;
 
@@ -185,7 +185,7 @@ namespace SpaceShooter
                 new Vector2(
                     (screenWidth - titleSize.X) / 2,
                     50),
-                Color.White);
+                XnaColor.White);
 
             foreach (Button button in _buttons)
             {
@@ -227,7 +227,7 @@ namespace SpaceShooter
 
             _buttons.Add(new Button(
                 "Return",
-                new Rectangle(x, startY, buttonWidth, buttonHeight)));
+                new XnaRectangle(x, startY, buttonWidth, buttonHeight)));
         }
 
         public override void Update(GameTime gameTime)
@@ -262,7 +262,7 @@ namespace SpaceShooter
         {
             spriteBatch.Begin();
 
-            spriteBatch.Draw(Game.Content.Load<Texture2D>("Textures/Background/black"), Vector2.Zero, Color.White);
+            spriteBatch.Draw(Game.Content.Load<Texture2D>("Textures/Background/black"), Vector2.Zero, XnaColor.White);
 
             int screenWidth = Game.GraphicsDevice.Viewport.Width;
 
@@ -276,7 +276,7 @@ namespace SpaceShooter
                 new Vector2(
                     (screenWidth - titleSize.X) / 2,
                     50),
-                Color.White);
+                XnaColor.White);
 
             foreach (Button button in _buttons)
             {
@@ -318,7 +318,7 @@ namespace SpaceShooter
 
             _buttons.Add(new Button(
                 "Return",
-                new Rectangle(x, startY, buttonWidth, buttonHeight)));
+                new XnaRectangle(x, startY, buttonWidth, buttonHeight)));
         }
 
         public override void Update(GameTime gameTime)
@@ -353,7 +353,7 @@ namespace SpaceShooter
         {
             spriteBatch.Begin();
 
-            spriteBatch.Draw(Game.Content.Load<Texture2D>("Textures/Background/black"), Vector2.Zero, Color.White);
+            spriteBatch.Draw(Game.Content.Load<Texture2D>("Textures/Background/black"), Vector2.Zero, XnaColor.White);
 
             int screenWidth = Game.GraphicsDevice.Viewport.Width;
 
@@ -367,7 +367,7 @@ namespace SpaceShooter
                 new Vector2(
                     (screenWidth - titleSize.X) / 2,
                     50),
-                Color.White);
+                XnaColor.White);
 
             foreach (Button button in _buttons)
             {
@@ -409,7 +409,7 @@ namespace SpaceShooter
 
             _buttons.Add(new Button(
                 "Return",
-                new Rectangle(x, startY, buttonWidth, buttonHeight)));
+                new XnaRectangle(x, startY, buttonWidth, buttonHeight)));
         }
 
         public override void Update(GameTime gameTime)
@@ -444,7 +444,7 @@ namespace SpaceShooter
         {
             spriteBatch.Begin();
 
-            spriteBatch.Draw(Game.Content.Load<Texture2D>("Textures/Background/black"), Vector2.Zero, Color.White);
+            spriteBatch.Draw(Game.Content.Load<Texture2D>("Textures/Background/black"), Vector2.Zero, XnaColor.White);
 
             int screenWidth = Game.GraphicsDevice.Viewport.Width;
 
@@ -458,7 +458,7 @@ namespace SpaceShooter
                 new Vector2(
                     (screenWidth - titleSize.X) / 2,
                     50),
-                Color.White);
+                XnaColor.White);
 
             foreach (Button button in _buttons)
             {

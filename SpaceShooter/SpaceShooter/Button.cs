@@ -8,13 +8,13 @@ namespace SpaceShooter
     {
         public string Text { get; private set; }
 
-        public Rectangle Bounds { get; private set; }
+        public XnaRectangle Bounds { get; private set; }
 
         public bool IsHovered { get; private set; }
 
         private Texture2D _pixel;
 
-        public Button(string text, Rectangle bounds)
+        public Button(string text, XnaRectangle bounds)
         {
             Text = text;
             Bounds = bounds;
@@ -22,7 +22,7 @@ namespace SpaceShooter
 
         public void Update(MouseState mouse)
         {
-            Point mousePosition = mouse.Position;
+            XnaPoint mousePosition = mouse.Position;
 
             IsHovered = Bounds.Contains(mousePosition);
         }
@@ -30,8 +30,8 @@ namespace SpaceShooter
         public bool IsClicked(MouseState current, MouseState previous)
         {
             return IsHovered &&
-                   previous.LeftButton == ButtonState.Released &&
-                   current.LeftButton == ButtonState.Pressed;
+                   previous.LeftButton == XnaButtonState.Released &&
+                   current.LeftButton == XnaButtonState.Pressed;
         }
 
         public void Draw(SpriteBatch spriteBatch, SpriteFont font)
@@ -43,12 +43,12 @@ namespace SpaceShooter
                     1,
                     1);
 
-                _pixel.SetData(new[] { Color.White });
+                _pixel.SetData(new[] { XnaColor.White });
             }
 
-            Color buttonColor = IsHovered
-                ? Color.DarkBlue
-                : Color.DarkSlateGray;
+            XnaColor buttonColor = IsHovered
+                ? XnaColor.DarkBlue
+                : XnaColor.DarkSlateGray;
 
             spriteBatch.Draw(
                 _pixel,
@@ -65,7 +65,7 @@ namespace SpaceShooter
                 font,
                 Text,
                 textPosition,
-                Color.White);
+                XnaColor.White);
         }
     }
 }
