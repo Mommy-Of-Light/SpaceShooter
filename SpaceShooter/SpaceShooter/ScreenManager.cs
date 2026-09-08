@@ -1,8 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-
-namespace SpaceShooter
+﻿namespace SpaceShooter
 {
     public class ScreenManager
     {
@@ -34,7 +30,7 @@ namespace SpaceShooter
             _waitForMouseRelease = true;
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, KeyboardState keyboard)
         {
             MouseState mouse = Mouse.GetState();
 
@@ -48,7 +44,7 @@ namespace SpaceShooter
                 return;
             }
 
-            _currentScreen?.Update(gameTime);
+            _currentScreen?.Update(gameTime, keyboard);
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)

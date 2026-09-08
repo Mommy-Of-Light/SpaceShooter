@@ -1,9 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using System.Collections.Generic;
-
-namespace SpaceShooter
+﻿namespace SpaceShooter
 {
     public class MenuScreen : GameScreen
     {
@@ -14,8 +9,11 @@ namespace SpaceShooter
 
         private MouseState _previousMouse;
 
+        private KeyboardState _previousKeyboard;
+
         public MenuScreen(Game1 game) : base(game)
         {
+            _previousKeyboard = Keyboard.GetState();
             Game.ChangeScreenSize(500, 500);
         }
 
@@ -56,8 +54,13 @@ namespace SpaceShooter
                 new XnaRectangle(x, startY + spacing * 4, buttonWidth, buttonHeight)));
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime, KeyboardState keyboard)
         {
+            if (keyboard.IsKeyDown(XnaKeys.Escape) && _previousKeyboard.IsKeyUp(XnaKeys.Escape))
+            {
+                Game.Exit();
+            }
+
             MouseState mouse = Mouse.GetState();
 
             foreach (Button button in _buttons)
@@ -73,6 +76,7 @@ namespace SpaceShooter
             }
 
             _previousMouse = mouse;
+            _previousKeyboard = keyboard;
         }
 
         private void HandleButton(string button)

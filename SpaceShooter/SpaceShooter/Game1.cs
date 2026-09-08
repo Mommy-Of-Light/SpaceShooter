@@ -40,13 +40,13 @@
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == XnaButtonState.Pressed ||
-                Keyboard.GetState().IsKeyDown(XnaKeys.Escape))
-            {
-                Exit();
-            }
+            //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == XnaButtonState.Pressed ||
+            //    Keyboard.GetState().IsKeyDown(XnaKeys.Escape))
+            //{
+            //    Exit();
+            //}
 
-            ScreenManager.Update(gameTime);
+            ScreenManager.Update(gameTime, Keyboard.GetState());
 
             base.Update(gameTime);
         }
