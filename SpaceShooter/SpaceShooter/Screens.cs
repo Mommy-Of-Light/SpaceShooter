@@ -7,8 +7,6 @@
 
         private List<Button> _buttons;
 
-        private MouseState _previousMouse;
-        
         private KeyboardState _previousKeyboard;
 
         public NewGameScreen(Game1 game) : base(game)
@@ -18,7 +16,8 @@
 
         public override void Initialize()
         {
-            _font = Game.Content.Load<SpriteFont>("Fonts/SpaceInvader_12"); _font_title = Game.Content.Load<SpriteFont>("Fonts/SpaceInvader_16");
+            _font = Game.Content.Load<SpriteFont>("Fonts/SpaceInvader_12");
+            _font_title = Game.Content.Load<SpriteFont>("Fonts/SpaceInvader_16");
 
             _buttons = new List<Button>();
 
@@ -38,10 +37,18 @@
 
             _buttons.Add(new Button(
                 "Return",
-                new XnaRectangle(x, startY + spacing * 1, buttonWidth, buttonHeight)));
+                new XnaRectangle(
+                    x,
+                    startY + spacing,
+                    buttonWidth,
+                    buttonHeight)));
         }
 
-        public override void Update(GameTime gameTime, KeyboardState keyboard)
+        public override void Update(
+            GameTime gameTime,
+            KeyboardState keyboard,
+            Vector2 mousePosition,
+            bool mouseClicked)
         {
             if (keyboard.IsKeyDown(XnaKeys.Escape) &&
                 _previousKeyboard.IsKeyUp(XnaKeys.Escape))
@@ -49,20 +56,17 @@
                 HandleButton("Return");
             }
 
-            MouseState mouse = Mouse.GetState();
-
             foreach (Button button in _buttons)
             {
-                button.Update(mouse);
+                button.Update(mousePosition);
 
-                if (button.IsClicked(mouse, _previousMouse))
+                if (button.IsClicked(mousePosition, mouseClicked))
                 {
                     HandleButton(button.Text);
                     break;
                 }
             }
 
-            _previousMouse = mouse;
             _previousKeyboard = keyboard;
         }
 
@@ -86,7 +90,11 @@
         {
             spriteBatch.Begin();
 
-            spriteBatch.Draw(Game.Content.Load<Texture2D>("Textures/Background/black"), Vector2.Zero, XnaColor.White);
+            spriteBatch.Draw(
+                Game.Content.Load<Texture2D>(
+                    "Textures/Background/black"),
+                Vector2.Zero,
+                XnaColor.White);
 
             int screenWidth = Game.GraphicsDevice.Viewport.Width;
 
@@ -111,14 +119,13 @@
         }
     }
 
+
     public class SaveScreen : GameScreen
     {
         private SpriteFont _font;
         private SpriteFont _font_title;
 
         private List<Button> _buttons;
-
-        private MouseState _previousMouse;
 
         private KeyboardState _previousKeyboard;
 
@@ -129,26 +136,33 @@
 
         public override void Initialize()
         {
-            _font = Game.Content.Load<SpriteFont>("Fonts/SpaceInvader_12"); _font_title = Game.Content.Load<SpriteFont>("Fonts/SpaceInvader_16");
+            _font = Game.Content.Load<SpriteFont>("Fonts/SpaceInvader_12");
+            _font_title = Game.Content.Load<SpriteFont>("Fonts/SpaceInvader_16");
 
             _buttons = new List<Button>();
 
             int screenWidth = Game.GraphicsDevice.Viewport.Width;
-            int screenHeight = Game.GraphicsDevice.Viewport.Height;
 
             int buttonWidth = 350;
             int buttonHeight = 60;
 
             int x = (screenWidth - buttonWidth) / 2;
             int startY = 100;
-            int spacing = 75;
 
             _buttons.Add(new Button(
                 "Return",
-                new XnaRectangle(x, startY, buttonWidth, buttonHeight)));
+                new XnaRectangle(
+                    x,
+                    startY,
+                    buttonWidth,
+                    buttonHeight)));
         }
 
-        public override void Update(GameTime gameTime, KeyboardState keyboard)
+        public override void Update(
+            GameTime gameTime,
+            KeyboardState keyboard,
+            Vector2 mousePosition,
+            bool mouseClicked)
         {
             if (keyboard.IsKeyDown(XnaKeys.Escape) &&
                 _previousKeyboard.IsKeyUp(XnaKeys.Escape))
@@ -156,20 +170,17 @@
                 HandleButton("Return");
             }
 
-            MouseState mouse = Mouse.GetState();
-
             foreach (Button button in _buttons)
             {
-                button.Update(mouse);
+                button.Update(mousePosition);
 
-                if (button.IsClicked(mouse, _previousMouse))
+                if (button.IsClicked(mousePosition, mouseClicked))
                 {
                     HandleButton(button.Text);
                     break;
                 }
             }
 
-            _previousMouse = mouse;
             _previousKeyboard = keyboard;
         }
 
@@ -188,7 +199,11 @@
         {
             spriteBatch.Begin();
 
-            spriteBatch.Draw(Game.Content.Load<Texture2D>("Textures/Background/black"), Vector2.Zero, XnaColor.White);
+            spriteBatch.Draw(
+                Game.Content.Load<Texture2D>(
+                    "Textures/Background/black"),
+                Vector2.Zero,
+                XnaColor.White);
 
             int screenWidth = Game.GraphicsDevice.Viewport.Width;
 
@@ -213,14 +228,13 @@
         }
     }
 
+
     public class ArchiveScreen : GameScreen
     {
         private SpriteFont _font;
         private SpriteFont _font_title;
 
         private List<Button> _buttons;
-
-        private MouseState _previousMouse;
 
         private KeyboardState _previousKeyboard;
 
@@ -231,26 +245,33 @@
 
         public override void Initialize()
         {
-            _font = Game.Content.Load<SpriteFont>("Fonts/SpaceInvader_12"); _font_title = Game.Content.Load<SpriteFont>("Fonts/SpaceInvader_16");
+            _font = Game.Content.Load<SpriteFont>("Fonts/SpaceInvader_12");
+            _font_title = Game.Content.Load<SpriteFont>("Fonts/SpaceInvader_16");
 
             _buttons = new List<Button>();
 
             int screenWidth = Game.GraphicsDevice.Viewport.Width;
-            int screenHeight = Game.GraphicsDevice.Viewport.Height;
 
             int buttonWidth = 350;
             int buttonHeight = 60;
 
             int x = (screenWidth - buttonWidth) / 2;
             int startY = 100;
-            int spacing = 75;
 
             _buttons.Add(new Button(
                 "Return",
-                new XnaRectangle(x, startY, buttonWidth, buttonHeight)));
+                new XnaRectangle(
+                    x,
+                    startY,
+                    buttonWidth,
+                    buttonHeight)));
         }
 
-        public override void Update(GameTime gameTime, KeyboardState keyboard)
+        public override void Update(
+            GameTime gameTime,
+            KeyboardState keyboard,
+            Vector2 mousePosition,
+            bool mouseClicked)
         {
             if (keyboard.IsKeyDown(XnaKeys.Escape) &&
                 _previousKeyboard.IsKeyUp(XnaKeys.Escape))
@@ -258,20 +279,17 @@
                 HandleButton("Return");
             }
 
-            MouseState mouse = Mouse.GetState();
-
             foreach (Button button in _buttons)
             {
-                button.Update(mouse);
+                button.Update(mousePosition);
 
-                if (button.IsClicked(mouse, _previousMouse))
+                if (button.IsClicked(mousePosition, mouseClicked))
                 {
                     HandleButton(button.Text);
                     break;
                 }
             }
 
-            _previousMouse = mouse;
             _previousKeyboard = keyboard;
         }
 
@@ -290,7 +308,11 @@
         {
             spriteBatch.Begin();
 
-            spriteBatch.Draw(Game.Content.Load<Texture2D>("Textures/Background/black"), Vector2.Zero, XnaColor.White);
+            spriteBatch.Draw(
+                Game.Content.Load<Texture2D>(
+                    "Textures/Background/black"),
+                Vector2.Zero,
+                XnaColor.White);
 
             int screenWidth = Game.GraphicsDevice.Viewport.Width;
 
@@ -315,14 +337,13 @@
         }
     }
 
+
     public class RankingScreen : GameScreen
     {
         private SpriteFont _font;
         private SpriteFont _font_title;
 
         private List<Button> _buttons;
-
-        private MouseState _previousMouse;
 
         private KeyboardState _previousKeyboard;
 
@@ -333,26 +354,33 @@
 
         public override void Initialize()
         {
-            _font = Game.Content.Load<SpriteFont>("Fonts/SpaceInvader_12"); _font_title = Game.Content.Load<SpriteFont>("Fonts/SpaceInvader_16");
+            _font = Game.Content.Load<SpriteFont>("Fonts/SpaceInvader_12");
+            _font_title = Game.Content.Load<SpriteFont>("Fonts/SpaceInvader_16");
 
             _buttons = new List<Button>();
 
             int screenWidth = Game.GraphicsDevice.Viewport.Width;
-            int screenHeight = Game.GraphicsDevice.Viewport.Height;
 
             int buttonWidth = 350;
             int buttonHeight = 60;
 
             int x = (screenWidth - buttonWidth) / 2;
             int startY = 100;
-            int spacing = 75;
 
             _buttons.Add(new Button(
                 "Return",
-                new XnaRectangle(x, startY, buttonWidth, buttonHeight)));
+                new XnaRectangle(
+                    x,
+                    startY,
+                    buttonWidth,
+                    buttonHeight)));
         }
 
-        public override void Update(GameTime gameTime, KeyboardState keyboard)
+        public override void Update(
+            GameTime gameTime,
+            KeyboardState keyboard,
+            Vector2 mousePosition,
+            bool mouseClicked)
         {
             if (keyboard.IsKeyDown(XnaKeys.Escape) &&
                 _previousKeyboard.IsKeyUp(XnaKeys.Escape))
@@ -360,20 +388,17 @@
                 HandleButton("Return");
             }
 
-            MouseState mouse = Mouse.GetState();
-
             foreach (Button button in _buttons)
             {
-                button.Update(mouse);
+                button.Update(mousePosition);
 
-                if (button.IsClicked(mouse, _previousMouse))
+                if (button.IsClicked(mousePosition, mouseClicked))
                 {
                     HandleButton(button.Text);
                     break;
                 }
             }
 
-            _previousMouse = mouse;
             _previousKeyboard = keyboard;
         }
 
@@ -392,7 +417,11 @@
         {
             spriteBatch.Begin();
 
-            spriteBatch.Draw(Game.Content.Load<Texture2D>("Textures/Background/black"), Vector2.Zero, XnaColor.White);
+            spriteBatch.Draw(
+                Game.Content.Load<Texture2D>(
+                    "Textures/Background/black"),
+                Vector2.Zero,
+                XnaColor.White);
 
             int screenWidth = Game.GraphicsDevice.Viewport.Width;
 
@@ -419,226 +448,305 @@
 
     public class PlayScreen : GameScreen
     {
-        private SpriteFont _font;
-        private SpriteFont _font_title;
-
-        private List<Button> _buttons;
-        private MouseState _previousMouse;
-        private KeyboardState _previousKeyboard;
-
         private Player _player;
 
-        private bool _isPaused;
-        private Texture2D _pixel;
+        private Texture2D _playerTexture;
+        private Texture2D _projectileTexture;
+
+        private SpriteFont _font;
+
+        private List<Button> _buttons;
 
         private Button _continueButton;
         private Button _restartButton;
         private Button _exitButton;
 
+        private KeyboardState _previousKeyboard;
+
+        private bool _isPaused;
+
         public PlayScreen(Game1 game) : base(game)
         {
             _previousKeyboard = Keyboard.GetState();
+
             Game.ChangeScreenSize(400, 800);
         }
 
         public override void Initialize()
         {
-            _font = Game.Content.Load<SpriteFont>("Fonts/SpaceInvader_12");
-            _font_title = Game.Content.Load<SpriteFont>("Fonts/SpaceInvader_16");
+            // -------------------------
+            // LOAD CONTENT
+            // -------------------------
 
-            Texture2D playerTexture =
-                Game.Content.Load<Texture2D>("Textures/PNG/playerShip1_blue");
-            Texture2D projectileTexture =
-                Game.Content.Load<Texture2D>("Textures/PNG/Lazers/laserBlue01");
+            _font = Game.Content.Load<SpriteFont>(
+                "Fonts/SpaceInvader_12"
+            );
+
+            /*
+             * REMPLACE ces deux chemins par les chemins
+             * que tu utilisais déjà dans ton ancien PlayScreen.
+             */
+            _playerTexture = Game.Content.Load<Texture2D>(
+                "Textures/PNG/player"
+            );
+
+            _projectileTexture = Game.Content.Load<Texture2D>(
+                "Textures/PNG/projectile"
+            );
+
+
+            // -------------------------
+            // CREATE PLAYER
+            // -------------------------
+
+            Vector2 playerPosition = new Vector2(
+                (Game.GraphicsDevice.Viewport.Width -
+                 _playerTexture.Width) / 2f,
+
+                Game.GraphicsDevice.Viewport.Height -
+                _playerTexture.Height -
+                30
+            );
 
             _player = new Player(
-                playerTexture,
-                projectileTexture,
-                new Vector2((Game.GraphicsDevice.Viewport.Width - playerTexture.Width) / 2, 700),
-                300f);
+                _playerTexture,
+                _projectileTexture,
+                playerPosition,
+                300f
+            );
+
+
+            // -------------------------
+            // BUTTONS
+            // -------------------------
 
             _buttons = new List<Button>();
 
-            int screenWidth = Game.GraphicsDevice.Viewport.Width;
-            int screenHeight = Game.GraphicsDevice.Viewport.Height;
+            _buttons.Add(
+                new Button(
+                    "||",
+                    new XnaRectangle(
+                        10,
+                        10,
+                        50,
+                        50
+                    )
+                )
+            );
 
-            int pauseWidth = 60;
-            int pauseHeight = 45;
 
-            _buttons.Add(new Button(
-                "||",
-                new XnaRectangle(
-                    screenWidth - pauseWidth - 10,
-                    10,
-                    pauseWidth,
-                    pauseHeight)));
-
-            int buttonWidth = 280;
-            int buttonHeight = 55;
-            int buttonX = (screenWidth - buttonWidth) / 2;
-
-            int panelHeight = 360;
-            int panelY = (screenHeight - panelHeight) / 2;
-            int startY = panelY + 115;
-            int spacing = 70;
+            // -------------------------
+            // PAUSE MENU
+            // -------------------------
 
             _continueButton = new Button(
                 "Continue",
-                new XnaRectangle(buttonX, startY, buttonWidth, buttonHeight));
+                new XnaRectangle(
+                    100,
+                    300,
+                    200,
+                    50
+                )
+            );
 
             _restartButton = new Button(
                 "Restart",
                 new XnaRectangle(
-                    buttonX,
-                    startY + spacing,
-                    buttonWidth,
-                    buttonHeight));
+                    100,
+                    370,
+                    200,
+                    50
+                )
+            );
 
             _exitButton = new Button(
                 "Exit",
                 new XnaRectangle(
-                    buttonX,
-                    startY + spacing * 2,
-                    buttonWidth,
-                    buttonHeight));
-
-            _pixel = new Texture2D(Game.GraphicsDevice, 1, 1);
-            _pixel.SetData(new[] { XnaColor.White });
+                    100,
+                    440,
+                    200,
+                    50
+                )
+            );
         }
 
-        public override void Update(GameTime gameTime, KeyboardState keyboard)
+        public override void Update(
+            GameTime gameTime,
+            KeyboardState keyboard,
+            Vector2 mousePosition,
+            bool mouseClicked)
         {
-            // Escape toggles pause
+            // -------------------------
+            // ESCAPE
+            // -------------------------
+
             if (keyboard.IsKeyDown(XnaKeys.Escape) &&
                 _previousKeyboard.IsKeyUp(XnaKeys.Escape))
             {
                 _isPaused = !_isPaused;
             }
 
-            MouseState mouse = Mouse.GetState();
 
-            // Always update previous keyboard state
-            _previousKeyboard = keyboard;
+            // -------------------------
+            // PAUSED
+            // -------------------------
 
-            // If paused, only process pause-menu buttons
             if (_isPaused)
             {
-                _continueButton.Update(mouse);
-                _restartButton.Update(mouse);
-                _exitButton.Update(mouse);
+                _continueButton.Update(mousePosition);
+                _restartButton.Update(mousePosition);
+                _exitButton.Update(mousePosition);
 
-                if (_continueButton.IsClicked(mouse, _previousMouse))
+                if (_continueButton.IsClicked(
+                    mousePosition,
+                    mouseClicked))
                 {
                     _isPaused = false;
                 }
-                else if (_restartButton.IsClicked(mouse, _previousMouse))
+                else if (_restartButton.IsClicked(
+                    mousePosition,
+                    mouseClicked))
                 {
                     ResetGame();
+
                     _isPaused = false;
                 }
-                else if (_exitButton.IsClicked(mouse, _previousMouse))
+                else if (_exitButton.IsClicked(
+                    mousePosition,
+                    mouseClicked))
                 {
                     Game.ScreenManager.ChangeScreen(
-                        new NewGameScreen(Game));
+                        new NewGameScreen(Game)
+                    );
 
-                    _previousMouse = mouse;
                     return;
                 }
 
-                _previousMouse = mouse;
+                _previousKeyboard = keyboard;
+
                 return;
             }
 
-            // Normal gameplay
-            _player.Update(gameTime, Game);
+
+            // -------------------------
+            // PLAYER
+            // -------------------------
+
+            _player.Update(
+                gameTime,
+                Game
+            );
+
+
+            // -------------------------
+            // PAUSE BUTTON
+            // -------------------------
 
             foreach (Button button in _buttons)
             {
-                button.Update(mouse);
+                button.Update(mousePosition);
 
-                if (button.IsClicked(mouse, _previousMouse))
+                if (button.IsClicked(
+                    mousePosition,
+                    mouseClicked))
                 {
                     if (button.Text == "||")
                     {
                         _isPaused = true;
                     }
+
                     break;
                 }
             }
 
-            _previousMouse = mouse;
+
+            _previousKeyboard = keyboard;
         }
 
         private void ResetGame()
         {
-            Texture2D playerTexture =
-                Game.Content.Load<Texture2D>("Textures/PNG/playerShip1_blue");
+            Vector2 playerPosition = new Vector2(
+                (Game.GraphicsDevice.Viewport.Width -
+                 _playerTexture.Width) / 2f,
 
-            Texture2D projectileTexture =
-                Game.Content.Load<Texture2D>("Textures/PNG/Lazers/laserBlue01");
+                Game.GraphicsDevice.Viewport.Height -
+                _playerTexture.Height -
+                30
+            );
 
             _player = new Player(
-                playerTexture,
-                projectileTexture,
-                new Vector2((Game.GraphicsDevice.Viewport.Width - playerTexture.Width) / 2, 700),
-                300f);
+                _playerTexture,
+                _projectileTexture,
+                playerPosition,
+                300f
+            );
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public override void Draw(
+            GameTime gameTime,
+            SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
 
+
+            // -------------------------
+            // BACKGROUND
+            // -------------------------
+
             spriteBatch.Draw(
-                Game.Content.Load<Texture2D>("Textures/Background/black"),
+                Game.Content.Load<Texture2D>(
+                    "Textures/Background/black"
+                ),
                 Vector2.Zero,
-                XnaColor.White);
+                XnaColor.White
+            );
+
+
+            // -------------------------
+            // PLAYER
+            // -------------------------
+
+            _player.Draw(
+                gameTime,
+                spriteBatch
+            );
+
+
+            // -------------------------
+            // PAUSE BUTTON
+            // -------------------------
 
             foreach (Button button in _buttons)
             {
-                button.Draw(spriteBatch, _font);
+                button.Draw(
+                    spriteBatch,
+                    _font
+                );
             }
 
-            _player.Draw(gameTime, spriteBatch);
+
+            // -------------------------
+            // PAUSE MENU
+            // -------------------------
 
             if (_isPaused)
             {
-                int screenWidth = Game.GraphicsDevice.Viewport.Width;
-                int screenHeight = Game.GraphicsDevice.Viewport.Height;
+                _continueButton.Draw(
+                    spriteBatch,
+                    _font
+                );
 
-                spriteBatch.Draw(
-                    _pixel,
-                    new XnaRectangle(0, 0, screenWidth, screenHeight),
-                    new XnaColor(0, 0, 0, 180));
+                _restartButton.Draw(
+                    spriteBatch,
+                    _font
+                );
 
-                int panelWidth = 330;
-                int panelHeight = 360;
-                int panelX = (screenWidth - panelWidth) / 2;
-                int panelY = (screenHeight - panelHeight) / 2;
-
-                spriteBatch.Draw(
-                    _pixel,
-                    new XnaRectangle(
-                        panelX,
-                        panelY,
-                        panelWidth,
-                        panelHeight),
-                    new XnaColor(15, 15, 15, 245));
-
-                string title = "PAUSED";
-                Vector2 titleSize = _font_title.MeasureString(title);
-
-                spriteBatch.DrawString(
-                    _font_title,
-                    title,
-                    new Vector2(
-                        (screenWidth - titleSize.X) / 2,
-                        panelY + 35),
-                    XnaColor.White);
-
-                _continueButton.Draw(spriteBatch, _font);
-                _restartButton.Draw(spriteBatch, _font);
-                _exitButton.Draw(spriteBatch, _font);
+                _exitButton.Draw(
+                    spriteBatch,
+                    _font
+                );
             }
+
 
             spriteBatch.End();
         }

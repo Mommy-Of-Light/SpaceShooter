@@ -1,67 +1,105 @@
-﻿namespace SpaceShooter
-{
-    public class Button
+﻿    namespace SpaceShooter
     {
-        public string Text { get; private set; }
-
-        public XnaRectangle Bounds { get; private set; }
-
-        public bool IsHovered { get; private set; }
-
-        private Texture2D _pixel;
-
-        public Button(string text, XnaRectangle bounds)
+        public class Button
         {
-            Text = text;
-            Bounds = bounds;
-        }
+            public string Text { get; private set; }
 
-        public void Update(MouseState mouse)
-        {
-            XnaPoint mousePosition = mouse.Position;
+            public XnaRectangle Bounds { get; private set; }
 
-            IsHovered = Bounds.Contains(mousePosition);
-        }
+            public bool IsHovered { get; private set; }
 
-        public bool IsClicked(MouseState current, MouseState previous)
-        {
-            return IsHovered &&
-                   previous.LeftButton == XnaButtonState.Released &&
-                   current.LeftButton == XnaButtonState.Pressed;
-        }
+            private Texture2D _pixel;
 
-        public void Draw(SpriteBatch spriteBatch, SpriteFont font)
-        {
-            if (_pixel == null)
+            public Button(string text, XnaRectangle bounds)
             {
-                _pixel = new Texture2D(
-                    spriteBatch.GraphicsDevice,
-                    1,
-                    1);
-
-                _pixel.SetData(new[] { XnaColor.White });
+                Text = text;
+                Bounds = bounds;
             }
 
-            XnaColor buttonColor = IsHovered
-                ? XnaColor.DarkBlue
-                : XnaColor.DarkSlateGray;
+            public void Update(Vector2 mousePosition)
+            {
+                IsHovered = Bounds.Contains(mousePosition.ToPoint());
+            }
 
-            spriteBatch.Draw(
-                _pixel,
-                Bounds,
-                buttonColor);
+            public bool IsClicked(
+                Vector2 mousePosition,
+                bool mouseClicked)
+            {
+                return IsHovered &&
+                       mouseClicked &&
+                       Bounds.Contains(mousePosition.ToPoint());
+            }
 
-            Vector2 textSize = font.MeasureString(Text);
+            public void Draw(SpriteBatch spriteBatch, SpriteFont font)
+            {
+                if (_pixel == null)
+                {
+                    _pixel = new Texture2D(
+                        spriteBatch.GraphicsDevice,
+                        1,
+                        1);
 
-            Vector2 textPosition = new Vector2(
-                Bounds.X + (Bounds.Width - textSize.X) / 2,
-                Bounds.Y + (Bounds.Height - textSize.Y) / 2);
+                    _pixel.SetData(new[] { XnaColor.White });
+                }
 
-            spriteBatch.DrawString(
-                font,
-                Text,
-                textPosition,
-                XnaColor.White);
+                XnaColor buttonColor = IsHovered
+                    ? XnaColor.DarkBlue
+                    : XnaColor.DarkSlateGray;
+
+                spriteBatch.Draw(
+                    _pixel,
+                    Bounds,
+                    buttonColor);
+
+                if (Text == "||")
+                {
+                    int barWidth = 5;
+                    int barHeight = 22;
+                    int gap = 6;
+
+                    int totalWidth = (barWidth * 2) + gap;
+
+                    int x = Bounds.X +
+                            (Bounds.Width - totalWidth) / 2;
+
+                    int y = Bounds.Y +
+                            (Bounds.Height - barHeight) / 2;
+
+                    spriteBatch.Draw(
+                        _pixel,
+                        new XnaRectangle(
+                            x,
+                            y,
+                            barWidth,
+                            barHeight),
+                        XnaColor.White);
+
+                    spriteBatch.Draw(
+                        _pixel,
+                        new XnaRectangle(
+                            x + barWidth + gap,
+                            y,
+                            barWidth,
+                            barHeight),
+                        XnaColor.White);
+                }
+                else
+                {
+                    Vector2 textSize = font.MeasureString(Text);
+
+                    Vector2 textPosition = new Vector2(
+                        Bounds.X +
+                        (Bounds.Width - textSize.X) / 2f,
+
+                        Bounds.Y +
+                        (Bounds.Height - textSize.Y) / 2f);
+
+                    spriteBatch.DrawString(
+                        font,
+                        Text,
+                        textPosition,
+                        XnaColor.White);
+                }
+            }
         }
     }
-}

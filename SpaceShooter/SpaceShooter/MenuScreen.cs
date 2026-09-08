@@ -1,4 +1,6 @@
-﻿namespace SpaceShooter
+﻿using Microsoft.VisualBasic.Devices;
+
+namespace SpaceShooter
 {
     public class MenuScreen : GameScreen
     {
@@ -7,13 +9,11 @@
 
         private List<Button> _buttons;
 
-        private MouseState _previousMouse;
-
         private KeyboardState _previousKeyboard;
 
         public MenuScreen(Game1 game) : base(game)
         {
-            _previousKeyboard = Keyboard.GetState();
+            _previousKeyboard = Microsoft.Xna.Framework.Input.Keyboard.GetState();
             Game.ChangeScreenSize(500, 500);
         }
 
@@ -54,28 +54,28 @@
                 new XnaRectangle(x, startY + spacing * 4, buttonWidth, buttonHeight)));
         }
 
-        public override void Update(GameTime gameTime, KeyboardState keyboard)
+        public override void Update(
+            GameTime gameTime,
+            KeyboardState keyboard,
+            Vector2 mousePosition,
+            bool mouseClicked)
         {
             if (keyboard.IsKeyDown(XnaKeys.Escape) && _previousKeyboard.IsKeyUp(XnaKeys.Escape))
             {
                 Game.Exit();
             }
 
-            MouseState mouse = Mouse.GetState();
-
             foreach (Button button in _buttons)
             {
-                button.Update(mouse);
+                button.Update(mousePosition);
 
-                if (button.IsClicked(mouse, _previousMouse))
+                if (button.IsClicked(mousePosition, mouseClicked))
                 {
                     HandleButton(button.Text);
-
                     break;
                 }
             }
 
-            _previousMouse = mouse;
             _previousKeyboard = keyboard;
         }
 

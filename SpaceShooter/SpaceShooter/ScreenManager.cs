@@ -30,21 +30,18 @@
             _waitForMouseRelease = true;
         }
 
-        public void Update(GameTime gameTime, KeyboardState keyboard)
+        public void Update(
+            GameTime gameTime,
+            KeyboardState keyboard,
+            Vector2 mousePosition,
+            bool mouseClicked)
         {
-            MouseState mouse = Mouse.GetState();
-
-            if (_waitForMouseRelease)
-            {
-                if (mouse.LeftButton == XnaButtonState.Released)
-                {
-                    _waitForMouseRelease = false;
-                }
-
-                return;
-            }
-
-            _currentScreen?.Update(gameTime, keyboard);
+            _currentScreen.Update(
+                gameTime,
+                keyboard,
+                mousePosition,
+                mouseClicked
+            );
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)

@@ -13,7 +13,11 @@
         {
         }
 
-        public virtual void Update(GameTime gameTime, KeyboardState keyboard)
+        public virtual void Update(
+            GameTime gameTime,
+            KeyboardState keyboard,
+            Vector2 mousePosition,
+            bool mouseClicked)
         {
         }
 
