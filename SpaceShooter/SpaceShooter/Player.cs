@@ -10,20 +10,22 @@
 
         public float Speed;
 
-        public float ShootingCooldown;
-        public float MissileShootingCooldown;
-
         public List<Projectiles> Projectiles;
 
         public int Width;
         public int Height;
 
-        public float ShootCooldownTime = 0.25f;
-        public float MissileCooldownTime = 2.5f;
-
         public int Pierce = 0;
-        public int AutoAimMissiles = 0;
+        public int AutoAimMissiles = 1;
         public int Damage = 1;
+
+        public int ShotsUntilMissile = 5;
+        private int _shotCount = 0;
+
+        private float _shootCooldown = 0f;
+        public float ShootCooldown = 0.2f;
+
+        private KeyboardState _previousKeyboard;
 
         public List<Enemy> GameEnemyList { get; set; }
 
@@ -58,8 +60,10 @@
             Projectiles =
                 new List<Projectiles>();
 
-            ShootingCooldown = 0f;
-            MissileShootingCooldown = 0f;
+            _shotCount = 0;
+
+            _previousKeyboard =
+                Keyboard.GetState();
         }
 
         public void Update(
@@ -74,14 +78,15 @@
             Vector2 movement =
                 Vector2.Zero;
 
-            if (Keyboard.GetState()
-                .IsKeyDown(XnaKeys.A))
+            KeyboardState keyboard =
+                Keyboard.GetState();
+
+            if (keyboard.IsKeyDown(XnaKeys.A))
             {
                 movement.X -= 1;
             }
 
-            if (Keyboard.GetState()
-                .IsKeyDown(XnaKeys.D))
+            if (keyboard.IsKeyDown(XnaKeys.D))
             {
                 movement.X += 1;
             }
@@ -103,29 +108,30 @@
             float deltaTime =
                 (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            ShootingCooldown -= deltaTime;
-            MissileShootingCooldown -= deltaTime;
+            _shootCooldown -= deltaTime;
 
-            if (Keyboard.GetState()
-                .IsKeyDown(XnaKeys.Space))
+            if (keyboard.IsKeyDown(XnaKeys.Space) &&
+                _shootCooldown <= 0f)
             {
-                if (ShootingCooldown <= 0)
-                {
-                    ShootNormal();
+                ShootNormal();
 
-                    ShootingCooldown =
-                        ShootCooldownTime;
+                _shotCount++;
+
+                if (_shotCount >= ShotsUntilMissile)
+                {
+                    if (AutoAimMissiles > 0)
+                    {
+                        ShootMissiles();
+                    }
+
+                    _shotCount = 0;
                 }
 
-                if (AutoAimMissiles > 0 &&
-                        MissileShootingCooldown <= 0)
-                {
-                    ShootMissiles();
-
-                    MissileShootingCooldown =
-                        MissileCooldownTime;
-                }
+                _shootCooldown = ShootCooldown;
             }
+
+            _previousKeyboard =
+                keyboard;
 
             foreach (Projectiles projectile
                      in Projectiles)

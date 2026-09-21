@@ -40,7 +40,7 @@
 
             _fireRateButton =
                 new Button(
-                    "RAPID FIRE",
+                    "MISSILE ATK SPD ++",
                     new XnaRectangle(
                         100,
                         130,
@@ -169,7 +169,7 @@
             int upgrade)
         {
             Game.ChangeScreenSize(
-                400,
+                500,
                 800);
 
             _playScreen.ApplyUpgrade(

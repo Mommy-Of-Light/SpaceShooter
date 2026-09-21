@@ -27,12 +27,12 @@
 
             int additionalEnemies;
 
-            switch (_currentWave)
+            switch (_currentWave % 5)
             {
                 case 1:
-                    additionalEnemies = 0;
-                    break;
+                    additionalEnemies = 1;
 
+                    break;
                 case 2:
                     additionalEnemies = 2;
                     break;
@@ -46,25 +46,23 @@
                     break;
 
                 default:
-                    additionalEnemies =
-                        7 +
-                        (_currentWave - 5) * 2;
+                    additionalEnemies = 0;
                     break;
             }
 
             int totalEnemies =
-                5 + additionalEnemies;
+                (7 * (int)Math.Floor((float)_currentWave / 5.0f)) + additionalEnemies;
 
             totalEnemies =
-                Math.Min(totalEnemies, 20);
+                Math.Min(totalEnemies, 50);
 
-            int enemiesPerRow = 5;
+            int enemiesPerRow = 7;
 
             int enemyWidth =
-                (int)(_enemyTexture.Width * 0.8f);
+                (int)(_enemyTexture.Width * 0.6f);
 
             int enemyHeight =
-                (int)(_enemyTexture.Height * 0.8f);
+                (int)(_enemyTexture.Height * 0.6f);
 
             int horizontalSpacing = 10;
             int verticalSpacing = 20;
@@ -79,6 +77,18 @@
             int enemyHealth =
                 1 +
                 ((_currentWave - 1) / 3);
+
+            float enemySpeed =
+                25f +
+                ((_currentWave - 1) / 4) * 5f;
+
+            enemySpeed =
+                Math.Min(enemySpeed, 100f);
+
+            int totalRows =
+                (int)Math.Ceiling(
+                    totalEnemies /
+                    (float)enemiesPerRow);
 
             for (int i = 0;
                  i < totalEnemies;
@@ -111,9 +121,11 @@
                     (enemyWidth +
                      horizontalSpacing);
 
+                int reversedRow =
+                    (totalRows - 1) - row;
+
                 float y =
-                    30 +
-                    row *
+                    -(reversedRow) *
                     (enemyHeight +
                      verticalSpacing);
 
@@ -123,7 +135,7 @@
                         _enemyProjectileTexture,
                         new Vector2(x, y),
                         enemySize,
-                        50f,
+                        enemySpeed,
                         enemyHealth));
             }
 

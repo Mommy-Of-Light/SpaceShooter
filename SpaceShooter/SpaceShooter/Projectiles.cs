@@ -19,6 +19,7 @@
         public Enemy Target;
         public bool IsMissile;
         public List<Enemy> EnemyList;
+        public List<Enemy> HitEnemies;
 
         public float Rotation;
 
@@ -55,6 +56,8 @@
                     (int)size.Y);
 
             State = true;
+
+            HitEnemies = new List<Enemy>();
         }
 
         public void Update(
@@ -148,6 +151,16 @@
             }
         }
 
+        public void ChangeTarget()
+        {
+            Target = FindNewTarget();
+
+            if (Target == null)
+            {
+                State = false;
+            }
+        }
+
         private Enemy FindNewTarget()
         {
             if (EnemyList == null)
@@ -155,12 +168,14 @@
 
             Enemy nearestEnemy = null;
 
-            float nearestDistance =
-                float.MaxValue;
+            float nearestDistance = float.MaxValue;
 
             foreach (Enemy enemy in EnemyList)
             {
                 if (!enemy.State)
+                    continue;
+
+                if (HitEnemies.Contains(enemy))
                     continue;
 
                 float distance =
@@ -177,7 +192,6 @@
 
             return nearestEnemy;
         }
-
         public void Draw(
             GameTime gameTime,
             SpriteBatch spriteBatch)

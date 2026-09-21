@@ -28,13 +28,19 @@
 
         private int _lastUpgradeWave;
 
+        private int startingUpgradeWave = 1;
+
+        private int nextUpgradeWave = 1;
+
+        private int upgradeWaveIncrement = 2;
+
         public PlayScreen(Game1 game) : base(game)
         {
             _previousKeyboard =
                 Keyboard.GetState();
 
             Game.ChangeScreenSize(
-                400,
+                500,
                 800);
         }
 
@@ -104,7 +110,7 @@
                 new Button(
                     "Continue",
                     new XnaRectangle(
-                        100,
+                        150,
                         300,
                         200,
                         50));
@@ -113,7 +119,7 @@
                 new Button(
                     "Restart",
                     new XnaRectangle(
-                        100,
+                        150,
                         370,
                         200,
                         50));
@@ -122,13 +128,18 @@
                 new Button(
                     "Exit",
                     new XnaRectangle(
-                        100,
+                        150,
                         440,
                         200,
                         50));
 
             _lastUpgradeWave = 0;
+
             _isPaused = false;
+
+            startingUpgradeWave = 1;
+            nextUpgradeWave = startingUpgradeWave;
+            upgradeWaveIncrement = 2;
 
             _player.AutoAimMissiles = 1;
         }
@@ -167,6 +178,7 @@
                     mouseClicked))
                 {
                     ResetGame();
+
                     _isPaused = false;
                 }
                 else if (_exitButton.IsClicked(
@@ -190,6 +202,18 @@
                 enemy.Update(
                     gameTime,
                     Game);
+
+                if (enemy.Position.Y +
+                    enemy.Size.Height >=
+                    Game.GraphicsDevice.Viewport.Height)
+                {
+                    Game.ScreenManager.ChangeScreen(
+                        new DeathScreen(
+                            Game,
+                            _waveManager.CurrentWave));
+
+                    return;
+                }
             }
 
             _enemies.RemoveAll(
@@ -202,11 +226,17 @@
 
                 _player.Projectiles.Clear();
 
-                if (completedWave % 5 == 0 &&
+                if (completedWave >= nextUpgradeWave &&
                     completedWave != _lastUpgradeWave)
                 {
-                    _lastUpgradeWave =
-                        completedWave;
+                    _lastUpgradeWave = completedWave;
+
+                    // 1 -> 3 -> 6 -> 10 -> 15 -> 21 -> 28 -> 36 -> 45 -> 55
+                    nextUpgradeWave += upgradeWaveIncrement;
+
+                    // Increase the gap each time:
+                    // +2, +3, +4, +5, +6, ...
+                    upgradeWaveIncrement++;
 
                     Game.ScreenManager.ChangeScreen(
                         new UpgradeScreen(
@@ -265,19 +295,31 @@
                     if (!enemy.State)
                         continue;
 
+                    if (projectile.HitEnemies.Contains(enemy))
+                        continue;
+
                     if (projectile.Hitbox.Intersects(
                         enemy.Hitbox))
                     {
                         enemy.TakeDamage(
                             projectile.Damage);
 
+                        projectile.HitEnemies.Add(
+                            enemy);
+
                         if (projectile.Pierce > 0)
                         {
                             projectile.Pierce--;
+
+                            if (projectile.IsMissile)
+                            {
+                                projectile.ChangeTarget();
+                            }
                         }
                         else
                         {
                             projectile.State = false;
+
                             break;
                         }
                     }
@@ -334,6 +376,11 @@
 
             _lastUpgradeWave = 0;
 
+            nextUpgradeWave =
+                startingUpgradeWave;
+
+            upgradeWaveIncrement = 2;
+
             _enemies =
                 _waveManager.CreateNextWave(
                     Game.GraphicsDevice.Viewport.Width);
@@ -371,14 +418,10 @@
             switch (upgrade)
             {
                 case 0:
-                    _player.ShootCooldownTime =
+                    _player.ShotsUntilMissile =
                         Math.Max(
-                            0.08f,
-                            _player.ShootCooldownTime - 0.04f);
-
-                    _player.MissileCooldownTime =
-                        _player.ShootCooldownTime * 10f;
-
+                            1,
+                            _player.ShotsUntilMissile - 1);
                     break;
 
                 case 1:
@@ -401,7 +444,6 @@
             _player.GameEnemyList =
                 _enemies;
         }
-
         public override void Draw(
             GameTime gameTime,
             SpriteBatch spriteBatch)
@@ -456,6 +498,36 @@
                 _font,
                 missileText,
                 new Vector2(10, 60),
+                XnaColor.White);
+
+            string pierceText =
+                "PIERCE " +
+                _player.Pierce;
+
+            spriteBatch.DrawString(
+                _font,
+                pierceText,
+                new Vector2(10, 85),
+                XnaColor.White);
+
+            string shotsText =
+                "MISSILE EVERY " +
+                _player.ShotsUntilMissile;
+
+            spriteBatch.DrawString(
+                _font,
+                shotsText,
+                new Vector2(10, 110),
+                XnaColor.White);
+
+            string nextUpgradeText =
+                "NEXT UPGRADE " +
+                nextUpgradeWave;
+
+            spriteBatch.DrawString(
+                _font,
+                nextUpgradeText,
+                new Vector2(10, 135),
                 XnaColor.White);
 
             foreach (Button button in _buttons)
