@@ -5,6 +5,7 @@
         public string Text { get; private set; }
         public XnaRectangle Bounds { get; private set; }
         public bool IsHovered { get; private set; }
+        public bool IsSelected { get; private set; }
         private Texture2D _pixel;
 
         public Button(string text, XnaRectangle bounds)
@@ -23,6 +24,11 @@
             return IsHovered && mouseClicked && Bounds.Contains(mousePosition.ToPoint());
         }
 
+        public void SetSelected(bool selected)
+        {
+            IsSelected = selected;
+        }
+
         public void Draw(SpriteBatch spriteBatch, SpriteFont font)
         {
             if (_pixel == null)
@@ -31,7 +37,21 @@
                 _pixel.SetData(new[] { XnaColor.White });
             }
 
-            XnaColor buttonColor = IsHovered ? XnaColor.DarkBlue : XnaColor.DarkSlateGray;
+            XnaColor buttonColor;
+
+            if (IsSelected)
+            {
+                buttonColor = XnaColor.DarkBlue;
+            }
+            else if (IsHovered)
+            {
+                buttonColor = XnaColor.DarkBlue;
+            }
+            else
+            {
+                buttonColor = XnaColor.DarkSlateGray;
+            }
+
             spriteBatch.Draw(_pixel, Bounds, buttonColor);
 
             if (Text == "||")

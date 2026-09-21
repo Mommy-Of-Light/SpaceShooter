@@ -20,6 +20,18 @@
         private KeyboardState _previousKeyboard;
         public List<Enemy> GameEnemyList { get; set; }
 
+        public int ShotCount
+        {
+            get { return _shotCount; }
+            set { _shotCount = value; }
+        }
+
+        public float CurrentShootCooldown
+        {
+            get { return _shootCooldown; }
+            set { _shootCooldown = value; }
+        }
+
         public Player(Texture2D texture, Texture2D projectileTexture, Vector2 position, float speed)
         {
             Texture = texture;

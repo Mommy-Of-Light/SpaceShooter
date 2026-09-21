@@ -9,6 +9,9 @@
         private Vector2 _cursorPosition;
         private XnaPoint _windowCenter;
         private float _mouseSensitivity = 3.0f;
+        public string PlayerPseudo { get; set; }
+        public string Difficulty { get; set; }
+        public double DifficultyMultiplier { get; set; }
         private bool _previousLeftMouseButton;
 
         public Game1()
@@ -19,6 +22,10 @@
             _graphics.PreferredBackBufferWidth = WINDOW_WIDTH;
             _graphics.PreferredBackBufferHeight = WINDOW_HEIGHT;
             Window.Title = WINDOW_TITLE;
+
+            PlayerPseudo = "";
+            Difficulty = "Medium";
+            DifficultyMultiplier = 1.0;
 
             ScreenManager = new ScreenManager(this);
         }
@@ -32,7 +39,7 @@
 
         protected override void Initialize()
         {
-            ScreenManager.ChangeScreen(new MenuScreen(this));
+            ScreenManager.ChangeScreen(new PseudoScreen(this));
 
             IsMouseVisible = false;
 
@@ -42,20 +49,15 @@
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-
             _cursorTexture = Content.Load<Texture2D>("Textures/PNG/UI/cursor");
-
             IsMouseVisible = false;
-
             _cursorPosition = new Vector2(_graphics.PreferredBackBufferWidth / 2f, _graphics.PreferredBackBufferHeight / 2f);
-
             CenterMouse();
         }
 
         private void CenterMouse()
         {
             _windowCenter = new XnaPoint(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
-
             Mouse.SetPosition(_windowCenter.X, _windowCenter.Y);
         }
 
@@ -70,11 +72,9 @@
             _cursorPosition.Y += deltaY * _mouseSensitivity;
 
             _cursorPosition.X = Math.Clamp(_cursorPosition.X, 0, _graphics.PreferredBackBufferWidth - _cursorTexture.Width);
-
             _cursorPosition.Y = Math.Clamp(_cursorPosition.Y, 0, _graphics.PreferredBackBufferHeight - _cursorTexture.Height);
 
             bool mouseClicked = mouseState.LeftButton == XnaButtonState.Pressed && !_previousLeftMouseButton;
-
             _previousLeftMouseButton = mouseState.LeftButton == XnaButtonState.Pressed;
 
             ScreenManager.Update(gameTime, Keyboard.GetState(), _cursorPosition, mouseClicked);
@@ -91,9 +91,7 @@
             ScreenManager.Draw(gameTime, _spriteBatch);
 
             _spriteBatch.Begin();
-
             _spriteBatch.Draw(_cursorTexture, _cursorPosition, XnaColor.White);
-
             _spriteBatch.End();
 
             base.Draw(gameTime);

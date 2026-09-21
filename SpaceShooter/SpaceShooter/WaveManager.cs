@@ -91,5 +91,10 @@
         {
             _currentWave = 0;
         }
+
+        public void SetCurrentWave(int currentWave)
+        {
+            _currentWave = currentWave;
+        }
     }
 }
