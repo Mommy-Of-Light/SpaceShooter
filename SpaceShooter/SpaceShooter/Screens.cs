@@ -4,9 +4,7 @@
     {
         private SpriteFont _font;
         private SpriteFont _font_title;
-
         private List<Button> _buttons;
-
         private KeyboardState _previousKeyboard;
 
         public NewGameScreen(Game1 game) : base(game)
@@ -32,27 +30,13 @@
             int startY = 100;
             int spacing = 75;
 
-            _buttons.Add(new Button(
-                "Create a new game",
-                new XnaRectangle(x, startY, buttonWidth, buttonHeight)));
-
-            _buttons.Add(new Button(
-                "Return",
-                new XnaRectangle(
-                    x,
-                    startY + spacing,
-                    buttonWidth,
-                    buttonHeight)));
+            _buttons.Add(new Button("Create a new game", new XnaRectangle(x, startY, buttonWidth, buttonHeight)));
+            _buttons.Add(new Button("Return", new XnaRectangle(x, startY + spacing, buttonWidth, buttonHeight)));
         }
 
-        public override void Update(
-            GameTime gameTime,
-            KeyboardState keyboard,
-            Vector2 mousePosition,
-            bool mouseClicked)
+        public override void Update(GameTime gameTime, KeyboardState keyboard, Vector2 mousePosition, bool mouseClicked)
         {
-            if (keyboard.IsKeyDown(XnaKeys.Escape) &&
-                _previousKeyboard.IsKeyUp(XnaKeys.Escape))
+            if (keyboard.IsKeyDown(XnaKeys.Escape) && _previousKeyboard.IsKeyUp(XnaKeys.Escape))
             {
                 HandleButton("Return");
             }
@@ -76,13 +60,11 @@
             switch (button)
             {
                 case "Create a new game":
-                    Game.ScreenManager.ChangeScreen(
-                        new PlayScreen(Game));
+                    Game.ScreenManager.ChangeScreen(new PlayScreen(Game));
                     break;
 
                 case "Return":
-                    Game.ScreenManager.ChangeScreen(
-                        new MenuScreen(Game));
+                    Game.ScreenManager.ChangeScreen(new MenuScreen(Game));
                     break;
             }
         }
@@ -91,11 +73,7 @@
         {
             spriteBatch.Begin();
 
-            spriteBatch.Draw(
-                Game.Content.Load<Texture2D>(
-                    "Textures/Background/black"),
-                Vector2.Zero,
-                XnaColor.White);
+            spriteBatch.Draw(Game.Content.Load<Texture2D>("Textures/Background/black"), Vector2.Zero, XnaColor.White);
 
             int screenWidth = Game.GraphicsDevice.Viewport.Width;
 
@@ -103,13 +81,7 @@
 
             Vector2 titleSize = _font_title.MeasureString(title);
 
-            spriteBatch.DrawString(
-                _font_title,
-                title,
-                new Vector2(
-                    (screenWidth - titleSize.X) / 2,
-                    50),
-                XnaColor.White);
+            spriteBatch.DrawString(_font_title, title, new Vector2((screenWidth - titleSize.X) / 2, 50), XnaColor.White);
 
             foreach (Button button in _buttons)
             {
@@ -124,9 +96,7 @@
     {
         private SpriteFont _font;
         private SpriteFont _font_title;
-
         private List<Button> _buttons;
-
         private KeyboardState _previousKeyboard;
 
         public SaveScreen(Game1 game) : base(game)
@@ -150,23 +120,12 @@
             int x = (screenWidth - buttonWidth) / 2;
             int startY = 100;
 
-            _buttons.Add(new Button(
-                "Return",
-                new XnaRectangle(
-                    x,
-                    startY,
-                    buttonWidth,
-                    buttonHeight)));
+            _buttons.Add(new Button("Return", new XnaRectangle(x, startY, buttonWidth, buttonHeight)));
         }
 
-        public override void Update(
-            GameTime gameTime,
-            KeyboardState keyboard,
-            Vector2 mousePosition,
-            bool mouseClicked)
+        public override void Update(GameTime gameTime, KeyboardState keyboard, Vector2 mousePosition, bool mouseClicked)
         {
-            if (keyboard.IsKeyDown(XnaKeys.Escape) &&
-                _previousKeyboard.IsKeyUp(XnaKeys.Escape))
+            if (keyboard.IsKeyDown(XnaKeys.Escape) && _previousKeyboard.IsKeyUp(XnaKeys.Escape))
             {
                 HandleButton("Return");
             }
@@ -190,8 +149,7 @@
             switch (button)
             {
                 case "Return":
-                    Game.ScreenManager.ChangeScreen(
-                        new MenuScreen(Game));
+                    Game.ScreenManager.ChangeScreen(new MenuScreen(Game));
                     break;
             }
         }
@@ -200,11 +158,7 @@
         {
             spriteBatch.Begin();
 
-            spriteBatch.Draw(
-                Game.Content.Load<Texture2D>(
-                    "Textures/Background/black"),
-                Vector2.Zero,
-                XnaColor.White);
+            spriteBatch.Draw(Game.Content.Load<Texture2D>("Textures/Background/black"), Vector2.Zero, XnaColor.White);
 
             int screenWidth = Game.GraphicsDevice.Viewport.Width;
 
@@ -212,13 +166,7 @@
 
             Vector2 titleSize = _font_title.MeasureString(title);
 
-            spriteBatch.DrawString(
-                _font_title,
-                title,
-                new Vector2(
-                    (screenWidth - titleSize.X) / 2,
-                    50),
-                XnaColor.White);
+            spriteBatch.DrawString(_font_title, title, new Vector2((screenWidth - titleSize.X) / 2, 50), XnaColor.White);
 
             foreach (Button button in _buttons)
             {
@@ -233,9 +181,7 @@
     {
         private SpriteFont _font;
         private SpriteFont _font_title;
-
         private List<Button> _buttons;
-
         private KeyboardState _previousKeyboard;
 
         public ArchiveScreen(Game1 game) : base(game)
@@ -259,23 +205,12 @@
             int x = (screenWidth - buttonWidth) / 2;
             int startY = 100;
 
-            _buttons.Add(new Button(
-                "Return",
-                new XnaRectangle(
-                    x,
-                    startY,
-                    buttonWidth,
-                    buttonHeight)));
+            _buttons.Add(new Button("Return", new XnaRectangle(x, startY, buttonWidth, buttonHeight)));
         }
 
-        public override void Update(
-            GameTime gameTime,
-            KeyboardState keyboard,
-            Vector2 mousePosition,
-            bool mouseClicked)
+        public override void Update(GameTime gameTime, KeyboardState keyboard, Vector2 mousePosition, bool mouseClicked)
         {
-            if (keyboard.IsKeyDown(XnaKeys.Escape) &&
-                _previousKeyboard.IsKeyUp(XnaKeys.Escape))
+            if (keyboard.IsKeyDown(XnaKeys.Escape) && _previousKeyboard.IsKeyUp(XnaKeys.Escape))
             {
                 HandleButton("Return");
             }
@@ -299,8 +234,7 @@
             switch (button)
             {
                 case "Return":
-                    Game.ScreenManager.ChangeScreen(
-                        new MenuScreen(Game));
+                    Game.ScreenManager.ChangeScreen(new MenuScreen(Game));
                     break;
             }
         }
@@ -309,11 +243,7 @@
         {
             spriteBatch.Begin();
 
-            spriteBatch.Draw(
-                Game.Content.Load<Texture2D>(
-                    "Textures/Background/black"),
-                Vector2.Zero,
-                XnaColor.White);
+            spriteBatch.Draw(Game.Content.Load<Texture2D>("Textures/Background/black"), Vector2.Zero, XnaColor.White);
 
             int screenWidth = Game.GraphicsDevice.Viewport.Width;
 
@@ -321,13 +251,7 @@
 
             Vector2 titleSize = _font_title.MeasureString(title);
 
-            spriteBatch.DrawString(
-                _font_title,
-                title,
-                new Vector2(
-                    (screenWidth - titleSize.X) / 2,
-                    50),
-                XnaColor.White);
+            spriteBatch.DrawString(_font_title, title, new Vector2((screenWidth - titleSize.X) / 2, 50), XnaColor.White);
 
             foreach (Button button in _buttons)
             {
@@ -342,9 +266,7 @@
     {
         private SpriteFont _font;
         private SpriteFont _font_title;
-
         private List<Button> _buttons;
-
         private KeyboardState _previousKeyboard;
 
         public RankingScreen(Game1 game) : base(game)
@@ -368,23 +290,12 @@
             int x = (screenWidth - buttonWidth) / 2;
             int startY = 100;
 
-            _buttons.Add(new Button(
-                "Return",
-                new XnaRectangle(
-                    x,
-                    startY,
-                    buttonWidth,
-                    buttonHeight)));
+            _buttons.Add(new Button("Return", new XnaRectangle(x, startY, buttonWidth, buttonHeight)));
         }
 
-        public override void Update(
-            GameTime gameTime,
-            KeyboardState keyboard,
-            Vector2 mousePosition,
-            bool mouseClicked)
+        public override void Update(GameTime gameTime, KeyboardState keyboard, Vector2 mousePosition, bool mouseClicked)
         {
-            if (keyboard.IsKeyDown(XnaKeys.Escape) &&
-                _previousKeyboard.IsKeyUp(XnaKeys.Escape))
+            if (keyboard.IsKeyDown(XnaKeys.Escape) && _previousKeyboard.IsKeyUp(XnaKeys.Escape))
             {
                 HandleButton("Return");
             }
@@ -408,8 +319,7 @@
             switch (button)
             {
                 case "Return":
-                    Game.ScreenManager.ChangeScreen(
-                        new MenuScreen(Game));
+                    Game.ScreenManager.ChangeScreen(new MenuScreen(Game));
                     break;
             }
         }
@@ -418,11 +328,7 @@
         {
             spriteBatch.Begin();
 
-            spriteBatch.Draw(
-                Game.Content.Load<Texture2D>(
-                    "Textures/Background/black"),
-                Vector2.Zero,
-                XnaColor.White);
+            spriteBatch.Draw(Game.Content.Load<Texture2D>("Textures/Background/black"), Vector2.Zero, XnaColor.White);
 
             int screenWidth = Game.GraphicsDevice.Viewport.Width;
 
@@ -430,13 +336,7 @@
 
             Vector2 titleSize = _font_title.MeasureString(title);
 
-            spriteBatch.DrawString(
-                _font_title,
-                title,
-                new Vector2(
-                    (screenWidth - titleSize.X) / 2,
-                    50),
-                XnaColor.White);
+            spriteBatch.DrawString(_font_title, title, new Vector2((screenWidth - titleSize.X) / 2, 50), XnaColor.White);
 
             foreach (Button button in _buttons)
             {

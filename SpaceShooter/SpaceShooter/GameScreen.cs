@@ -9,28 +9,14 @@
             Game = game;
         }
 
-        public virtual void Initialize()
-        {
-        }
+        public virtual void Initialize() { }
 
-        public virtual void Update(
-            GameTime gameTime,
-            KeyboardState keyboard,
-            Vector2 mousePosition,
-            bool mouseClicked)
-        {
-        }
+        public virtual void Update(GameTime gameTime, KeyboardState keyboard, Vector2 mousePosition, bool mouseClicked) { }
 
-        public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch)
-        {
-        }
+        public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch) { }
 
-        public virtual void OnEnter()
-        {
-        }
+        public virtual void OnEnter() { }
 
-        public virtual void OnExit()
-        {
-        }
+        public virtual void OnExit() { }
     }
 }

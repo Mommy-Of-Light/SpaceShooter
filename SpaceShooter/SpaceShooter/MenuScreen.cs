@@ -6,11 +6,8 @@ namespace SpaceShooter
     {
         private SpriteFont _font;
         private SpriteFont _font_title;
-
         private List<Button> _buttons;
-
         private KeyboardState _previousKeyboard;
-
         public MenuScreen(Game1 game) : base(game)
         {
             _previousKeyboard = Microsoft.Xna.Framework.Input.Keyboard.GetState();
@@ -33,32 +30,14 @@ namespace SpaceShooter
             int startY = 100;
             int spacing = 75;
 
-            _buttons.Add(new Button(
-                "New Game",
-                new XnaRectangle(x, startY, buttonWidth, buttonHeight)));
-
-            _buttons.Add(new Button(
-                "Save",
-                new XnaRectangle(x, startY + spacing, buttonWidth, buttonHeight)));
-
-            _buttons.Add(new Button(
-                "Archive",
-                new XnaRectangle(x, startY + spacing * 2, buttonWidth, buttonHeight)));
-
-            _buttons.Add(new Button(
-                "Ranking",
-                new XnaRectangle(x, startY + spacing * 3, buttonWidth, buttonHeight)));
-
-            _buttons.Add(new Button(
-                "Exit",
-                new XnaRectangle(x, startY + spacing * 4, buttonWidth, buttonHeight)));
+            _buttons.Add(new Button("New Game", new XnaRectangle(x, startY, buttonWidth, buttonHeight)));
+            _buttons.Add(new Button("Save", new XnaRectangle(x, startY + spacing, buttonWidth, buttonHeight)));
+            _buttons.Add(new Button("Archive", new XnaRectangle(x, startY + spacing * 2, buttonWidth, buttonHeight)));
+            _buttons.Add(new Button("Ranking", new XnaRectangle(x, startY + spacing * 3, buttonWidth, buttonHeight)));
+            _buttons.Add(new Button("Exit", new XnaRectangle(x, startY + spacing * 4, buttonWidth, buttonHeight)));
         }
 
-        public override void Update(
-            GameTime gameTime,
-            KeyboardState keyboard,
-            Vector2 mousePosition,
-            bool mouseClicked)
+        public override void Update(GameTime gameTime, KeyboardState keyboard, Vector2 mousePosition, bool mouseClicked)
         {
             if (keyboard.IsKeyDown(XnaKeys.Escape) && _previousKeyboard.IsKeyUp(XnaKeys.Escape))
             {
@@ -84,23 +63,19 @@ namespace SpaceShooter
             switch (button)
             {
                 case "New Game":
-                    Game.ScreenManager.ChangeScreen(
-                        new NewGameScreen(Game));
+                    Game.ScreenManager.ChangeScreen(new NewGameScreen(Game));
                     break;
 
                 case "Save":
-                    Game.ScreenManager.ChangeScreen(
-                        new SaveScreen(Game));
+                    Game.ScreenManager.ChangeScreen(new SaveScreen(Game));
                     break;
 
                 case "Archive":
-                    Game.ScreenManager.ChangeScreen(
-                        new ArchiveScreen(Game));
+                    Game.ScreenManager.ChangeScreen(new ArchiveScreen(Game));
                     break;
 
                 case "Ranking":
-                    Game.ScreenManager.ChangeScreen(
-                        new RankingScreen(Game));
+                    Game.ScreenManager.ChangeScreen(new RankingScreen(Game));
                     break;
 
                 case "Exit":
@@ -121,13 +96,7 @@ namespace SpaceShooter
 
             Vector2 titleSize = _font_title.MeasureString(title);
 
-            spriteBatch.DrawString(
-                _font_title,
-                title,
-                new Vector2(
-                    (screenWidth - titleSize.X) / 2,
-                    50),
-                XnaColor.White);
+            spriteBatch.DrawString(_font_title, title, new Vector2((screenWidth - titleSize.X) / 2, 50), XnaColor.White);
 
             foreach (Button button in _buttons)
             {
