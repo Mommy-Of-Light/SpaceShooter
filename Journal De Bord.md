@@ -415,3 +415,236 @@ Sure. Since these are tasks for **today (14/09/2026)** and you’ll fill in the 
 
 * Définir les conditions nécessaires pour déclencher la victoire ou la défaite.
 * Prévoir une gestion claire de la fin de partie.
+
+
+Bien sûr. Voici l’entrée du **15/09/2026**, en gardant le même style que les journées précédentes, avec les tâches de la veille **finalisées** et les nouvelles tâches **commencées**.
+
+---
+
+## 15/09/2026
+
+### 1. Étapes réalisées
+
+#### Développement
+
+**Condition de victoire/défaite**
+
+* Finalisation du système permettant de déterminer la victoire ou la défaite du joueur.
+
+* Mise en place des conditions nécessaires pour terminer une partie.
+
+* Intégration de la gestion de la fin de partie dans le jeu.
+
+**Système de bonus**
+
+* Début de la création du système de bonus.
+
+* Réflexion sur les différents bonus pouvant être ajoutés au jeu.
+
+* Mise en place de la structure nécessaire pour permettre l'apparition et la gestion des bonus.
+
+**Système de score**
+
+* Début de la création du système de score.
+
+* Réflexion sur les différentes actions permettant d'augmenter le score du joueur.
+
+* Préparation de la structure permettant d'enregistrer et d'afficher le score.
+
+**Niveaux de difficulté**
+
+* Début de la création des différents niveaux de difficulté.
+
+* Réflexion sur les éléments pouvant être modifiés selon le niveau de difficulté.
+
+* Préparation de la structure nécessaire pour adapter progressivement la difficulté du jeu.
+
+### 2. Temps consacré aux différentes tâches
+
+| Catégorie     | Tâche                                            |  Temps consacré |
+| ------------- | ------------------------------------------------ | --------------: |
+| Développement | Finalisation de la condition de victoire/défaite |      45 minutes |
+| Développement | Début du système de bonus                        |      45 minutes |
+| Développement | Début du système de score                        |      45 minutes |
+| Développement | Début des niveaux de difficulté                  |      45 minutes |
+| **Total**     |                                                  | **180 minutes** |
+
+### 3. Problèmes rencontrés et solutions apportées
+
+**Finalisation de la condition de victoire/défaite**
+
+* Vérification des différentes situations pouvant entraîner la fin de la partie.
+
+* Ajustement des conditions afin d'éviter qu'une partie se termine de manière incorrecte.
+
+**Création du système de bonus**
+
+* Réflexion sur la manière de faire apparaître et de récupérer les bonus.
+
+* Mise en place d'une première structure permettant d'ajouter différents types de bonus par la suite.
+
+**Création du système de score**
+
+* Réflexion sur les actions devant modifier le score du joueur.
+
+* Préparation d'un système suffisamment flexible pour pouvoir être utilisé avec les différents éléments du gameplay.
+
+**Création des niveaux de difficulté**
+
+* Réflexion sur les paramètres pouvant être modifiés pour augmenter ou réduire la difficulté.
+
+* Préparation d'une structure permettant de modifier ces paramètres selon le niveau choisi.
+
+### 4. Options envisagées et choix effectués
+
+#### Condition de victoire/défaite
+
+* Finaliser le système commencé précédemment.
+
+* Centraliser les conditions de fin de partie afin de faciliter leur gestion.
+
+* Prévoir une structure permettant d'ajouter ou de modifier les conditions ultérieurement.
+
+#### Système de bonus
+
+* Commencer par une structure simple permettant d'intégrer les premiers bonus.
+
+* Prévoir la possibilité d'ajouter différents effets et types de bonus.
+
+* Garder le système suffisamment flexible pour permettre son évolution.
+
+#### Système de score
+
+* Mettre en place un système permettant de comptabiliser les points obtenus par le joueur.
+
+* Prévoir l'intégration du score avec les ennemis et les autres éléments du gameplay.
+
+* Préparer l'affichage du score dans l'interface du jeu.
+
+#### Niveaux de difficulté
+
+* Mettre en place plusieurs niveaux de difficulté.
+
+* Faire varier certains paramètres du jeu en fonction du niveau choisi.
+
+* Prévoir une structure permettant d'ajuster facilement la difficulté au cours du développement.
+
+## **21/09/2026**
+
+### 1. Étapes réalisées
+
+#### Développement
+
+**Système de score**
+
+* Poursuite du développement du système de score commencé précédemment.
+
+* Mise en place de la gestion des points obtenus par le joueur.
+
+* Préparation du système afin que les scores puissent être enregistrés et utilisés par le futur classement.
+
+**Niveaux de difficulté**
+
+* Poursuite du développement des niveaux de difficulté.
+
+* Mise en place des différents paramètres permettant de modifier la difficulté du jeu.
+
+* Préparation du système afin de pouvoir proposer plusieurs niveaux de difficulté.
+
+**Écran du classement**
+
+* Début de la création de l'écran permettant d'afficher le classement des joueurs.
+
+* Mise en place de la structure visuelle de l'écran.
+
+* Préparation de l'affichage des futurs scores récupérés depuis la base de données.
+
+**Base de données MariaDB**
+
+* Début de la mise en place de la base de données MariaDB.
+
+* Préparation de la structure nécessaire pour stocker les informations du jeu.
+
+* Réflexion sur les données nécessaires pour gérer les scores et le classement.
+
+### 2. Temps consacré aux différentes tâches
+
+| Catégorie     | Tâche                                  |  Temps consacré |
+| ------------- | -------------------------------------- | --------------: |
+| Développement | Poursuite du système de score          |      15 minutes |
+| Développement | Poursuite des niveaux de difficulté    |      30 minutes |
+| Développement | Création de l'écran du classement      |      60 minutes |
+| Développement | Création de la base de données MariaDB |      75 minutes |
+| **Total**     |                                        | **180 minutes** |
+
+### 3. Problèmes rencontrés et solutions apportées
+
+**Intégration du système de score**
+
+* Réflexion sur la manière de conserver les scores afin de pouvoir les réutiliser dans le classement.
+
+* Adaptation du système de score pour préparer son enregistrement dans la base de données.
+
+**Gestion des niveaux de difficulté**
+
+* Difficulté à déterminer quels paramètres doivent varier selon le niveau choisi.
+
+* Mise en place d'une structure permettant de modifier ces paramètres sans devoir modifier directement toute la logique du jeu.
+
+**Création de l'écran du classement**
+
+* Réflexion sur la manière d'organiser l'affichage des différents joueurs et de leurs scores.
+
+* Création d'une structure permettant d'intégrer les données provenant de la base de données par la suite.
+
+**Mise en place de MariaDB**
+
+* Réflexion sur les données devant être conservées dans la base.
+
+* Préparation d'une structure permettant de séparer les données des joueurs et leurs scores.
+
+### 4. Options envisagées et choix effectués
+
+#### Système de score
+
+* Continuer le développement du système de score.
+
+* Prévoir l'enregistrement des scores dans la base de données.
+
+* Préparer le système afin que les scores puissent être récupérés pour construire le classement.
+
+#### Niveaux de difficulté
+
+* Conserver plusieurs niveaux de difficulté.
+
+* Faire varier les paramètres du jeu en fonction du niveau sélectionné.
+
+* Garder une structure permettant d'ajuster facilement les paramètres de difficulté.
+
+#### Écran du classement
+
+* Créer un écran dédié au classement.
+
+* Prévoir l'affichage des joueurs et de leurs scores.
+
+* Préparer l'écran afin qu'il puisse récupérer les données depuis la base de données.
+
+#### Base de données MariaDB
+
+* Utiliser MariaDB pour stocker les données liées aux joueurs et aux scores.
+
+* Prévoir les tables nécessaires au fonctionnement du classement.
+
+* Préparer la connexion entre le jeu et la base de données pour les prochaines étapes.
+
+### 5. Prochaines étapes
+
+* Finaliser le système de score et les niveaux de difficulté.
+
+* Créer les tables nécessaires dans MariaDB.
+
+* Connecter le jeu à la base de données.
+
+* Mettre en place l'enregistrement des scores.
+
+* Finaliser l'affichage du classement.
