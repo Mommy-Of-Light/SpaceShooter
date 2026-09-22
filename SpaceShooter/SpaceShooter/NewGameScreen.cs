@@ -34,7 +34,7 @@
             int startY = 100;
             int spacing = 75;
 
-            if (SaveManager.Exists())
+            if (SaveManager.Exists(Game.PlayerPseudo))
             {
                 _buttons.Add(new Button("Continue", new XnaRectangle(x, startY, buttonWidth, buttonHeight)));
             }
@@ -45,59 +45,34 @@
             int difficultySpacing = 10;
 
             int difficultyTotalWidth = (difficultyButtonWidth * 3) + (difficultySpacing * 2);
+
             int difficultyX = (screenWidth - difficultyTotalWidth) / 2;
 
-            _easyButton = new Button(
-                "Easy",
-                new XnaRectangle(
-                    difficultyX,
-                    difficultyY,
-                    difficultyButtonWidth,
-                    buttonHeight
-                )
-            );
+            _easyButton = new Button("Easy", new XnaRectangle(difficultyX, difficultyY, difficultyButtonWidth, buttonHeight));
+
             _easyButton.SetSelected(false);
 
-            _mediumButton = new Button(
-                "Medium",
-                new XnaRectangle(
-                    difficultyX + difficultyButtonWidth + difficultySpacing,
-                    difficultyY,
-                    difficultyButtonWidth,
-                    buttonHeight
-                )
-            );
+            _mediumButton = new Button("Medium", new XnaRectangle(difficultyX + difficultyButtonWidth + difficultySpacing, difficultyY, difficultyButtonWidth, buttonHeight));
+
             _mediumButton.SetSelected(true);
 
-            _hardButton = new Button(
-                "Hard",
-                new XnaRectangle(
-                    difficultyX + (difficultyButtonWidth + difficultySpacing) * 2,
-                    difficultyY,
-                    difficultyButtonWidth,
-                    buttonHeight
-                )
-            );
+            _hardButton = new Button("Hard", new XnaRectangle(difficultyX + (difficultyButtonWidth + difficultySpacing) * 2, difficultyY, difficultyButtonWidth, buttonHeight));
+
             _hardButton.SetSelected(false);
 
             int newGameY = difficultyY + spacing;
 
-            _buttons.Add(new Button(
-                "Create a new game",
-                new XnaRectangle(x, newGameY, buttonWidth, buttonHeight)
-            ));
+            _buttons.Add(new Button("Create a new game", new XnaRectangle(x, newGameY, buttonWidth, buttonHeight)));
 
             int returnY = newGameY + spacing;
 
-            _buttons.Add(new Button(
-                "Return",
-                new XnaRectangle(x, returnY, buttonWidth, buttonHeight)
-            ));
+            _buttons.Add(new Button("Return", new XnaRectangle(x, returnY, buttonWidth, buttonHeight)));
         }
 
         public override void Update(GameTime gameTime, KeyboardState keyboard, Vector2 mousePosition, bool mouseClicked)
         {
-            if (keyboard.IsKeyDown(XnaKeys.Escape) && _previousKeyboard.IsKeyUp(XnaKeys.Escape))
+            if (keyboard.IsKeyDown(XnaKeys.Escape) && _previousKeyboard.IsKeyUp(XnaKeys.Escape)
+            )
             {
                 HandleButton("Return");
             }
@@ -138,9 +113,16 @@
             switch (button)
             {
                 case "Continue":
-                    PlayScreen playScreen = new PlayScreen(Game);
-                    Game.ScreenManager.ChangeScreen(playScreen);
-                    playScreen.LoadGame();
+                    SaveData save = SaveManager.GetLatestSave(Game.PlayerPseudo);
+
+                    if (save != null)
+                    {
+                        PlayScreen playScreen = new PlayScreen(Game);
+
+                        Game.ScreenManager.ChangeScreen(playScreen);
+
+                        playScreen.LoadGame(save);
+                    }
                     break;
 
                 case "Easy":
@@ -183,8 +165,6 @@
                         Game.DifficultyMultiplier = 2.0;
                     }
 
-                    SaveManager.Delete();
-
                     Game.ScreenManager.ChangeScreen(new PlayScreen(Game));
                     break;
 
@@ -198,11 +178,7 @@
         {
             spriteBatch.Begin();
 
-            spriteBatch.Draw(
-                Game.Content.Load<Texture2D>("Textures/Background/black"),
-                Vector2.Zero,
-                XnaColor.White
-            );
+            spriteBatch.Draw(Game.Content.Load<Texture2D>("Textures/Background/black"), Vector2.Zero, XnaColor.White);
 
             int screenWidth = Game.GraphicsDevice.Viewport.Width;
 
@@ -210,12 +186,7 @@
 
             Vector2 titleSize = _font_title.MeasureString(title);
 
-            spriteBatch.DrawString(
-                _font_title,
-                title,
-                new Vector2((screenWidth - titleSize.X) / 2, 50),
-                XnaColor.White
-            );
+            spriteBatch.DrawString(_font_title, title, new Vector2((screenWidth - titleSize.X) / 2, 50), XnaColor.White);
 
             foreach (Button button in _buttons)
             {
@@ -223,7 +194,9 @@
             }
 
             _easyButton.Draw(spriteBatch, _font);
+
             _mediumButton.Draw(spriteBatch, _font);
+
             _hardButton.Draw(spriteBatch, _font);
 
             spriteBatch.End();

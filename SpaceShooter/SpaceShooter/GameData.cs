@@ -2,25 +2,31 @@
 {
     public class GameData
     {
+        public string RunId { get; set; }
+
         public int CurrentWave { get; set; }
         public int LastUpgradeWave { get; set; }
         public int NextUpgradeWave { get; set; }
         public int UpgradeWaveIncrement { get; set; }
         public int StartingUpgradeWave { get; set; }
+
         public float PlayerX { get; set; }
         public float PlayerY { get; set; }
         public float PlayerSpeed { get; set; }
         public int PlayerWidth { get; set; }
         public int PlayerHeight { get; set; }
+
         public int Pierce { get; set; }
         public int AutoAimMissiles { get; set; }
         public int Damage { get; set; }
         public int ShotsUntilMissile { get; set; }
         public int ShotCount { get; set; }
         public float ShootCooldown { get; set; }
+
         public int Score { get; set; }
         public string Difficulty { get; set; }
         public double DifficultyMultiplier { get; set; }
+
         public List<EnemyData> Enemies { get; set; }
         public List<ProjectileData> PlayerProjectiles { get; set; }
 

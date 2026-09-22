@@ -15,6 +15,8 @@
         public List<Enemy> EnemyList;
         public List<Enemy> HitEnemies;
         public float Rotation;
+        public float TurnSpeed = 5f;
+        private Vector2 Velocity;
 
         public Projectiles(Texture2D texture, Vector2 position, Vector2 size, float speed, int damage = 1, int pierce = 0, bool isMissile = false, Enemy target = null, List<Enemy> enemyList = null)
         {
@@ -37,6 +39,8 @@
             State = true;
 
             HitEnemies = new List<Enemy>();
+
+            Velocity = new Vector2(0, -1);
         }
 
         public void Update(GameTime gameTime, int screenWidth, int screenHeight, int direction)
@@ -65,30 +69,50 @@
 
         private void UpdateMissile(float deltaTime)
         {
+            if (HitEnemies.Count > 1)
+                HitEnemies.RemoveAt(0);
+
             if (Target == null || !Target.State)
             {
                 Target = FindNewTarget();
 
                 if (Target == null)
                 {
-                    Position.Y -= Speed * deltaTime;
+                    Position += Velocity * Speed * deltaTime;
                     return;
                 }
             }
 
             Vector2 missileCenter = Position + Size / 2f;
+
             Vector2 targetCenter = Target.Position + new Vector2(Target.Size.Width / 2f, Target.Size.Height / 2f);
-            Vector2 direction = targetCenter - missileCenter;
 
-            if (direction != Vector2.Zero)
+            Vector2 desiredDirection = targetCenter - missileCenter;
+
+            if (desiredDirection != Vector2.Zero)
             {
-                direction.Normalize();
+                desiredDirection.Normalize();
 
-                Position += direction * Speed * deltaTime;
-                Rotation = (float)Math.Atan2(direction.Y, direction.X);
+                Vector2 currentDirection = Velocity;
 
-                Rotation += MathHelper.PiOver2;
+                float currentAngle = (float)Math.Atan2(currentDirection.Y, currentDirection.X);
+
+                float targetAngle = (float)Math.Atan2(desiredDirection.Y, desiredDirection.X);
+
+                float angleDifference = MathHelper.WrapAngle(targetAngle - currentAngle);
+
+                float maxTurn = TurnSpeed * deltaTime;
+
+                float turnAmount = MathHelper.Clamp(angleDifference, -maxTurn, maxTurn);
+
+                currentAngle += turnAmount;
+
+                Velocity = new Vector2((float)Math.Cos(currentAngle), (float)Math.Sin(currentAngle));
+
+                Rotation = currentAngle + MathHelper.PiOver2;
             }
+
+            Position += Velocity * Speed * deltaTime;
         }
 
         public void ChangeTarget()

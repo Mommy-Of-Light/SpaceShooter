@@ -4,9 +4,7 @@ namespace SpaceShooter
 {
     public static class MariaDbManager
     {
-        private static readonly string ConnectionString =
-            "Server=localhost;Port=3306;Database=SpaceShooter;User ID=bastien;Password=super;";
-
+        private static readonly string ConnectionString = "Server=localhost;Port=3306;Database=SpaceShooter;User ID=bastien;Password=super;";
         public static string LastError { get; private set; }
 
         public static void SaveScore(string pseudo, int score, string difficulty)

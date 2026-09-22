@@ -17,7 +17,6 @@
             _score = score;
             _previousKeyboard = Keyboard.GetState();
             _scoreSaved = false;
-
             Game.ChangeScreenSize(500, 500);
         }
 
@@ -39,11 +38,7 @@
 
             _scoreSaved = true;
 
-            MariaDbManager.SaveScore(
-                Game.PlayerPseudo,
-                _score,
-                Game.Difficulty
-            );
+            MariaDbManager.SaveScore(Game.PlayerPseudo, _score, Game.Difficulty);
         }
 
         public override void Update(GameTime gameTime, KeyboardState keyboard, Vector2 mousePosition, bool mouseClicked)
@@ -53,7 +48,6 @@
 
             if (_restartButton.IsClicked(mousePosition, mouseClicked))
             {
-                SaveManager.Delete();
                 Game.ScreenManager.ChangeScreen(new PlayScreen(Game));
                 return;
             }
@@ -83,42 +77,22 @@
             string title = "GAME OVER";
             Vector2 titleSize = _titleFont.MeasureString(title);
 
-            spriteBatch.DrawString(
-                _titleFont,
-                title,
-                new Vector2((Game.GraphicsDevice.Viewport.Width - titleSize.X) / 2f, 70),
-                XnaColor.White
-            );
+            spriteBatch.DrawString(_titleFont, title, new Vector2((Game.GraphicsDevice.Viewport.Width - titleSize.X) / 2f, 70), XnaColor.White);
 
             string pseudoText = "Player: " + Game.PlayerPseudo;
             Vector2 pseudoSize = _font.MeasureString(pseudoText);
 
-            spriteBatch.DrawString(
-                _font,
-                pseudoText,
-                new Vector2((Game.GraphicsDevice.Viewport.Width - pseudoSize.X) / 2f, 140),
-                XnaColor.White
-            );
+            spriteBatch.DrawString(_font, pseudoText, new Vector2((Game.GraphicsDevice.Viewport.Width - pseudoSize.X) / 2f, 140), XnaColor.White);
 
             string waveText = "Wave " + _wave;
             Vector2 waveSize = _font.MeasureString(waveText);
 
-            spriteBatch.DrawString(
-                _font,
-                waveText,
-                new Vector2((Game.GraphicsDevice.Viewport.Width - waveSize.X) / 2f, 180),
-                XnaColor.White
-            );
+            spriteBatch.DrawString(_font, waveText, new Vector2((Game.GraphicsDevice.Viewport.Width - waveSize.X) / 2f, 180), XnaColor.White);
 
             string scoreText = "Score " + _score;
             Vector2 scoreSize = _font.MeasureString(scoreText);
 
-            spriteBatch.DrawString(
-                _font,
-                scoreText,
-                new Vector2((Game.GraphicsDevice.Viewport.Width - scoreSize.X) / 2f, 220),
-                XnaColor.White
-            );
+            spriteBatch.DrawString(_font, scoreText, new Vector2((Game.GraphicsDevice.Viewport.Width - scoreSize.X) / 2f, 220), XnaColor.White);
 
             _restartButton.Draw(spriteBatch, _font);
             _exitButton.Draw(spriteBatch, _font);

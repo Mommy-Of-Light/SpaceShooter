@@ -4,8 +4,11 @@
     {
         private SpriteFont _font;
         private SpriteFont _font_title;
-        private List<Button> _buttons;
         private KeyboardState _previousKeyboard;
+        private List<ArchiveData> _archives;
+        private Button _returnButton;
+        private int _scrollIndex;
+        private int _visibleArchives = 7;
 
         public ArchiveScreen(Game1 game) : base(game)
         {
@@ -17,69 +20,122 @@
         {
             _font = Game.Content.Load<SpriteFont>("Fonts/SpaceInvader_12");
             _font_title = Game.Content.Load<SpriteFont>("Fonts/SpaceInvader_16");
+            _archives = ArchiveManager.GetArchives(Game.PlayerPseudo);
+            _scrollIndex = 0;
+            _returnButton = new Button("Return", new XnaRectangle(100, 430, 300, 45));
+        }
 
-            _buttons = new List<Button>();
+        private void ScrollUp()
+        {
+            if (_scrollIndex <= 0)
+                return;
 
-            int screenWidth = Game.GraphicsDevice.Viewport.Width;
+            _scrollIndex--;
+        }
 
-            int buttonWidth = 350;
-            int buttonHeight = 60;
+        private void ScrollDown()
+        {
+            if (_scrollIndex + _visibleArchives >= _archives.Count)
+                return;
 
-            int x = (screenWidth - buttonWidth) / 2;
-            int startY = 100;
-
-            _buttons.Add(new Button("Return", new XnaRectangle(x, startY, buttonWidth, buttonHeight)));
+            _scrollIndex++;
         }
 
         public override void Update(GameTime gameTime, KeyboardState keyboard, Vector2 mousePosition, bool mouseClicked)
         {
-            if (keyboard.IsKeyDown(XnaKeys.Escape) && _previousKeyboard.IsKeyUp(XnaKeys.Escape))
+            _returnButton.Update(mousePosition);
+
+            if (_returnButton.IsClicked(mousePosition, mouseClicked))
             {
-                HandleButton("Return");
+                Game.ScreenManager.ChangeScreen(new MenuScreen(Game));
+                return;
             }
 
-            foreach (Button button in _buttons)
+            if (keyboard.IsKeyDown(XnaKeys.Up) && _previousKeyboard.IsKeyUp(XnaKeys.Up))
             {
-                button.Update(mousePosition);
+                ScrollUp();
+            }
 
-                if (button.IsClicked(mousePosition, mouseClicked))
-                {
-                    HandleButton(button.Text);
-                    break;
-                }
+            if (keyboard.IsKeyDown(XnaKeys.Down) && _previousKeyboard.IsKeyUp(XnaKeys.Down))
+            {
+                ScrollDown();
+            }
+
+            if (keyboard.IsKeyDown(XnaKeys.Escape) && _previousKeyboard.IsKeyUp(XnaKeys.Escape))
+            {
+                Game.ScreenManager.ChangeScreen(new MenuScreen(Game));
+                return;
             }
 
             _previousKeyboard = keyboard;
-        }
-
-        private void HandleButton(string button)
-        {
-            switch (button)
-            {
-                case "Return":
-                    Game.ScreenManager.ChangeScreen(new MenuScreen(Game));
-                    break;
-            }
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
 
-            spriteBatch.Draw(Game.Content.Load<Texture2D>("Textures/Background/black"), Vector2.Zero, XnaColor.White);
+            Texture2D background = Game.Content.Load<Texture2D>("Textures/Background/black");
 
-            int screenWidth = Game.GraphicsDevice.Viewport.Width;
+            spriteBatch.Draw(background, Vector2.Zero, XnaColor.White);
 
-            string title = "ARCHIVED GAMES";
+            string title = "ARCHIVE";
 
             Vector2 titleSize = _font_title.MeasureString(title);
 
-            spriteBatch.DrawString(_font_title, title, new Vector2((screenWidth - titleSize.X) / 2, 50), XnaColor.White);
+            spriteBatch.DrawString(_font_title, title, new Vector2((Game.GraphicsDevice.Viewport.Width - titleSize.X) / 2f, 30), XnaColor.White);
 
-            foreach (Button button in _buttons)
+            string pseudoText = "Player: " + Game.PlayerPseudo;
+
+            Vector2 pseudoSize = _font.MeasureString(pseudoText);
+
+            spriteBatch.DrawString(_font, pseudoText, new Vector2((Game.GraphicsDevice.Viewport.Width - pseudoSize.X) / 2f, 70), XnaColor.White);
+
+            if (_archives.Count == 0)
             {
-                button.Draw(spriteBatch, _font);
+                string text = "NO PLAYED GAMES";
+
+                Vector2 textSize = _font.MeasureString(text);
+
+                spriteBatch.DrawString(_font, text, new Vector2((Game.GraphicsDevice.Viewport.Width - textSize.X) / 2f, 180), XnaColor.White);
             }
+            else
+            {
+                int endIndex = Math.Min(_scrollIndex + _visibleArchives, _archives.Count);
+
+                for (int i = _scrollIndex; i < endIndex; i++)
+                {
+                    ArchiveData archive = _archives[i];
+
+                    int displayIndex = i - _scrollIndex;
+
+                    string line = (i + 1) + ". Wave " + archive.Wave + "  Score " + archive.Score;
+
+                    spriteBatch.DrawString(_font, line, new Vector2(45, 105 + displayIndex * 42), XnaColor.White);
+
+                    string details = archive.Difficulty + "  " + archive.FinishedAt.ToString("dd/MM/yyyy HH:mm");
+
+                    spriteBatch.DrawString(_font, details, new Vector2(45, 123 + displayIndex * 42), XnaColor.White);
+                }
+
+                if (_scrollIndex > 0)
+                {
+                    spriteBatch.DrawString(_font, "UP", new Vector2(10, 115), XnaColor.White);
+                }
+
+                if (_scrollIndex + _visibleArchives < _archives.Count
+                )
+                {
+                    spriteBatch.DrawString(_font, "DOWN", new Vector2(10, 150), XnaColor.White);
+                }
+
+                string counter = (_scrollIndex + 1) + "-" + Math.Min(_scrollIndex + _visibleArchives, _archives.Count) + " / " + _archives.Count;
+
+                Vector2 counterSize = _font.MeasureString(counter);
+
+                spriteBatch.DrawString(_font, counter, new Vector2((Game.GraphicsDevice.Viewport.Width - counterSize.X) / 2f, 405), XnaColor.White);
+            }
+
+            _returnButton.Draw(spriteBatch, _font);
 
             spriteBatch.End();
         }

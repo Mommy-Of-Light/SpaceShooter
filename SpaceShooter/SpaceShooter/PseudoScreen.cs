@@ -12,7 +12,6 @@
         {
             _previousKeyboard = Keyboard.GetState();
             _pseudo = "";
-
             Game.ChangeScreenSize(500, 500);
         }
 
@@ -91,12 +90,7 @@
             string title = "ENTER PSEUDO";
             Vector2 titleSize = _titleFont.MeasureString(title);
 
-            spriteBatch.DrawString(
-                _titleFont,
-                title,
-                new Vector2((Game.GraphicsDevice.Viewport.Width - titleSize.X) / 2f, 100),
-                XnaColor.White
-            );
+            spriteBatch.DrawString(_titleFont, title, new Vector2((Game.GraphicsDevice.Viewport.Width - titleSize.X) / 2f, 100), XnaColor.White);
 
             string pseudoText = _pseudo;
 
@@ -105,22 +99,12 @@
 
             Vector2 pseudoSize = _font.MeasureString(pseudoText);
 
-            spriteBatch.DrawString(
-                _font,
-                pseudoText,
-                new Vector2((Game.GraphicsDevice.Viewport.Width - pseudoSize.X) / 2f, 200),
-                XnaColor.White
-            );
+            spriteBatch.DrawString(_font, pseudoText, new Vector2((Game.GraphicsDevice.Viewport.Width - pseudoSize.X) / 2f, 200), XnaColor.White);
 
             string instruction = "Use letters, numbers, - or _";
             Vector2 instructionSize = _font.MeasureString(instruction);
 
-            spriteBatch.DrawString(
-                _font,
-                instruction,
-                new Vector2((Game.GraphicsDevice.Viewport.Width - instructionSize.X) / 2f, 240),
-                XnaColor.White
-            );
+            spriteBatch.DrawString(_font, instruction, new Vector2((Game.GraphicsDevice.Viewport.Width - instructionSize.X) / 2f, 240), XnaColor.White);
 
             _continueButton.Draw(spriteBatch, _font);
 

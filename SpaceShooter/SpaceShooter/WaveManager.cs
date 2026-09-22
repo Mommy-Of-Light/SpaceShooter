@@ -4,13 +4,15 @@
     {
         private Texture2D _enemyTexture;
         private Texture2D _enemyProjectileTexture;
+        private double _difficultyMultiplier;
         private int _currentWave = 0;
         public int CurrentWave => _currentWave;
 
-        public WaveManager(Texture2D enemyTexture, Texture2D enemyProjectileTexture)
+        public WaveManager(Texture2D enemyTexture, Texture2D enemyProjectileTexture, double difficultyMultiplier)
         {
             _enemyTexture = enemyTexture;
             _enemyProjectileTexture = enemyProjectileTexture;
+            _difficultyMultiplier = difficultyMultiplier;
             _currentWave = 0;
         }
 
@@ -60,7 +62,9 @@
 
             XnaRectangle enemySize = new XnaRectangle(0, 0, enemyWidth, enemyHeight);
 
-            int enemyHealth = 1 + ((_currentWave - 1) / 3);
+            int baseEnemyHealth = 1 + ((_currentWave - 1) / 3);
+
+            int enemyHealth = Math.Max(1, (int)Math.Round(baseEnemyHealth * _difficultyMultiplier));
 
             float enemySpeed = 25f + ((_currentWave - 1) / 4) * 5f;
 
@@ -71,14 +75,19 @@
             for (int i = 0; i < totalEnemies; i++)
             {
                 int row = i / enemiesPerRow;
+
                 int column = i % enemiesPerRow;
 
                 int enemiesInThisRow = Math.Min(enemiesPerRow, totalEnemies - row * enemiesPerRow);
+
                 int rowWidth = enemiesInThisRow * enemyWidth + (enemiesInThisRow - 1) * horizontalSpacing;
 
                 float startX = (screenWidth - rowWidth) / 2f;
+
                 float x = startX + column * (enemyWidth + horizontalSpacing);
+
                 int reversedRow = (totalRows - 1) - row;
+
                 float y = -(reversedRow) * (enemyHeight + verticalSpacing);
 
                 enemies.Add(new Enemy(_enemyTexture, _enemyProjectileTexture, new Vector2(x, y), enemySize, enemySpeed, enemyHealth));

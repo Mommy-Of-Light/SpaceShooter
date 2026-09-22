@@ -19,10 +19,7 @@
             _font = Game.Content.Load<SpriteFont>("Fonts/SpaceInvader_12");
             _font_title = Game.Content.Load<SpriteFont>("Fonts/SpaceInvader_16");
 
-            _returnButton = new Button(
-                "Return",
-                new XnaRectangle(100, 420, 300, 50)
-            );
+            _returnButton = new Button("Return", new XnaRectangle(100, 420, 300, 50));
 
             _scores = MariaDbManager.GetScores();
         }
@@ -56,12 +53,7 @@
             string title = "RANKING";
             Vector2 titleSize = _font_title.MeasureString(title);
 
-            spriteBatch.DrawString(
-                _font_title,
-                title,
-                new Vector2((Game.GraphicsDevice.Viewport.Width - titleSize.X) / 2f, 40),
-                XnaColor.White
-            );
+            spriteBatch.DrawString(_font_title, title, new Vector2((Game.GraphicsDevice.Viewport.Width - titleSize.X) / 2f, 40), XnaColor.White);
 
             if (!string.IsNullOrEmpty(MariaDbManager.LastError))
             {
@@ -69,12 +61,7 @@
 
                 Vector2 errorSize = _font.MeasureString(error);
 
-                spriteBatch.DrawString(
-                    _font,
-                    error,
-                    new Vector2((Game.GraphicsDevice.Viewport.Width - errorSize.X) / 2f, 120),
-                    XnaColor.White
-                );
+                spriteBatch.DrawString(_font, error, new Vector2((Game.GraphicsDevice.Viewport.Width - errorSize.X) / 2f, 120), XnaColor.White);
             }
             else if (_scores.Count == 0)
             {
@@ -82,12 +69,7 @@
 
                 Vector2 noScoresSize = _font.MeasureString(noScores);
 
-                spriteBatch.DrawString(
-                    _font,
-                    noScores,
-                    new Vector2((Game.GraphicsDevice.Viewport.Width - noScoresSize.X) / 2f, 150),
-                    XnaColor.White
-                );
+                spriteBatch.DrawString(_font, noScores, new Vector2((Game.GraphicsDevice.Viewport.Width - noScoresSize.X) / 2f, 150), XnaColor.White);
             }
             else
             {
@@ -102,21 +84,9 @@
                     if (pseudo.Length > 12)
                         pseudo = pseudo.Substring(0, 12);
 
-                    string line =
-                        (i + 1) +
-                        ". " +
-                        pseudo +
-                        "    " +
-                        score.Score +
-                        "    " +
-                        score.Difficulty;
+                    string line = (i + 1) + ". " + pseudo + "    " + score.Score + "    " + score.Difficulty;
 
-                    spriteBatch.DrawString(
-                        _font,
-                        line,
-                        new Vector2(40, 100 + i * 38),
-                        XnaColor.White
-                    );
+                    spriteBatch.DrawString(_font, line, new Vector2(40, 100 + i * 38), XnaColor.White);
                 }
             }
 

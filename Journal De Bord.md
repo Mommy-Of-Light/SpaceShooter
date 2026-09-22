@@ -648,3 +648,113 @@ Bien sûr. Voici l’entrée du **15/09/2026**, en gardant le même style que le
 * Mettre en place l'enregistrement des scores.
 
 * Finaliser l'affichage du classement.
+
+## 22/09/2026
+
+### 1. Étapes réalisées
+
+#### Développement
+
+**Système de sauvegarde**
+
+* Début de la création du système permettant de sauvegarder la progression du joueur.
+
+* Réflexion sur les données nécessaires à conserver lors d'une sauvegarde.
+
+* Préparation de la structure permettant d'enregistrer l'état d'une partie.
+
+**Système de chargement**
+
+* Début de la mise en place du système permettant de charger une partie sauvegardée.
+
+* Préparation de la récupération des données enregistrées.
+
+* Réflexion sur la manière de restaurer correctement l'état de la partie.
+
+**Écran des sauvegardes**
+
+* Début de la création de l'écran permettant de consulter les sauvegardes disponibles.
+
+* Mise en place de la structure de l'écran.
+
+* Préparation des éléments nécessaires pour sélectionner une sauvegarde à charger.
+
+**Écran des archives**
+
+* Début de la création de l'écran permettant de consulter les parties archivées.
+
+* Mise en place de la structure générale de l'écran.
+
+* Préparation de l'affichage des différentes parties disponibles dans les archives.
+
+### 2. Temps consacré aux différentes tâches
+
+| Catégorie     | Tâche                 |  Temps consacré |
+| ------------- | --------------------- | --------------: |
+| Développement | Système de sauvegarde |      75 minutes |
+| Développement | Système de chargement |      75 minutes |
+| Développement | Écran des sauvegardes |      15 minutes |
+| Développement | Écran des archives    |      15 minutes |
+| **Total**     |                       | **180 minutes** |
+
+### 3. Problèmes rencontrés et solutions apportées
+
+**Gestion des sauvegardes**
+
+* Réflexion sur les informations nécessaires pour pouvoir reprendre une partie ultérieurement.
+
+* Organisation des données afin de faciliter leur enregistrement et leur récupération.
+
+**Chargement d'une partie**
+
+* Difficulté à déterminer quelles données doivent être restaurées lors du chargement.
+
+* Préparation d'une structure permettant de récupérer progressivement les données de la sauvegarde.
+
+**Création des écrans de sauvegardes et d'archives**
+
+* Réflexion sur la manière d'organiser les différentes sauvegardes et parties archivées.
+
+* Utilisation du système de gestion des écrans déjà mis en place afin de conserver une structure cohérente.
+
+### 4. Options envisagées et choix effectués
+
+#### Système de sauvegarde
+
+* Créer un système permettant d'enregistrer l'état d'une partie.
+
+* Prévoir plusieurs sauvegardes pouvant être consultées depuis l'interface.
+
+* Organiser les données afin de faciliter leur récupération ultérieure.
+
+#### Système de chargement
+
+* Permettre au joueur de sélectionner une sauvegarde existante.
+
+* Restaurer les données nécessaires afin de reprendre la partie dans l'état enregistré.
+
+* Prévoir une gestion des sauvegardes inexistantes ou invalides.
+
+#### Écran des sauvegardes
+
+* Créer un écran dédié à la gestion des sauvegardes.
+
+* Afficher les sauvegardes disponibles de manière claire.
+
+* Prévoir une interaction permettant de sélectionner une sauvegarde.
+
+#### Écran des archives
+
+* Créer un écran permettant de consulter les anciennes parties.
+
+* Prévoir l'affichage des informations importantes liées aux parties archivées.
+
+* Préparer l'écran afin de pouvoir le connecter au futur système d'archive.
+
+#### Système de classement
+
+* Préparer la structure nécessaire pour intégrer le système de classement aux données du jeu.
+
+* Prévoir une organisation permettant d'utiliser les scores enregistrés précédemment.
+
+* Faciliter l'intégration du classement avec les écrans et les données déjà développés.

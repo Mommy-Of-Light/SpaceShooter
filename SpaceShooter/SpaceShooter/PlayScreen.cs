@@ -1,6 +1,4 @@
-﻿using static System.Formats.Asn1.AsnWriter;
-
-namespace SpaceShooter
+﻿namespace SpaceShooter
 {
     public class PlayScreen : GameScreen
     {
@@ -23,6 +21,8 @@ namespace SpaceShooter
         private int startingUpgradeWave = 1;
         private int nextUpgradeWave = 1;
         private int upgradeWaveIncrement = 2;
+        private SaveData _currentSave;
+        private string _runId;
 
         public PlayScreen(Game1 game) : base(game)
         {
@@ -39,7 +39,7 @@ namespace SpaceShooter
             _enemyTexture = Game.Content.Load<Texture2D>("Textures/PNG/Enemies/enemyBlack1");
             _enemyProjectileTexture = Game.Content.Load<Texture2D>("Textures/PNG/Lazers/laserRed01");
 
-            _waveManager = new WaveManager(_enemyTexture, _enemyProjectileTexture);
+            _waveManager = new WaveManager(_enemyTexture, _enemyProjectileTexture, Game.DifficultyMultiplier);
 
             _enemies = _waveManager.CreateNextWave(Game.GraphicsDevice.Viewport.Width);
 
@@ -66,6 +66,9 @@ namespace SpaceShooter
             _player.AutoAimMissiles = 1;
 
             _score = 0;
+
+            _runId = null;
+            _currentSave = null;
         }
 
         public override void Update(GameTime gameTime, KeyboardState keyboard, Vector2 mousePosition, bool mouseClicked)
@@ -99,7 +102,6 @@ namespace SpaceShooter
                 }
 
                 _previousKeyboard = keyboard;
-
                 return;
             }
 
@@ -109,7 +111,7 @@ namespace SpaceShooter
 
                 if (enemy.Position.Y + enemy.Size.Height >= Game.GraphicsDevice.Viewport.Height)
                 {
-                    Game.ScreenManager.ChangeScreen(new DeathScreen(Game, _waveManager.CurrentWave, _score));
+                    HandleDeath();
                     return;
                 }
             }
@@ -228,7 +230,9 @@ namespace SpaceShooter
                     if (projectile.Hitbox.Intersects(_player.Hitbox))
                     {
                         projectile.State = false;
-                        Game.ScreenManager.ChangeScreen(new DeathScreen(Game, _waveManager.CurrentWave, _score));
+
+                        HandleDeath();
+
                         return;
                     }
                 }
@@ -241,16 +245,35 @@ namespace SpaceShooter
 
                 if (enemy.Hitbox.Intersects(_player.Hitbox))
                 {
-                    Game.ScreenManager.ChangeScreen(new DeathScreen(Game, _waveManager.CurrentWave, _score));
+                    HandleDeath();
+
                     return;
                 }
             }
         }
 
+        private void HandleDeath()
+        {
+            ArchiveCurrentGame();
+
+            Game.ScreenManager.ChangeScreen(new DeathScreen(Game, _waveManager.CurrentWave, _score));
+        }
+
+        private void ArchiveCurrentGame()
+        {
+            ArchiveManager.SaveGameArchive(Game.PlayerPseudo, _score, _waveManager.CurrentWave, Game.Difficulty, Game.DifficultyMultiplier);
+
+            if (!string.IsNullOrEmpty(_runId))
+            {
+                SaveManager.DeleteRun(Game.PlayerPseudo, _runId);
+            }
+
+            _currentSave = null;
+            _runId = null;
+        }
+
         private void ResetGame()
         {
-            SaveManager.Delete();
-
             _waveManager.Reset();
 
             _lastUpgradeWave = 0;
@@ -266,6 +289,9 @@ namespace SpaceShooter
             ResetPlayer();
 
             _player.GameEnemyList = _enemies;
+
+            _runId = Guid.NewGuid().ToString();
+            _currentSave = null;
         }
 
         private void ResetPlayer()
@@ -307,6 +333,8 @@ namespace SpaceShooter
         {
             GameData data = new GameData();
 
+            data.RunId = _runId;
+
             data.CurrentWave = _waveManager.CurrentWave;
 
             data.LastUpgradeWave = _lastUpgradeWave;
@@ -334,7 +362,9 @@ namespace SpaceShooter
 
             foreach (Projectiles projectile in _player.Projectiles)
             {
-                data.PlayerProjectiles.Add(CreateProjectileData(projectile));
+                data.PlayerProjectiles.Add(
+                    CreateProjectileData(projectile)
+                );
             }
 
             foreach (Enemy enemy in _enemies)
@@ -352,7 +382,9 @@ namespace SpaceShooter
                 enemyData.MaxHealth = enemy.MaxHealth;
                 enemyData.Health = enemy.Health;
 
-                enemyData.ShootingCooldown = enemy.ShootingCooldown;
+                enemyData.ShootingCooldown =
+                    enemy.ShootingCooldown;
+
                 enemyData.State = enemy.State;
 
                 foreach (Projectiles projectile in enemy.Projectiles)
@@ -363,12 +395,27 @@ namespace SpaceShooter
                 data.Enemies.Add(enemyData);
             }
 
-            SaveManager.Save(data);
+            _currentSave = SaveManager.Save(data, Game.PlayerPseudo, _runId);
         }
 
-        public bool LoadGame()
+        public bool LoadGame(SaveData save)
         {
-            GameData data = SaveManager.Load();
+            if (save == null)
+                return false;
+
+            if (save.Game == null)
+                return false;
+
+            GameData data = save.Game;
+
+            _runId = save.RunId;
+
+            if (string.IsNullOrEmpty(_runId))
+            {
+                _runId = Guid.NewGuid().ToString();
+            }
+
+            _currentSave = save;
 
             _score = data.Score;
 
@@ -382,119 +429,91 @@ namespace SpaceShooter
             else
                 Game.DifficultyMultiplier = 1.0;
 
-            if (data == null)
-                return false;
-
             _waveManager.SetCurrentWave(data.CurrentWave);
 
             _lastUpgradeWave = data.LastUpgradeWave;
+
             nextUpgradeWave = data.NextUpgradeWave;
+
             upgradeWaveIncrement = data.UpgradeWaveIncrement;
+
             startingUpgradeWave = data.StartingUpgradeWave;
 
             _enemies = new List<Enemy>();
 
             foreach (EnemyData enemyData in data.Enemies)
             {
-                XnaRectangle enemySize = new XnaRectangle(
-                    0,
-                    0,
-                    enemyData.Width,
-                    enemyData.Height
-                );
+                XnaRectangle enemySize = new XnaRectangle(0, 0, enemyData.Width, enemyData.Height);
 
-                Enemy enemy = new Enemy(
-                    _enemyTexture,
-                    _enemyProjectileTexture,
-                    new Vector2(enemyData.X, enemyData.Y),
-                    enemySize,
-                    enemyData.Speed,
-                    enemyData.MaxHealth
-                );
+                Enemy enemy = new Enemy(_enemyTexture, _enemyProjectileTexture, new Vector2(enemyData.X, enemyData.Y), enemySize, enemyData.Speed, enemyData.MaxHealth);
 
                 enemy.Health = enemyData.Health;
+
                 enemy.ShootingCooldown = enemyData.ShootingCooldown;
+
                 enemy.State = enemyData.State;
 
-                enemy.Hitbox = new XnaRectangle(
-                    (int)enemyData.X,
-                    (int)enemyData.Y,
-                    enemyData.Width,
-                    enemyData.Height
-                );
+                enemy.Hitbox = new XnaRectangle((int)enemyData.X, (int)enemyData.Y, enemyData.Width, enemyData.Height);
 
                 foreach (ProjectileData projectileData in enemyData.Projectiles)
                 {
-                    enemy.Projectiles.Add(
-                        CreateProjectileFromData(
-                            projectileData,
-                            _enemyProjectileTexture
-                        )
-                    );
+                    enemy.Projectiles.Add(CreateProjectileFromData(projectileData, _enemyProjectileTexture));
                 }
 
                 _enemies.Add(enemy);
             }
 
-            Vector2 playerPosition = new Vector2(
-                data.PlayerX,
-                data.PlayerY
-            );
+            Vector2 playerPosition = new Vector2(data.PlayerX, data.PlayerY);
 
-            _player = new Player(
-                _playerTexture,
-                _projectileTexture,
-                playerPosition,
-                data.PlayerSpeed
-            );
+            _player = new Player(_playerTexture, _projectileTexture, playerPosition, data.PlayerSpeed);
 
             _player.Width = data.PlayerWidth;
+
             _player.Height = data.PlayerHeight;
 
             _player.Pierce = data.Pierce;
+
             _player.AutoAimMissiles = data.AutoAimMissiles;
+
             _player.Damage = data.Damage;
+
             _player.ShotsUntilMissile = data.ShotsUntilMissile;
 
             _player.ShotCount = data.ShotCount;
+
             _player.CurrentShootCooldown = data.ShootCooldown;
 
-            _player.Hitbox = new XnaRectangle(
-                (int)data.PlayerX,
-                (int)data.PlayerY,
-                data.PlayerWidth,
-                data.PlayerHeight
-            );
+            _player.Hitbox = new XnaRectangle((int)data.PlayerX, (int)data.PlayerY, data.PlayerWidth, data.PlayerHeight);
 
             _player.GameEnemyList = _enemies;
 
             foreach (ProjectileData projectileData in data.PlayerProjectiles)
             {
-                _player.Projectiles.Add(
-                    CreateProjectileFromData(
-                        projectileData,
-                        _projectileTexture
-                    )
-                );
+                _player.Projectiles.Add(CreateProjectileFromData(projectileData, _projectileTexture));
             }
 
-            RestoreProjectileReferences(
-                _player.Projectiles,
-                data.PlayerProjectiles
-            );
+            RestoreProjectileReferences(_player.Projectiles, data.PlayerProjectiles);
 
             for (int enemyIndex = 0; enemyIndex < _enemies.Count; enemyIndex++)
             {
-                RestoreProjectileReferences(
-                    _enemies[enemyIndex].Projectiles,
-                    data.Enemies[enemyIndex].Projectiles
-                );
+                RestoreProjectileReferences(_enemies[enemyIndex].Projectiles, data.Enemies[enemyIndex].Projectiles);
             }
 
             _isPaused = false;
+
             _previousKeyboard = Keyboard.GetState();
 
             return true;
+        }
+
+        public bool LoadGame()
+        {
+            SaveData save = SaveManager.GetLatestSave(Game.PlayerPseudo);
+
+            if (save == null)
+                return false;
+
+            return LoadGame(save);
         }
 
         private ProjectileData CreateProjectileData(Projectiles projectile)
@@ -534,39 +553,19 @@ namespace SpaceShooter
             return data;
         }
 
-        private Projectiles CreateProjectileFromData(
-            ProjectileData data,
-            Texture2D projectileTexture)
+        private Projectiles CreateProjectileFromData(ProjectileData data, Texture2D projectileTexture)
         {
-            Projectiles projectile =
-                new Projectiles(
-                    projectileTexture,
-                    new Vector2(data.X, data.Y),
-                    new Vector2(data.Width, data.Height),
-                    data.Speed,
-                    data.Damage,
-                    data.Pierce,
-                    data.IsMissile,
-                    null,
-                    _enemies
-                );
+            Projectiles projectile = new Projectiles(projectileTexture, new Vector2(data.X, data.Y), new Vector2(data.Width, data.Height), data.Speed, data.Damage, data.Pierce, data.IsMissile, null, _enemies);
 
             projectile.State = data.State;
             projectile.Rotation = data.Rotation;
 
-            projectile.Hitbox = new XnaRectangle(
-                (int)data.X,
-                (int)data.Y,
-                (int)data.Width,
-                (int)data.Height
-            );
+            projectile.Hitbox = new XnaRectangle((int)data.X, (int)data.Y, (int)data.Width, (int)data.Height);
 
             return projectile;
         }
 
-        private void RestoreProjectileReferences(
-            List<Projectiles> projectiles,
-            List<ProjectileData> savedData)
+        private void RestoreProjectileReferences(List<Projectiles> projectiles, List<ProjectileData> savedData)
         {
             for (int i = 0; i < projectiles.Count && i < savedData.Count; i++)
             {
@@ -602,6 +601,7 @@ namespace SpaceShooter
 
             Texture2D background = Game.Content.Load<Texture2D>("Textures/Background/black");
             spriteBatch.Draw(background, Vector2.Zero, XnaColor.White);
+
             _player.Draw(gameTime, spriteBatch);
 
             foreach (Enemy enemy in _enemies)
@@ -611,29 +611,30 @@ namespace SpaceShooter
 
             string scoreText = "Score: " + _score;
 
-            spriteBatch.DrawString(
-                _font,
-                scoreText,
-                new Vector2(10, 10),
-                XnaColor.White
-            );
+            spriteBatch.DrawString(_font, scoreText, new Vector2(10, 10), XnaColor.White);
 
             string waveText = "WAVE " + _waveManager.CurrentWave;
+
             spriteBatch.DrawString(_font, waveText, new Vector2(10, 35), XnaColor.White);
 
             string damageText = "DMG " + _player.Damage;
+
             spriteBatch.DrawString(_font, damageText, new Vector2(10, 60), XnaColor.White);
 
             string missileText = "MISSILES " + _player.AutoAimMissiles;
+
             spriteBatch.DrawString(_font, missileText, new Vector2(10, 85), XnaColor.White);
 
             string pierceText = "PIERCE " + _player.Pierce;
+
             spriteBatch.DrawString(_font, pierceText, new Vector2(10, 110), XnaColor.White);
 
             string shotsText = "MISSILE EVERY " + _player.ShotsUntilMissile;
+
             spriteBatch.DrawString(_font, shotsText, new Vector2(10, 135), XnaColor.White);
 
             string nextUpgradeText = "NEXT UPGRADE " + nextUpgradeWave;
+
             spriteBatch.DrawString(_font, nextUpgradeText, new Vector2(10, 160), XnaColor.White);
 
             foreach (Button button in _buttons)
