@@ -28,6 +28,7 @@
         public double DifficultyMultiplier { get; set; }
 
         public List<EnemyData> Enemies { get; set; }
+        public BossData Boss { get; set; }
         public List<ProjectileData> PlayerProjectiles { get; set; }
 
         public GameData()
@@ -56,6 +57,30 @@
         }
     }
 
+    public class BossData
+    {
+        public float X { get; set; }
+        public float Y { get; set; }
+        public int Width { get; set; }
+        public int Height { get; set; }
+        public float Speed { get; set; }
+        public int MaxHealth { get; set; }
+        public int Health { get; set; }
+        public float ShootingCooldown { get; set; }
+        public float MissileCooldown { get; set; }
+        public int Wave { get; set; }
+        public int HealthMultiplier { get; set; }
+        public float MissileTurnSpeed { get; set; }
+        public int MissileCount { get; set; }
+        public bool State { get; set; }
+        public List<ProjectileData> Projectiles { get; set; }
+
+        public BossData()
+        {
+            Projectiles = new List<ProjectileData>();
+        }
+    }
+
     public class ProjectileData
     {
         public float X { get; set; }
@@ -69,6 +94,12 @@
         public int Pierce { get; set; }
         public bool State { get; set; }
         public bool IsMissile { get; set; }
+        public bool HasPositionTarget { get; set; }
+        public float TargetX { get; set; }
+        public float TargetY { get; set; }
+        public float TurnSpeed { get; set; }
+        public bool TargetsBoss { get; set; }
+        public bool HitBoss { get; set; }
         public float Rotation { get; set; }
         public int TargetEnemyIndex { get; set; }
         public List<int> HitEnemyIndexes { get; set; }

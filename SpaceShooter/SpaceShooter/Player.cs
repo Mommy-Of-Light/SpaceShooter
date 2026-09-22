@@ -14,6 +14,7 @@
         public int AutoAimMissiles = 1;
         public int Damage = 1;
         public int ShotsUntilMissile = 5;
+        public Boss BossTarget { get; set; }
         private int _shotCount = 0;
         private float _shootCooldown = 0f;
         public float ShootCooldown = 0.2f;
@@ -64,12 +65,12 @@
             Vector2 movement = Vector2.Zero;
             KeyboardState keyboard = Keyboard.GetState();
 
-            if (keyboard.IsKeyDown(XnaKeys.A))
+            if (keyboard.IsKeyDown(XnaKeys.A) || keyboard.IsKeyDown(XnaKeys.Left))
             {
                 movement.X -= 1;
             }
 
-            if (keyboard.IsKeyDown(XnaKeys.D))
+            if (keyboard.IsKeyDown(XnaKeys.D) || keyboard.IsKeyDown(XnaKeys.Right))
             {
                 movement.X += 1;
             }
@@ -87,6 +88,7 @@
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             _shootCooldown -= deltaTime;
+
 
             if (keyboard.IsKeyDown(XnaKeys.Space) && _shootCooldown <= 0f)
             {
@@ -130,6 +132,37 @@
 
         private void ShootMissiles()
         {
+            if (BossTarget != null && BossTarget.State)
+            {
+                for (int i = 0; i < AutoAimMissiles; i++)
+                {
+                    Vector2 missilePosition = new Vector2(
+                        Position.X + Width / 2f - ProjectileTexture.Width / 2f,
+                        Position.Y - ProjectileTexture.Height
+                    );
+
+                    Projectiles.Add(new Projectiles(
+                        ProjectileTexture,
+                        missilePosition,
+                        new Vector2(ProjectileTexture.Width, ProjectileTexture.Height),
+                        350f,
+                        Damage,
+                        Pierce,
+                        true,
+                        null,
+                        null,
+                        BossTarget,
+                        false,
+                        default,
+                        5f,
+                        false,
+                        new Vector2(0, -1)
+                    ));
+                }
+
+                return;
+            }
+
             if (GameEnemyList == null || GameEnemyList.Count == 0)
             {
                 return;
@@ -155,7 +188,23 @@
 
                 Vector2 missilePosition = new Vector2(Position.X + Width / 2f - ProjectileTexture.Width / 2f, Position.Y);
 
-                Projectiles.Add(new Projectiles(ProjectileTexture, missilePosition, new Vector2(ProjectileTexture.Width, ProjectileTexture.Height), 350f, Damage, Pierce, true, target, GameEnemyList));
+                Projectiles.Add(new Projectiles(
+                     ProjectileTexture,
+                     missilePosition,
+                     new Vector2(ProjectileTexture.Width, ProjectileTexture.Height),
+                     350f,
+                     Damage,
+                     Pierce,
+                     true,
+                     target,
+                     GameEnemyList,
+                     null,
+                     false,
+                     default,
+                     5f,
+                     false,
+                     new Vector2(0, -1)
+                 ));
             }
         }
 

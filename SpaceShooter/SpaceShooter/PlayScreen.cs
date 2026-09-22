@@ -6,8 +6,10 @@
         private Texture2D _playerTexture;
         private Texture2D _projectileTexture;
         private List<Enemy> _enemies;
+        private Boss _boss;
         private Texture2D _enemyTexture;
         private Texture2D _enemyProjectileTexture;
+        private Texture2D _pixelTexture;
         private WaveManager _waveManager;
         private SpriteFont _font;
         private List<Button> _buttons;
@@ -24,6 +26,11 @@
         private SaveData _currentSave;
         private string _runId;
 
+        public Player Player
+        {
+            get { return _player; }
+        }
+
         public PlayScreen(Game1 game) : base(game)
         {
             _previousKeyboard = Keyboard.GetState();
@@ -39,14 +46,21 @@
             _enemyTexture = Game.Content.Load<Texture2D>("Textures/PNG/Enemies/enemyBlack1");
             _enemyProjectileTexture = Game.Content.Load<Texture2D>("Textures/PNG/Lazers/laserRed01");
 
+            _pixelTexture = new Texture2D(Game.GraphicsDevice, 1, 1);
+            _pixelTexture.SetData(new[] { XnaColor.White });
+
             _waveManager = new WaveManager(_enemyTexture, _enemyProjectileTexture, Game.DifficultyMultiplier);
 
             _enemies = _waveManager.CreateNextWave(Game.GraphicsDevice.Viewport.Width);
+            _boss = null;
 
-            Vector2 playerPosition = new Vector2((Game.GraphicsDevice.Viewport.Width - _playerTexture.Width * 0.5f) / 2f, Game.GraphicsDevice.Viewport.Height - _playerTexture.Height * 0.5f - 30);
+            Vector2 playerPosition = new Vector2(
+                (Game.GraphicsDevice.Viewport.Width - _playerTexture.Width * 0.5f) / 2f,
+                Game.GraphicsDevice.Viewport.Height - _playerTexture.Height * 0.5f - 30
+            );
 
             _player = new Player(_playerTexture, _projectileTexture, playerPosition, 300f);
-            _player.GameEnemyList = _enemies;
+            UpdatePlayerTargets();
 
             _buttons = new List<Button>();
 
@@ -116,9 +130,29 @@
                 }
             }
 
-            _enemies.RemoveAll(enemy => !enemy.State);
+            _enemies.RemoveAll(enemy => !enemy.State && enemy.Projectiles.Count == 0);
 
-            if (_enemies.Count == 0)
+            if (_boss != null)
+            {
+                _boss.Update(
+                    gameTime,
+                    Game,
+                    _player.Position + new Vector2(_player.Width / 2f, _player.Height / 2f)
+                );
+
+                if (!_boss.State)
+                {
+                    _boss = null;
+                    _player.Projectiles.Clear();
+                    UpdatePlayerTargets();
+
+                    Game.ScreenManager.ChangeScreen(new UpgradeScreen(Game, this));
+
+                    return;
+                }
+            }
+
+            if (_enemies.Count == 0 && _boss == null)
             {
                 int completedWave = _waveManager.CurrentWave;
 
@@ -137,9 +171,7 @@
                     return;
                 }
 
-                _enemies = _waveManager.CreateNextWave(Game.GraphicsDevice.Viewport.Width);
-
-                _player.GameEnemyList = _enemies;
+                StartNextWave();
             }
 
             _player.Update(gameTime, Game);
@@ -164,9 +196,43 @@
             _previousKeyboard = keyboard;
         }
 
+        private void StartNextWave()
+        {
+            _enemies = _waveManager.CreateNextWave(Game.GraphicsDevice.Viewport.Width);
+
+            if (_waveManager.IsBossWave(_waveManager.CurrentWave))
+            {
+                int normalEnemyHealth = _waveManager.GetNormalEnemyHealth(_waveManager.CurrentWave);
+
+                _boss = new Boss(
+                    _enemyTexture,
+                    _enemyProjectileTexture,
+                    _pixelTexture,
+                    Game.GraphicsDevice.Viewport.Width,
+                    _waveManager.CurrentWave,
+                    normalEnemyHealth
+                );
+            }
+
+            UpdatePlayerTargets();
+        }
+
+        private void UpdatePlayerTargets()
+        {
+            _player.GameEnemyList = _enemies;
+            _player.BossTarget = _boss;
+        }
+
         private void AddScore()
         {
             double points = 10.0 * 1.0 * (_waveManager.CurrentWave / 10.0) * Game.DifficultyMultiplier;
+
+            _score += (int)Math.Round(points);
+        }
+
+        private void AddBossScore()
+        {
+            double points = 100.0 * (_waveManager.CurrentWave / 10.0) * Game.DifficultyMultiplier;
 
             _score += (int)Math.Round(points);
         }
@@ -215,13 +281,35 @@
                         }
                     }
                 }
+
+                if (!projectile.State || _boss == null || !_boss.State || projectile.HitBoss)
+                    continue;
+
+                if (projectile.Hitbox.Intersects(_boss.Hitbox))
+                {
+                    bool bossWasAlive = _boss.State;
+
+                    _boss.TakeDamage(projectile.Damage);
+                    projectile.HitBoss = true;
+
+                    if (bossWasAlive && !_boss.State)
+                    {
+                        AddBossScore();
+                    }
+
+                    if (projectile.Pierce > 0)
+                    {
+                        projectile.Pierce--;
+                    }
+                    else
+                    {
+                        projectile.State = false;
+                    }
+                }
             }
 
             foreach (Enemy enemy in _enemies)
             {
-                if (!enemy.State)
-                    continue;
-
                 foreach (Projectiles projectile in enemy.Projectiles)
                 {
                     if (!projectile.State)
@@ -235,6 +323,29 @@
 
                         return;
                     }
+                }
+            }
+
+            if (_boss != null && _boss.State)
+            {
+                foreach (Projectiles projectile in _boss.Projectiles)
+                {
+                    if (!projectile.State)
+                        continue;
+
+                    if (projectile.Hitbox.Intersects(_player.Hitbox))
+                    {
+                        projectile.State = false;
+
+                        HandleDeath();
+
+                        return;
+                    }
+                }
+
+                if (_boss.Hitbox.Intersects(_player.Hitbox))
+                {
+                    HandleDeath();
                 }
             }
 
@@ -284,11 +395,12 @@
 
             upgradeWaveIncrement = 2;
 
+            _boss = null;
             _enemies = _waveManager.CreateNextWave(Game.GraphicsDevice.Viewport.Width);
 
             ResetPlayer();
 
-            _player.GameEnemyList = _enemies;
+            UpdatePlayerTargets();
 
             _runId = Guid.NewGuid().ToString();
             _currentSave = null;
@@ -296,11 +408,14 @@
 
         private void ResetPlayer()
         {
-            Vector2 playerPosition = new Vector2((Game.GraphicsDevice.Viewport.Width - _playerTexture.Width * 0.5f) / 2f, Game.GraphicsDevice.Viewport.Height - _playerTexture.Height * 0.5f - 30);
+            Vector2 playerPosition = new Vector2(
+                (Game.GraphicsDevice.Viewport.Width - _playerTexture.Width * 0.5f) / 2f,
+                Game.GraphicsDevice.Viewport.Height - _playerTexture.Height * 0.5f - 30
+            );
 
             _player = new Player(_playerTexture, _projectileTexture, playerPosition, 300f);
 
-            _player.GameEnemyList = _enemies;
+            UpdatePlayerTargets();
         }
 
         public void ApplyUpgrade(int upgrade)
@@ -308,15 +423,24 @@
             switch (upgrade)
             {
                 case 0:
-                    _player.ShotsUntilMissile = Math.Max(1, _player.ShotsUntilMissile - 1);
+                    if (_player.ShotsUntilMissile > 1)
+                    {
+                        _player.ShotsUntilMissile--;
+                    }
                     break;
 
                 case 1:
-                    _player.Pierce++;
+                    if (_player.Pierce < 10)
+                    {
+                        _player.Pierce++;
+                    }
                     break;
 
                 case 2:
-                    _player.AutoAimMissiles++;
+                    if (_player.AutoAimMissiles < 15)
+                    {
+                        _player.AutoAimMissiles++;
+                    }
                     break;
 
                 case 3:
@@ -324,9 +448,7 @@
                     break;
             }
 
-            _enemies = _waveManager.CreateNextWave(Game.GraphicsDevice.Viewport.Width);
-
-            _player.GameEnemyList = _enemies;
+            StartNextWave();
         }
 
         public void SaveGame()
@@ -362,9 +484,7 @@
 
             foreach (Projectiles projectile in _player.Projectiles)
             {
-                data.PlayerProjectiles.Add(
-                    CreateProjectileData(projectile)
-                );
+                data.PlayerProjectiles.Add(CreateProjectileData(projectile));
             }
 
             foreach (Enemy enemy in _enemies)
@@ -373,18 +493,12 @@
 
                 enemyData.X = enemy.Position.X;
                 enemyData.Y = enemy.Position.Y;
-
                 enemyData.Width = enemy.Size.Width;
                 enemyData.Height = enemy.Size.Height;
-
                 enemyData.Speed = enemy.Speed;
-
                 enemyData.MaxHealth = enemy.MaxHealth;
                 enemyData.Health = enemy.Health;
-
-                enemyData.ShootingCooldown =
-                    enemy.ShootingCooldown;
-
+                enemyData.ShootingCooldown = enemy.ShootingCooldown;
                 enemyData.State = enemy.State;
 
                 foreach (Projectiles projectile in enemy.Projectiles)
@@ -393,6 +507,33 @@
                 }
 
                 data.Enemies.Add(enemyData);
+            }
+
+            if (_boss != null)
+            {
+                BossData bossData = new BossData();
+
+                bossData.X = _boss.Position.X;
+                bossData.Y = _boss.Position.Y;
+                bossData.Width = _boss.Size.Width;
+                bossData.Height = _boss.Size.Height;
+                bossData.Speed = _boss.Speed;
+                bossData.MaxHealth = _boss.MaxHealth;
+                bossData.Health = _boss.Health;
+                bossData.ShootingCooldown = _boss.ShootingCooldown;
+                bossData.MissileCooldown = _boss.MissileCooldown;
+                bossData.Wave = _boss.Wave;
+                bossData.HealthMultiplier = _boss.HealthMultiplier;
+                bossData.MissileTurnSpeed = _boss.MissileTurnSpeed;
+                bossData.MissileCount = _boss.MissileCount;
+                bossData.State = _boss.State;
+
+                foreach (Projectiles projectile in _boss.Projectiles)
+                {
+                    bossData.Projectiles.Add(CreateProjectileData(projectile));
+                }
+
+                data.Boss = bossData;
             }
 
             _currentSave = SaveManager.Save(data, Game.PlayerPseudo, _runId);
@@ -432,27 +573,29 @@
             _waveManager.SetCurrentWave(data.CurrentWave);
 
             _lastUpgradeWave = data.LastUpgradeWave;
-
             nextUpgradeWave = data.NextUpgradeWave;
-
             upgradeWaveIncrement = data.UpgradeWaveIncrement;
-
             startingUpgradeWave = data.StartingUpgradeWave;
 
             _enemies = new List<Enemy>();
+            _boss = null;
 
             foreach (EnemyData enemyData in data.Enemies)
             {
                 XnaRectangle enemySize = new XnaRectangle(0, 0, enemyData.Width, enemyData.Height);
 
-                Enemy enemy = new Enemy(_enemyTexture, _enemyProjectileTexture, new Vector2(enemyData.X, enemyData.Y), enemySize, enemyData.Speed, enemyData.MaxHealth);
+                Enemy enemy = new Enemy(
+                    _enemyTexture,
+                    _enemyProjectileTexture,
+                    new Vector2(enemyData.X, enemyData.Y),
+                    enemySize,
+                    enemyData.Speed,
+                    enemyData.MaxHealth
+                );
 
                 enemy.Health = enemyData.Health;
-
                 enemy.ShootingCooldown = enemyData.ShootingCooldown;
-
                 enemy.State = enemyData.State;
-
                 enemy.Hitbox = new XnaRectangle((int)enemyData.X, (int)enemyData.Y, enemyData.Width, enemyData.Height);
 
                 foreach (ProjectileData projectileData in enemyData.Projectiles)
@@ -463,29 +606,53 @@
                 _enemies.Add(enemy);
             }
 
+            if (data.Boss != null && data.Boss.State)
+            {
+                int normalEnemyHealth = _waveManager.GetNormalEnemyHealth(data.Boss.Wave);
+
+                _boss = new Boss(
+                    _enemyTexture,
+                    _enemyProjectileTexture,
+                    _pixelTexture,
+                    Game.GraphicsDevice.Viewport.Width,
+                    data.Boss.Wave,
+                    normalEnemyHealth
+                );
+
+                _boss.Position = new Vector2(data.Boss.X, data.Boss.Y);
+                _boss.Size = new XnaRectangle(0, 0, data.Boss.Width, data.Boss.Height);
+                _boss.Speed = data.Boss.Speed;
+                _boss.MaxHealth = data.Boss.MaxHealth;
+                _boss.Health = data.Boss.Health;
+                _boss.ShootingCooldown = data.Boss.ShootingCooldown;
+                _boss.MissileCooldown = data.Boss.MissileCooldown;
+                _boss.HealthMultiplier = data.Boss.HealthMultiplier;
+                _boss.MissileTurnSpeed = data.Boss.MissileTurnSpeed;
+                _boss.MissileCount = data.Boss.MissileCount;
+                _boss.State = data.Boss.State;
+                _boss.Hitbox = new XnaRectangle((int)data.Boss.X, (int)data.Boss.Y, data.Boss.Width, data.Boss.Height);
+
+                foreach (ProjectileData projectileData in data.Boss.Projectiles)
+                {
+                    _boss.Projectiles.Add(CreateProjectileFromData(projectileData, _enemyProjectileTexture));
+                }
+            }
+
             Vector2 playerPosition = new Vector2(data.PlayerX, data.PlayerY);
 
             _player = new Player(_playerTexture, _projectileTexture, playerPosition, data.PlayerSpeed);
 
             _player.Width = data.PlayerWidth;
-
             _player.Height = data.PlayerHeight;
-
             _player.Pierce = data.Pierce;
-
             _player.AutoAimMissiles = data.AutoAimMissiles;
-
             _player.Damage = data.Damage;
-
             _player.ShotsUntilMissile = data.ShotsUntilMissile;
-
             _player.ShotCount = data.ShotCount;
-
             _player.CurrentShootCooldown = data.ShootCooldown;
-
             _player.Hitbox = new XnaRectangle((int)data.PlayerX, (int)data.PlayerY, data.PlayerWidth, data.PlayerHeight);
 
-            _player.GameEnemyList = _enemies;
+            UpdatePlayerTargets();
 
             foreach (ProjectileData projectileData in data.PlayerProjectiles)
             {
@@ -494,13 +661,17 @@
 
             RestoreProjectileReferences(_player.Projectiles, data.PlayerProjectiles);
 
-            for (int enemyIndex = 0; enemyIndex < _enemies.Count; enemyIndex++)
+            for (int enemyIndex = 0; enemyIndex < _enemies.Count && enemyIndex < data.Enemies.Count; enemyIndex++)
             {
                 RestoreProjectileReferences(_enemies[enemyIndex].Projectiles, data.Enemies[enemyIndex].Projectiles);
             }
 
-            _isPaused = false;
+            if (_boss != null && data.Boss != null)
+            {
+                RestoreProjectileReferences(_boss.Projectiles, data.Boss.Projectiles);
+            }
 
+            _isPaused = false;
             _previousKeyboard = Keyboard.GetState();
 
             return true;
@@ -522,17 +693,21 @@
 
             data.X = projectile.Position.X;
             data.Y = projectile.Position.Y;
-
             data.Width = projectile.Size.X;
             data.Height = projectile.Size.Y;
-
             data.Speed = projectile.Speed;
+            data.VelocityX = projectile.Velocity.X;
+            data.VelocityY = projectile.Velocity.Y;
             data.State = projectile.State;
-
             data.Damage = projectile.Damage;
             data.Pierce = projectile.Pierce;
-
             data.IsMissile = projectile.IsMissile;
+            data.HasPositionTarget = projectile.HasPositionTarget;
+            data.TargetX = projectile.TargetPosition.X;
+            data.TargetY = projectile.TargetPosition.Y;
+            data.TurnSpeed = projectile.TurnSpeed;
+            data.TargetsBoss = projectile.BossTarget != null;
+            data.HitBoss = projectile.HitBoss;
             data.Rotation = projectile.Rotation;
 
             if (projectile.IsMissile && projectile.Target != null)
@@ -555,10 +730,31 @@
 
         private Projectiles CreateProjectileFromData(ProjectileData data, Texture2D projectileTexture)
         {
-            Projectiles projectile = new Projectiles(projectileTexture, new Vector2(data.X, data.Y), new Vector2(data.Width, data.Height), data.Speed, data.Damage, data.Pierce, data.IsMissile, null, _enemies);
+            Projectiles projectile = new Projectiles(
+                projectileTexture,
+                new Vector2(data.X, data.Y),
+                new Vector2(data.Width, data.Height),
+                data.Speed,
+                data.Damage,
+                data.Pierce,
+                data.IsMissile,
+                null,
+                _enemies,
+                null,
+                data.HasPositionTarget,
+                new Vector2(data.TargetX, data.TargetY),
+                data.TurnSpeed > 0 ? data.TurnSpeed : 5f
+            );
 
             projectile.State = data.State;
+            projectile.HitBoss = data.HitBoss;
             projectile.Rotation = data.Rotation;
+            projectile.SetVelocity(new Vector2(data.VelocityX, data.VelocityY));
+
+            if (data.TargetsBoss)
+            {
+                projectile.BossTarget = _boss;
+            }
 
             projectile.Hitbox = new XnaRectangle((int)data.X, (int)data.Y, (int)data.Width, (int)data.Height);
 
@@ -592,6 +788,11 @@
                 {
                     projectile.Target = null;
                 }
+
+                if (data.TargetsBoss)
+                {
+                    projectile.BossTarget = _boss;
+                }
             }
         }
 
@@ -609,32 +810,30 @@
                 enemy.Draw(gameTime, spriteBatch);
             }
 
-            string scoreText = "Score: " + _score;
+            if (_boss != null)
+            {
+                _boss.Draw(gameTime, spriteBatch);
+            }
 
+            string scoreText = "Score: " + _score;
             spriteBatch.DrawString(_font, scoreText, new Vector2(10, 10), XnaColor.White);
 
             string waveText = "WAVE " + _waveManager.CurrentWave;
-
             spriteBatch.DrawString(_font, waveText, new Vector2(10, 35), XnaColor.White);
 
             string damageText = "DMG " + _player.Damage;
-
             spriteBatch.DrawString(_font, damageText, new Vector2(10, 60), XnaColor.White);
 
             string missileText = "MISSILES " + _player.AutoAimMissiles;
-
             spriteBatch.DrawString(_font, missileText, new Vector2(10, 85), XnaColor.White);
 
             string pierceText = "PIERCE " + _player.Pierce;
-
             spriteBatch.DrawString(_font, pierceText, new Vector2(10, 110), XnaColor.White);
 
             string shotsText = "MISSILE EVERY " + _player.ShotsUntilMissile;
-
             spriteBatch.DrawString(_font, shotsText, new Vector2(10, 135), XnaColor.White);
 
             string nextUpgradeText = "NEXT UPGRADE " + nextUpgradeWave;
-
             spriteBatch.DrawString(_font, nextUpgradeText, new Vector2(10, 160), XnaColor.White);
 
             foreach (Button button in _buttons)

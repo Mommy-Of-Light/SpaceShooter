@@ -10,6 +10,9 @@
         private Button _damageButton;
         private KeyboardState _previousKeyboard;
         private PlayScreen _playScreen;
+        private const int MaxPierce = 10;
+        private const int MaxMissiles = 15;
+        private const int MaxShotsUntilMissile = 1;
 
         public UpgradeScreen(Game1 game, PlayScreen playScreen) : base(game)
         {
@@ -27,6 +30,8 @@
             _pierceButton = new Button("PIERCE +1 (2)", new XnaRectangle(100, 200, 300, 50));
             _missileButton = new Button("MISSILE +1 (3)", new XnaRectangle(100, 270, 300, 50));
             _damageButton = new Button("DAMAGE +1 (4)", new XnaRectangle(100, 340, 300, 50));
+
+            UpdateButtonStates();
         }
 
         public override void Update(GameTime gameTime, KeyboardState keyboard, Vector2 mousePosition, bool mouseClicked)
@@ -60,31 +65,46 @@
                 return;
             }
 
-            if (keyboard.IsKeyDown(XnaKeys.D1) && _previousKeyboard.IsKeyUp(XnaKeys.D1))
+            if ((keyboard.IsKeyDown(XnaKeys.D1) &&_previousKeyboard.IsKeyUp(XnaKeys.D1)) || (keyboard.IsKeyDown(XnaKeys.NumPad1) &&_previousKeyboard.IsKeyUp(XnaKeys.NumPad1)) &&!_fireRateButton.IsLocked)
             {
                 ChooseUpgrade(0);
                 return;
             }
 
-            if (keyboard.IsKeyDown(XnaKeys.D2) && _previousKeyboard.IsKeyUp(XnaKeys.D2))
+            if ((keyboard.IsKeyDown(XnaKeys.D2) &&_previousKeyboard.IsKeyUp(XnaKeys.D2)) || (keyboard.IsKeyDown(XnaKeys.NumPad2) &&_previousKeyboard.IsKeyUp(XnaKeys.NumPad2)) &&!_pierceButton.IsLocked)
             {
                 ChooseUpgrade(1);
                 return;
             }
 
-            if (keyboard.IsKeyDown(XnaKeys.D3) && _previousKeyboard.IsKeyUp(XnaKeys.D3))
+            if ((keyboard.IsKeyDown(XnaKeys.D3) && _previousKeyboard.IsKeyUp(XnaKeys.D3)) || (keyboard.IsKeyDown(XnaKeys.NumPad3) && _previousKeyboard.IsKeyUp(XnaKeys.NumPad3)) &&!_missileButton.IsLocked)
             {
                 ChooseUpgrade(2);
                 return;
             }
 
-            if (keyboard.IsKeyDown(XnaKeys.D4) && _previousKeyboard.IsKeyUp(XnaKeys.D4))
+            if ((keyboard.IsKeyDown(XnaKeys.D4) && _previousKeyboard.IsKeyUp(XnaKeys.D4)) || (keyboard.IsKeyDown(XnaKeys.NumPad4) && _previousKeyboard.IsKeyUp(XnaKeys.NumPad4)) &&!_damageButton.IsLocked)
             {
                 ChooseUpgrade(3);
                 return;
             }
 
             _previousKeyboard = keyboard;
+        }
+
+        private void UpdateButtonStates()
+        {
+            _fireRateButton.SetLocked(
+                _playScreen.Player.ShotsUntilMissile <= MaxShotsUntilMissile
+            );
+
+            _pierceButton.SetLocked(
+                _playScreen.Player.Pierce >= MaxPierce
+            );
+
+            _missileButton.SetLocked(
+                _playScreen.Player.AutoAimMissiles >= MaxMissiles
+            );
         }
 
         private void ChooseUpgrade(int upgrade)

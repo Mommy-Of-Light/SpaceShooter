@@ -43,32 +43,40 @@
             Hitbox.Width = Size.Width;
             Hitbox.Height = Size.Height;
 
-            Position.Y += Speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-            ShootingCooldown -= (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-            if (ShootingCooldown <= 0)
+            if (State)
             {
-                Shoot();
-                ShootingCooldown = GetRandomCooldown();
+                Position.Y += Speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                ShootingCooldown -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                if (ShootingCooldown <= 0)
+                {
+                    Shoot();
+                    ShootingCooldown = GetRandomCooldown();
+                }
+
+                if (Position.Y > game.GraphicsDevice.Viewport.Height)
+                {
+                    State = false;
+                }
+
+                if (Health <= 0)
+                {
+                    State = false;
+                }
             }
 
             foreach (Projectiles projectile in Projectiles)
             {
-                projectile.Update(gameTime, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height, 1);
+                projectile.Update(
+                    gameTime,
+                    game.GraphicsDevice.Viewport.Width,
+                    game.GraphicsDevice.Viewport.Height,
+                    1
+                );
             }
 
             Projectiles.RemoveAll(projectile => !projectile.State);
-
-            if (Position.Y > game.GraphicsDevice.Viewport.Height)
-            {
-                State = false;
-            }
-
-            if (Health <= 0)
-            {
-                State = false;
-            }
         }
 
         private float GetRandomCooldown()
@@ -78,9 +86,17 @@
 
         private void Shoot()
         {
-            Vector2 projectilePosition = new Vector2(Position.X + Size.Width / 2f - ProjectileTexture.Width / 2f, Position.Y + Size.Height);
+            Vector2 projectilePosition = new Vector2(
+                Position.X + Size.Width / 2f - ProjectileTexture.Width / 2f,
+                Position.Y + Size.Height
+            );
 
-            Projectiles.Add(new Projectiles(ProjectileTexture, projectilePosition, new Vector2(ProjectileTexture.Width, ProjectileTexture.Height), 300f));
+            Projectiles.Add(new Projectiles(
+                ProjectileTexture,
+                projectilePosition,
+                new Vector2(ProjectileTexture.Width, ProjectileTexture.Height),
+                300f
+            ));
         }
 
         public void TakeDamage(int damage)
@@ -96,14 +112,23 @@
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            if (Texture != null)
+            if (State && Texture != null)
             {
-                spriteBatch.Draw(Texture, new XnaRectangle((int)Position.X, (int)Position.Y, Size.Width, Size.Height), XnaColor.White);
+                spriteBatch.Draw(
+                    Texture,
+                    new XnaRectangle(
+                        (int)Position.X,
+                        (int)Position.Y,
+                        Size.Width,
+                        Size.Height
+                    ),
+                    XnaColor.White
+                );
+            }
 
-                foreach (Projectiles projectile in Projectiles)
-                {
-                    projectile.Draw(gameTime, spriteBatch);
-                }
+            foreach (Projectiles projectile in Projectiles)
+            {
+                projectile.Draw(gameTime, spriteBatch);
             }
         }
     }
