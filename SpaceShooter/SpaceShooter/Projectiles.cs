@@ -21,7 +21,6 @@
         public float Rotation;
         public float TurnSpeed = 5f;
         public Vector2 Velocity => _velocity;
-
         private Vector2 _velocity;
         private bool _limitBossMissileAngle;
 
@@ -103,8 +102,8 @@
             Hitbox.Width = (int)Size.X;
             Hitbox.Height = (int)Size.Y;
 
-            if (Position.Y < -Size.Y || Position.Y > screenHeight + Size.Y 
-                //|| Position.X < -Size.X || Position.X > screenWidth + Size.X
+            if (Position.Y < -Size.Y || Position.Y > screenHeight + Size.Y
+            //|| Position.X < -Size.X || Position.X > screenWidth + Size.X
             )
             {
                 State = false;

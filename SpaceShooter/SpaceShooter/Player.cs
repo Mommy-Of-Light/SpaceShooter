@@ -41,7 +41,7 @@
             Position = position;
             Speed = speed;
 
-            float scale = 0.5f;
+            float scale = 0.4f;
 
             Width = (int)(texture.Width * scale);
             Height = (int)(texture.Height * scale);
@@ -213,7 +213,37 @@
             if (Texture == null)
                 return;
 
-            spriteBatch.Draw(Texture, new XnaRectangle((int)Position.X, (int)Position.Y, Width, Height), XnaColor.White);
+            spriteBatch.Draw(
+                Texture,
+                new XnaRectangle((int)Position.X, (int)Position.Y, Width, Height),
+                XnaColor.White
+            );
+
+            // Draw hitbox
+            Texture2D pixel = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
+            pixel.SetData(new[] { XnaColor.White });
+
+            int thickness = 2;
+
+            // Top
+            spriteBatch.Draw(pixel,
+                new XnaRectangle(Hitbox.X, Hitbox.Y, Hitbox.Width, thickness),
+                XnaColor.Red);
+
+            // Bottom
+            spriteBatch.Draw(pixel,
+                new XnaRectangle(Hitbox.X, Hitbox.Bottom - thickness, Hitbox.Width, thickness),
+                XnaColor.Red);
+
+            // Left
+            spriteBatch.Draw(pixel,
+                new XnaRectangle(Hitbox.X, Hitbox.Y, thickness, Hitbox.Height),
+                XnaColor.Red);
+
+            // Right
+            spriteBatch.Draw(pixel,
+                new XnaRectangle(Hitbox.Right - thickness, Hitbox.Y, thickness, Hitbox.Height),
+                XnaColor.Red);
 
             foreach (Projectiles projectile in Projectiles)
             {

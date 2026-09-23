@@ -132,6 +132,11 @@
 
             _enemies.RemoveAll(enemy => !enemy.State && enemy.Projectiles.Count == 0);
 
+            if (!_enemies.Any(enemy => enemy.State))
+            {
+                _enemies.Clear();
+            }
+
             if (_boss != null)
             {
                 _boss.Update(
@@ -155,6 +160,11 @@
             if (_enemies.Count == 0 && _boss == null)
             {
                 int completedWave = _waveManager.CurrentWave;
+
+                foreach (Enemy enemy in _enemies)
+                {
+                    enemy.Projectiles.Clear();
+                }
 
                 _player.Projectiles.Clear();
 
