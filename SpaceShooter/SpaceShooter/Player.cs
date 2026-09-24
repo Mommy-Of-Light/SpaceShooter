@@ -21,6 +21,8 @@
         private KeyboardState _previousKeyboard;
         public List<Enemy> GameEnemyList { get; set; }
 
+        private bool debugAutoShoot = false;
+
         public int ShotCount
         {
             get { return _shotCount; }
@@ -65,6 +67,11 @@
             Vector2 movement = Vector2.Zero;
             KeyboardState keyboard = Keyboard.GetState();
 
+            if (keyboard.IsKeyDown(XnaKeys.F12))
+            {
+                debugAutoShoot = !debugAutoShoot;
+            }
+
             if (keyboard.IsKeyDown(XnaKeys.A) || keyboard.IsKeyDown(XnaKeys.Left))
             {
                 movement.X -= 1;
@@ -73,6 +80,11 @@
             if (keyboard.IsKeyDown(XnaKeys.D) || keyboard.IsKeyDown(XnaKeys.Right))
             {
                 movement.X += 1;
+            }
+
+            if (keyboard.IsKeyDown(XnaKeys.LeftShift) || keyboard.IsKeyDown(XnaKeys.RightShift))
+            {
+                movement *= 0.5f;
             }
 
             if (Position.X < 0 && movement.X < 0)
@@ -89,6 +101,20 @@
 
             _shootCooldown -= deltaTime;
 
+            if(debugAutoShoot && _shootCooldown <= 0f)
+            {
+                ShootNormal();
+                _shotCount++;
+                if (_shotCount >= ShotsUntilMissile)
+                {
+                    if (AutoAimMissiles > 0)
+                    {
+                        ShootMissiles();
+                    }
+                    _shotCount = 0;
+                }
+                _shootCooldown = ShootCooldown;
+            }
 
             if (keyboard.IsKeyDown(XnaKeys.Space) && _shootCooldown <= 0f)
             {
@@ -204,7 +230,7 @@
                      5f,
                      false,
                      new Vector2(0, -1)
-                 ));
+                ));
             }
         }
 

@@ -35,6 +35,11 @@ namespace SpaceShooter
             _buttons.Add(new Button("Archive", new XnaRectangle(x, startY + spacing * 2, buttonWidth, buttonHeight)));
             _buttons.Add(new Button("Ranking", new XnaRectangle(x, startY + spacing * 3, buttonWidth, buttonHeight)));
             _buttons.Add(new Button("Exit", new XnaRectangle(x, startY + spacing * 4, buttonWidth, buttonHeight)));
+
+            if (_buttons.Count > 0)
+            {
+                _buttons[0].SetSelected(true);
+            }
         }
 
         public override void Update(GameTime gameTime, KeyboardState keyboard, Vector2 mousePosition, bool mouseClicked)
@@ -52,6 +57,45 @@ namespace SpaceShooter
                 {
                     HandleButton(button.Text);
                     break;
+                }
+            }
+
+            if (keyboard.IsKeyDown(XnaKeys.Up) && _previousKeyboard.IsKeyUp(XnaKeys.Up))
+            {
+                int selectedIndex = _buttons.FindIndex(b => b.IsSelected);
+                if (selectedIndex == -1)
+                {
+                    _buttons[0].SetSelected(true);
+                }
+                else
+                {
+                    _buttons[selectedIndex].SetSelected(false);
+                    int newIndex = (selectedIndex - 1 + _buttons.Count) % _buttons.Count;
+                    _buttons[newIndex].SetSelected(true);
+                }
+            }
+
+            if (keyboard.IsKeyDown(XnaKeys.Down) && _previousKeyboard.IsKeyUp(XnaKeys.Down))
+            {
+                int selectedIndex = _buttons.FindIndex(b => b.IsSelected);
+                if (selectedIndex == -1)
+                {
+                    _buttons[0].SetSelected(true);
+                }
+                else
+                {
+                    _buttons[selectedIndex].SetSelected(false);
+                    int newIndex = (selectedIndex + 1) % _buttons.Count;
+                    _buttons[newIndex].SetSelected(true);
+                }
+            }
+
+            if ((keyboard.IsKeyDown(XnaKeys.Enter) && _previousKeyboard.IsKeyUp(XnaKeys.Enter)) || (keyboard.IsKeyDown(XnaKeys.Space) && _previousKeyboard.IsKeyUp(XnaKeys.Space)))
+            {
+                int selectedIndex = _buttons.FindIndex(b => b.IsSelected);
+                if (selectedIndex != -1)
+                {
+                    HandleButton(_buttons[selectedIndex].Text);
                 }
             }
 

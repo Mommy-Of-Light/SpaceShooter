@@ -17,9 +17,16 @@
         public Vector2 TargetPosition;
         public List<Enemy> EnemyList;
         public List<Enemy> HitEnemies;
-        public bool HitBoss;
+        private float _bossHitCooldown;
+        private const float BossHitCooldownDuration = 1f;
+
+        public bool CanHitBoss
+        {
+            get { return _bossHitCooldown <= 0f; }
+            set { _bossHitCooldown = value ? 0f : BossHitCooldownDuration; }
+        }
         public float Rotation;
-        public float TurnSpeed = 5f;
+        public float TurnSpeed = 1f;
         public Vector2 Velocity => _velocity;
         private Vector2 _velocity;
         private bool _limitBossMissileAngle;
@@ -71,7 +78,7 @@
             State = true;
 
             HitEnemies = new List<Enemy>();
-            HitBoss = false;
+            _bossHitCooldown = 0f;
 
             if (initialVelocity == Vector2.Zero)
             {
@@ -84,9 +91,24 @@
             }
         }
 
+        public void RegisterBossHit()
+        {
+            _bossHitCooldown = BossHitCooldownDuration;
+        }
+
         public void Update(GameTime gameTime, int screenWidth, int screenHeight, int direction)
         {
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            if (_bossHitCooldown > 0f)
+            {
+                _bossHitCooldown -= deltaTime;
+
+                if (_bossHitCooldown < 0f)
+                {
+                    _bossHitCooldown = 0f;
+                }
+            }
 
             if (IsMissile)
             {

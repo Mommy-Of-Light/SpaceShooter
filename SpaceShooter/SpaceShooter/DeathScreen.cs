@@ -10,6 +10,7 @@
         private int _wave;
         private int _score;
         private bool _scoreSaved;
+        private List<Button> _buttons;
 
         public DeathScreen(Game1 game, int wave, int score) : base(game)
         {
@@ -28,6 +29,17 @@
             _restartButton = new Button("Restart", new XnaRectangle((Game.GraphicsDevice.Viewport.Width - 200) / 2, 300, 200, 50));
             _exitButton = new Button("Exit", new XnaRectangle((Game.GraphicsDevice.Viewport.Width - 200) / 2, 380, 200, 50));
 
+            _buttons = new List<Button>
+            {
+                _restartButton,
+                _exitButton
+            };
+
+            if (_buttons.Count > 0)
+            {
+                _buttons[0].SetSelected(true);
+            }
+
             SaveScore();
         }
 
@@ -38,7 +50,7 @@
 
             _scoreSaved = true;
 
-            MariaDbManager.SaveScore(Game.PlayerPseudo, _score, Game.Difficulty);
+            MariaDbManager.SaveScore(Game.PlayerPseudo, _score, _wave, Game.Difficulty);
         }
 
         public override void Update(GameTime gameTime, KeyboardState keyboard, Vector2 mousePosition, bool mouseClicked)
@@ -58,6 +70,60 @@
                 return;
             }
 
+            if (keyboard.IsKeyDown(XnaKeys.Up) &&
+                _previousKeyboard.IsKeyUp(XnaKeys.Up))
+            {
+                int selectedIndex = _buttons.FindIndex(b => b.IsSelected);
+
+                if (selectedIndex == -1)
+                {
+                    _buttons[0].SetSelected(true);
+                }
+                else
+                {
+                    _buttons[selectedIndex].SetSelected(false);
+
+                    int newIndex =
+                        (selectedIndex - 1 + _buttons.Count) % _buttons.Count;
+
+                    _buttons[newIndex].SetSelected(true);
+                }
+            }
+
+            if (keyboard.IsKeyDown(XnaKeys.Down) &&
+                _previousKeyboard.IsKeyUp(XnaKeys.Down))
+            {
+                int selectedIndex = _buttons.FindIndex(b => b.IsSelected);
+
+                if (selectedIndex == -1)
+                {
+                    _buttons[0].SetSelected(true);
+                }
+                else
+                {
+                    _buttons[selectedIndex].SetSelected(false);
+
+                    int newIndex =
+                        (selectedIndex + 1) % _buttons.Count;
+
+                    _buttons[newIndex].SetSelected(true);
+                }
+            }
+
+            if ((keyboard.IsKeyDown(XnaKeys.Enter) &&
+                 _previousKeyboard.IsKeyUp(XnaKeys.Enter)) ||
+                (keyboard.IsKeyDown(XnaKeys.Space) &&
+                 _previousKeyboard.IsKeyUp(XnaKeys.Space)))
+            {
+                int selectedIndex = _buttons.FindIndex(b => b.IsSelected);
+
+                if (selectedIndex != -1)
+                {
+                    HandleButton(_buttons[selectedIndex].Text);
+                    return;
+                }
+            }
+
             if (keyboard.IsKeyDown(XnaKeys.Escape) && _previousKeyboard.IsKeyUp(XnaKeys.Escape))
             {
                 Game.ScreenManager.ChangeScreen(new NewGameScreen(Game));
@@ -65,6 +131,19 @@
             }
 
             _previousKeyboard = keyboard;
+        }
+
+        private void HandleButton(string button)
+        {
+            switch (button)
+            {
+                case "Restart":
+                    Game.ScreenManager.ChangeScreen(new PlayScreen(Game));
+                    break;
+                case "Exit":
+                    Game.ScreenManager.ChangeScreen(new NewGameScreen(Game));
+                    break;
+            }
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)

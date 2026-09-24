@@ -119,13 +119,13 @@
 
                 if (_scrollIndex > 0)
                 {
-                    spriteBatch.DrawString(_font, "UP", new Vector2(10, 115), XnaColor.White);
+                    spriteBatch.DrawString(_font, "UP", new Vector2(10, 20), XnaColor.White);
                 }
 
                 if (_scrollIndex + _visibleArchives < _archives.Count
                 )
                 {
-                    spriteBatch.DrawString(_font, "DOWN", new Vector2(10, 150), XnaColor.White);
+                    spriteBatch.DrawString(_font, "DOWN", new Vector2(10, 35), XnaColor.White);
                 }
 
                 string counter = (_scrollIndex + 1) + "-" + Math.Min(_scrollIndex + _visibleArchives, _archives.Count) + " / " + _archives.Count;

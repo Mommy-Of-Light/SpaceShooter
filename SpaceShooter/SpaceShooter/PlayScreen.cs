@@ -25,6 +25,8 @@
         private int upgradeWaveIncrement = 2;
         private SaveData _currentSave;
         private string _runId;
+        private List<Button> _pauseButtons;
+        private int _scrollIndex = 0;
 
         public Player Player
         {
@@ -66,9 +68,24 @@
 
             _buttons.Add(new Button("||", new XnaRectangle(Game.GraphicsDevice.Viewport.Width - 60, 10, 50, 50)));
 
-            _continueButton = new Button("Continue", new XnaRectangle(150, 300, 200, 50));
-            _restartButton = new Button("Restart", new XnaRectangle(150, 370, 200, 50));
-            _exitButton = new Button("Exit", new XnaRectangle(150, 440, 200, 50));
+            _continueButton = new Button(
+                "Continue",
+                new XnaRectangle(150, 300, 200, 50));
+
+            _restartButton = new Button(
+                "Restart",
+                new XnaRectangle(150, 370, 200, 50));
+
+            _exitButton = new Button(
+                "Exit",
+                new XnaRectangle(150, 440, 200, 50));
+
+            _pauseButtons = new List<Button>
+            {
+                _continueButton,
+                _restartButton,
+                _exitButton
+            };
 
             _lastUpgradeWave = 0;
             _isPaused = false;
@@ -113,6 +130,60 @@
 
                     Game.ScreenManager.ChangeScreen(new NewGameScreen(Game));
                     return;
+                }
+
+                if (keyboard.IsKeyDown(XnaKeys.Up) &&
+    _previousKeyboard.IsKeyUp(XnaKeys.Up))
+                {
+                    int selectedIndex = _buttons.FindIndex(b => b.IsSelected);
+
+                    if (selectedIndex == -1)
+                    {
+                        _buttons[0].SetSelected(true);
+                    }
+                    else
+                    {
+                        _buttons[selectedIndex].SetSelected(false);
+
+                        int newIndex =
+                            (selectedIndex - 1 + _buttons.Count) % _buttons.Count;
+
+                        _buttons[newIndex].SetSelected(true);
+                    }
+                }
+
+                if (keyboard.IsKeyDown(XnaKeys.Down) &&
+                    _previousKeyboard.IsKeyUp(XnaKeys.Down))
+                {
+                    int selectedIndex = _buttons.FindIndex(b => b.IsSelected);
+
+                    if (selectedIndex == -1)
+                    {
+                        _buttons[0].SetSelected(true);
+                    }
+                    else
+                    {
+                        _buttons[selectedIndex].SetSelected(false);
+
+                        int newIndex =
+                            (selectedIndex + 1) % _buttons.Count;
+
+                        _buttons[newIndex].SetSelected(true);
+                    }
+                }
+
+                if ((keyboard.IsKeyDown(XnaKeys.Enter) &&
+                     _previousKeyboard.IsKeyUp(XnaKeys.Enter)) ||
+                    (keyboard.IsKeyDown(XnaKeys.Space) &&
+                     _previousKeyboard.IsKeyUp(XnaKeys.Space)))
+                {
+                    int selectedIndex = _buttons.FindIndex(b => b.IsSelected);
+
+                    if (selectedIndex != -1)
+                    {
+                        HandleButton(_buttons[selectedIndex].Text);
+                        return;
+                    }
                 }
 
                 _previousKeyboard = keyboard;
@@ -206,6 +277,27 @@
             _previousKeyboard = keyboard;
         }
 
+        private void HandleButton(string button)
+        {
+            switch (button)
+            {
+                case "||":
+                    _isPaused = true;
+                    break;
+                case "Continue":
+                    _isPaused = false;
+                    break;
+                case "Restart":
+                    ResetGame();
+                    _isPaused = false;
+                    break;
+                case "Exit":
+                    SaveGame();
+                    Game.ScreenManager.ChangeScreen(new NewGameScreen(Game));
+                    break;
+            }
+        }
+
         private void StartNextWave()
         {
             _enemies = _waveManager.CreateNextWave(Game.GraphicsDevice.Viewport.Width);
@@ -292,7 +384,7 @@
                     }
                 }
 
-                if (!projectile.State || _boss == null || !_boss.State || projectile.HitBoss)
+                if (!projectile.State || _boss == null || !_boss.State || !projectile.CanHitBoss)
                     continue;
 
                 if (projectile.Hitbox.Intersects(_boss.Hitbox))
@@ -300,7 +392,7 @@
                     bool bossWasAlive = _boss.State;
 
                     _boss.TakeDamage(projectile.Damage);
-                    projectile.HitBoss = true;
+                    projectile.RegisterBossHit();
 
                     if (bossWasAlive && !_boss.State)
                     {
@@ -717,7 +809,7 @@
             data.TargetY = projectile.TargetPosition.Y;
             data.TurnSpeed = projectile.TurnSpeed;
             data.TargetsBoss = projectile.BossTarget != null;
-            data.HitBoss = projectile.HitBoss;
+            data.HitBoss = projectile.CanHitBoss;
             data.Rotation = projectile.Rotation;
 
             if (projectile.IsMissile && projectile.Target != null)
@@ -757,7 +849,7 @@
             );
 
             projectile.State = data.State;
-            projectile.HitBoss = data.HitBoss;
+            projectile.CanHitBoss = data.HitBoss;
             projectile.Rotation = data.Rotation;
             projectile.SetVelocity(new Vector2(data.VelocityX, data.VelocityY));
 

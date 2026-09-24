@@ -67,6 +67,11 @@
             int returnY = newGameY + spacing;
 
             _buttons.Add(new Button("Return", new XnaRectangle(x, returnY, buttonWidth, buttonHeight)));
+
+            if (_buttons.Count > 0)
+            {
+                _buttons[0].SetSelected(true);
+            }
         }
 
         public override void Update(GameTime gameTime, KeyboardState keyboard, Vector2 mousePosition, bool mouseClicked)
@@ -81,15 +86,21 @@
             _mediumButton.Update(mousePosition);
             _hardButton.Update(mousePosition);
 
-            if (_easyButton.IsClicked(mousePosition, mouseClicked))
+            if (_easyButton.IsClicked(mousePosition, mouseClicked) || 
+                (keyboard.IsKeyDown(XnaKeys.D1) && _previousKeyboard.IsKeyUp(XnaKeys.D1)) || 
+                (keyboard.IsKeyDown(XnaKeys.NumPad1) && _previousKeyboard.IsKeyUp(XnaKeys.NumPad1)))
             {
                 HandleButton("Easy");
             }
-            else if (_mediumButton.IsClicked(mousePosition, mouseClicked))
+            else if (_mediumButton.IsClicked(mousePosition, mouseClicked) || 
+                     (keyboard.IsKeyDown(XnaKeys.D2) && _previousKeyboard.IsKeyUp(XnaKeys.D2)) || 
+                     (keyboard.IsKeyDown(XnaKeys.NumPad2) && _previousKeyboard.IsKeyUp(XnaKeys.NumPad2)))
             {
                 HandleButton("Medium");
             }
-            else if (_hardButton.IsClicked(mousePosition, mouseClicked))
+            else if (_hardButton.IsClicked(mousePosition, mouseClicked) || 
+                     (keyboard.IsKeyDown(XnaKeys.D3) && _previousKeyboard.IsKeyUp(XnaKeys.D3)) || 
+                     (keyboard.IsKeyDown(XnaKeys.NumPad3) && _previousKeyboard.IsKeyUp(XnaKeys.NumPad3)))
             {
                 HandleButton("Hard");
             }
@@ -102,6 +113,60 @@
                 {
                     HandleButton(button.Text);
                     break;
+                }
+            }
+
+            if (keyboard.IsKeyDown(XnaKeys.Up) &&
+    _previousKeyboard.IsKeyUp(XnaKeys.Up))
+            {
+                int selectedIndex = _buttons.FindIndex(b => b.IsSelected);
+
+                if (selectedIndex == -1)
+                {
+                    _buttons[0].SetSelected(true);
+                }
+                else
+                {
+                    _buttons[selectedIndex].SetSelected(false);
+
+                    int newIndex =
+                        (selectedIndex - 1 + _buttons.Count) % _buttons.Count;
+
+                    _buttons[newIndex].SetSelected(true);
+                }
+            }
+
+            if (keyboard.IsKeyDown(XnaKeys.Down) &&
+                _previousKeyboard.IsKeyUp(XnaKeys.Down))
+            {
+                int selectedIndex = _buttons.FindIndex(b => b.IsSelected);
+
+                if (selectedIndex == -1)
+                {
+                    _buttons[0].SetSelected(true);
+                }
+                else
+                {
+                    _buttons[selectedIndex].SetSelected(false);
+
+                    int newIndex =
+                        (selectedIndex + 1) % _buttons.Count;
+
+                    _buttons[newIndex].SetSelected(true);
+                }
+            }
+
+            if ((keyboard.IsKeyDown(XnaKeys.Enter) &&
+                 _previousKeyboard.IsKeyUp(XnaKeys.Enter)) ||
+                (keyboard.IsKeyDown(XnaKeys.Space) &&
+                 _previousKeyboard.IsKeyUp(XnaKeys.Space)))
+            {
+                int selectedIndex = _buttons.FindIndex(b => b.IsSelected);
+
+                if (selectedIndex != -1)
+                {
+                    HandleButton(_buttons[selectedIndex].Text);
+                    return;
                 }
             }
 

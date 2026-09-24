@@ -13,6 +13,7 @@
         private const int MaxPierce = 10;
         private const int MaxMissiles = 15;
         private const int MaxShotsUntilMissile = 1;
+        private List<Button> _buttons;
 
         public UpgradeScreen(Game1 game, PlayScreen playScreen) : base(game)
         {
@@ -30,6 +31,19 @@
             _pierceButton = new Button("PIERCE +1 (2)", new XnaRectangle(100, 200, 300, 50));
             _missileButton = new Button("MISSILE +1 (3)", new XnaRectangle(100, 270, 300, 50));
             _damageButton = new Button("DAMAGE +1 (4)", new XnaRectangle(100, 340, 300, 50));
+
+            _buttons = new List<Button>
+            {
+                _fireRateButton,
+                _pierceButton,
+                _missileButton,
+                _damageButton
+            };
+
+            if (_buttons.Count > 0)
+            {
+                _buttons[0].SetSelected(true);
+            }
 
             UpdateButtonStates();
         }
@@ -87,6 +101,61 @@
             {
                 ChooseUpgrade(3);
                 return;
+            }
+
+            if (keyboard.IsKeyDown(XnaKeys.Up) &&
+    _previousKeyboard.IsKeyUp(XnaKeys.Up))
+            {
+                int selectedIndex = _buttons.FindIndex(b => b.IsSelected);
+
+                if (selectedIndex == -1)
+                {
+                    _buttons[0].SetSelected(true);
+                }
+                else
+                {
+                    _buttons[selectedIndex].SetSelected(false);
+
+                    int newIndex =
+                        (selectedIndex - 1 + _buttons.Count) % _buttons.Count;
+
+                    _buttons[newIndex].SetSelected(true);
+                }
+            }
+
+            if (keyboard.IsKeyDown(XnaKeys.Down) &&
+                _previousKeyboard.IsKeyUp(XnaKeys.Down))
+            {
+                int selectedIndex = _buttons.FindIndex(b => b.IsSelected);
+
+                if (selectedIndex == -1)
+                {
+                    _buttons[0].SetSelected(true);
+                }
+                else
+                {
+                    _buttons[selectedIndex].SetSelected(false);
+
+                    int newIndex =
+                        (selectedIndex + 1) % _buttons.Count;
+
+                    _buttons[newIndex].SetSelected(true);
+                }
+            }
+
+            if ((keyboard.IsKeyDown(XnaKeys.Enter) &&
+                 _previousKeyboard.IsKeyUp(XnaKeys.Enter)) ||
+                (keyboard.IsKeyDown(XnaKeys.Space) &&
+                 _previousKeyboard.IsKeyUp(XnaKeys.Space)))
+            {
+                int selectedIndex = _buttons.FindIndex(b => b.IsSelected);
+
+                if (selectedIndex != -1 &&
+                    !_buttons[selectedIndex].IsLocked)
+                {
+                    ChooseUpgrade(selectedIndex);
+                    return;
+                }
             }
 
             _previousKeyboard = keyboard;

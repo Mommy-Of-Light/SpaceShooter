@@ -56,7 +56,7 @@
             }
 
             int totalEnemies = (7 * (int)Math.Floor((float)_currentWave / 5.0f)) + additionalEnemies;
-            //int totalEnemies = 1; // just one to test boss waves
+            //totalEnemies = 1; // just one to test boss waves
 
             totalEnemies = Math.Min(totalEnemies, 50);
 

@@ -8,6 +8,9 @@
         private KeyboardState _previousKeyboard;
         private List<ScoreData> _scores;
 
+        private int _scrollIndex;
+        private int _visibleScores = 7;
+
         public RankingScreen(Game1 game) : base(game)
         {
             _previousKeyboard = Keyboard.GetState();
@@ -19,12 +22,33 @@
             _font = Game.Content.Load<SpriteFont>("Fonts/SpaceInvader_12");
             _font_title = Game.Content.Load<SpriteFont>("Fonts/SpaceInvader_16");
 
-            _returnButton = new Button("Return", new XnaRectangle(100, 420, 300, 50));
+            _returnButton = new Button("Return", new XnaRectangle(100, 430, 300, 45));
 
             _scores = MariaDbManager.GetScores();
+            _scrollIndex = 0;
         }
 
-        public override void Update(GameTime gameTime, KeyboardState keyboard, Vector2 mousePosition, bool mouseClicked)
+        private void ScrollUp()
+        {
+            if (_scrollIndex <= 0)
+                return;
+
+            _scrollIndex--;
+        }
+
+        private void ScrollDown()
+        {
+            if (_scrollIndex + _visibleScores >= _scores.Count)
+                return;
+
+            _scrollIndex++;
+        }
+
+        public override void Update(
+            GameTime gameTime,
+            KeyboardState keyboard,
+            Vector2 mousePosition,
+            bool mouseClicked)
         {
             _returnButton.Update(mousePosition);
 
@@ -34,7 +58,20 @@
                 return;
             }
 
-            if (keyboard.IsKeyDown(XnaKeys.Escape) && _previousKeyboard.IsKeyUp(XnaKeys.Escape))
+            if (keyboard.IsKeyDown(XnaKeys.Up) &&
+                _previousKeyboard.IsKeyUp(XnaKeys.Up))
+            {
+                ScrollUp();
+            }
+
+            if (keyboard.IsKeyDown(XnaKeys.Down) &&
+                _previousKeyboard.IsKeyUp(XnaKeys.Down))
+            {
+                ScrollDown();
+            }
+
+            if (keyboard.IsKeyDown(XnaKeys.Escape) &&
+                _previousKeyboard.IsKeyUp(XnaKeys.Escape))
             {
                 Game.ScreenManager.ChangeScreen(new MenuScreen(Game));
                 return;
@@ -47,13 +84,25 @@
         {
             spriteBatch.Begin();
 
-            Texture2D background = Game.Content.Load<Texture2D>("Textures/Background/black");
-            spriteBatch.Draw(background, Vector2.Zero, XnaColor.White);
+            Texture2D background =
+                Game.Content.Load<Texture2D>("Textures/Background/black");
+
+            spriteBatch.Draw(
+                background,
+                Vector2.Zero,
+                XnaColor.White);
 
             string title = "RANKING";
+
             Vector2 titleSize = _font_title.MeasureString(title);
 
-            spriteBatch.DrawString(_font_title, title, new Vector2((Game.GraphicsDevice.Viewport.Width - titleSize.X) / 2f, 40), XnaColor.White);
+            spriteBatch.DrawString(
+                _font_title,
+                title,
+                new Vector2(
+                    (Game.GraphicsDevice.Viewport.Width - titleSize.X) / 2f,
+                    30),
+                XnaColor.White);
 
             if (!string.IsNullOrEmpty(MariaDbManager.LastError))
             {
@@ -61,7 +110,13 @@
 
                 Vector2 errorSize = _font.MeasureString(error);
 
-                spriteBatch.DrawString(_font, error, new Vector2((Game.GraphicsDevice.Viewport.Width - errorSize.X) / 2f, 120), XnaColor.White);
+                spriteBatch.DrawString(
+                    _font,
+                    error,
+                    new Vector2(
+                        (Game.GraphicsDevice.Viewport.Width - errorSize.X) / 2f,
+                        120),
+                    XnaColor.White);
             }
             else if (_scores.Count == 0)
             {
@@ -69,13 +124,22 @@
 
                 Vector2 noScoresSize = _font.MeasureString(noScores);
 
-                spriteBatch.DrawString(_font, noScores, new Vector2((Game.GraphicsDevice.Viewport.Width - noScoresSize.X) / 2f, 150), XnaColor.White);
+                spriteBatch.DrawString(
+                    _font,
+                    noScores,
+                    new Vector2(
+                        (Game.GraphicsDevice.Viewport.Width - noScoresSize.X) / 2f,
+                        180),
+                    XnaColor.White);
             }
             else
             {
-                int maxScores = Math.Min(_scores.Count, 8);
+                int endIndex =
+                    Math.Min(
+                        _scrollIndex + _visibleScores,
+                        _scores.Count);
 
-                for (int i = 0; i < maxScores; i++)
+                for (int i = _scrollIndex; i < endIndex; i++)
                 {
                     ScoreData score = _scores[i];
 
@@ -84,10 +148,63 @@
                     if (pseudo.Length > 12)
                         pseudo = pseudo.Substring(0, 12);
 
-                    string line = (i + 1) + ". " + pseudo + "    " + score.Score + "    " + score.Difficulty;
+                    int displayIndex = i - _scrollIndex;
 
-                    spriteBatch.DrawString(_font, line, new Vector2(40, 100 + i * 38), XnaColor.White);
+                    string line =
+                        (i + 1) +
+                        ". " +
+                        pseudo +
+                        "    " +
+                        score.Score +
+                        "    " +
+                        score.Difficulty;
+
+                    spriteBatch.DrawString(
+                        _font,
+                        line,
+                        new Vector2(
+                            40,
+                            100 + displayIndex * 38),
+                        XnaColor.White);
                 }
+
+                if (_scrollIndex > 0)
+                {
+                    spriteBatch.DrawString(
+                        _font,
+                        "UP",
+                        new Vector2(10, 20),
+                        XnaColor.White);
+                }
+
+                if (_scrollIndex + _visibleScores < _scores.Count)
+                {
+                    spriteBatch.DrawString(
+                        _font,
+                        "DOWN",
+                        new Vector2(10, 35),
+                        XnaColor.White);
+                }
+
+                string counter =
+                    (_scrollIndex + 1) +
+                    "-" +
+                    Math.Min(
+                        _scrollIndex + _visibleScores,
+                        _scores.Count) +
+                    " / " +
+                    _scores.Count;
+
+                Vector2 counterSize =
+                    _font.MeasureString(counter);
+
+                spriteBatch.DrawString(
+                    _font,
+                    counter,
+                    new Vector2(
+                        (Game.GraphicsDevice.Viewport.Width - counterSize.X) / 2f,
+                        405),
+                    XnaColor.White);
             }
 
             _returnButton.Draw(spriteBatch, _font);

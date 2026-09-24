@@ -19,7 +19,6 @@
         public int HealthMultiplier;
         public float MissileTurnSpeed;
         public int MissileCount;
-
         private static Random _random = new Random();
         private float _direction = 1f;
         private float _attackCooldownBase;
@@ -69,6 +68,11 @@
         {
             if (!State)
                 return;
+
+            if (Wave % 200 == 0 && MissileCount < 6)
+            {
+                MissileCount++;
+            }
 
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             int screenWidth = game.GraphicsDevice.Viewport.Width;
@@ -163,31 +167,8 @@
                 );
 
                 Projectiles missile;
-                Projectiles missile2;
 
-                if (Wave < 200)
-                {
-                    missile = new Projectiles(
-                        ProjectileTexture,
-                        missilePosition,
-                        new Vector2(ProjectileTexture.Width, ProjectileTexture.Height),
-                        250f + (Wave / 100) * 25f,
-                        1,
-                        0,
-                        true,
-                        null,
-                        null,
-                        null,
-                        true,
-                        playerPosition,
-                        MissileTurnSpeed,
-                        true,
-                        new Vector2(-1, -1)
-                    );
-                }
-                else
-                {
-                    missile = new Projectiles(
+                missile = new Projectiles(
                     ProjectileTexture,
                     missilePosition,
                     new Vector2(ProjectileTexture.Width, ProjectileTexture.Height),
@@ -202,29 +183,8 @@
                     playerPosition,
                     MissileTurnSpeed,
                     true,
-                    new Vector2(-1, -1)
+                    (i % 2 == 0) ? new Vector2(-1, -1) : new Vector2(1, -1)
                 );
-
-                    missile2 = new Projectiles(
-                        ProjectileTexture,
-                        missilePosition,
-                        new Vector2(ProjectileTexture.Width, ProjectileTexture.Height),
-                        250f + (Wave / 100) * 25f,
-                        1,
-                        0,
-                        true,
-                        null,
-                        null,
-                        null,
-                        true,
-                        playerPosition,
-                        MissileTurnSpeed,
-                        true,
-                        new Vector2(1, -1)
-                    );
-
-                    Projectiles.Add(missile2);
-                }
 
                 Projectiles.Add(missile);
             }
