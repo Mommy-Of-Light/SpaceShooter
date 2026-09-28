@@ -49,6 +49,21 @@ namespace SpaceShooter
                 Game.Exit();
             }
 
+            if (keyboard.IsKeyDown(XnaKeys.NumPad1) && _previousKeyboard.IsKeyUp(XnaKeys.NumPad1))
+            {
+                SoundEffectPlayer.Instance.PlayRetroLazer();
+            }
+
+            if (keyboard.IsKeyDown(XnaKeys.NumPad2) && _previousKeyboard.IsKeyUp(XnaKeys.NumPad2))
+            {
+                SoundEffectPlayer.Instance.PlaySnareShot();
+            }
+
+            if (keyboard.IsKeyDown(XnaKeys.NumPad3) && _previousKeyboard.IsKeyUp(XnaKeys.NumPad3))
+            {
+                SoundEffectPlayer.Instance.PlaySpaceZap();
+            }
+
             foreach (Button button in _buttons)
             {
                 button.Update(mousePosition);

@@ -52,6 +52,12 @@
             _cursorTexture = Content.Load<Texture2D>("Textures/PNG/UI/cursor");
             IsMouseVisible = false;
             _cursorPosition = new Vector2(_graphics.PreferredBackBufferWidth / 2f, _graphics.PreferredBackBufferHeight / 2f);
+
+            SoundEffectPlayer.Instance.Initialize(this);
+            MusicPlayer.Instance.Initialize(this);
+
+            MusicPlayer.Instance.Play("Menu");
+
             CenterMouse();
         }
 
@@ -63,6 +69,8 @@
 
         protected override void Update(GameTime gameTime)
         {
+            MusicPlayer.Instance.Update();
+
             MouseState mouseState = Mouse.GetState();
 
             int deltaX = mouseState.X - _windowCenter.X;

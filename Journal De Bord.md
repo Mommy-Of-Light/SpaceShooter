@@ -758,3 +758,122 @@ Bien sûr. Voici l’entrée du **15/09/2026**, en gardant le même style que le
 * Prévoir une organisation permettant d'utiliser les scores enregistrés précédemment.
 
 * Faciliter l'intégration du classement avec les écrans et les données déjà développés.
+
+
+## 28/09/2026
+
+### 1. Étapes réalisées
+
+#### Développement
+
+**Effets sonores**
+
+* Début de l'intégration des effets sonores dans le jeu.
+
+* Recherche et préparation des sons nécessaires aux différentes interactions du jeu.
+
+* Préparation de leur intégration avec les actions du joueur et les événements du gameplay.
+
+**Musique**
+
+* Début de la mise en place de la musique du jeu.
+
+* Préparation de l'intégration de la musique dans les différents écrans et phases du jeu.
+
+* Réflexion sur la gestion de la lecture de la musique afin de conserver une expérience cohérente.
+
+**Effets visuels**
+
+* Début de l'ajout des effets visuels.
+
+* Préparation d'effets permettant d'améliorer la lisibilité des actions et événements du jeu.
+
+* Intégration progressive des effets visuels aux différents éléments du gameplay.
+
+#### Tests
+
+**Mise en place de la batterie de tests**
+
+* Début de la mise en place de la batterie de tests du jeu.
+
+* Préparation des différents scénarios permettant de vérifier le bon fonctionnement des fonctionnalités développées.
+
+* Une grande partie des tests prévus est basée sur des vérifications visuelles du comportement et de l'affichage du jeu.
+
+* Début des vérifications des collisions, des vagues, des difficultés, des bonus et des différents écrans.
+
+### 2. Temps consacré aux différentes tâches
+
+| Catégorie     | Tâche                                 |  Temps consacré |
+| ------------- | ------------------------------------- | --------------: |
+| Développement | Ajout des effets sonores              |      30 minutes |
+| Développement | Ajout de la musique                   |      30 minutes |
+| Développement | Ajout des effets visuels              |      30 minutes |
+| Tests         | Mise en place de la batterie de tests |      90 minutes |
+| **Total**     |                                       | **180 minutes** |
+
+### 3. Problèmes rencontrés et solutions apportées
+
+**Intégration des effets sonores**
+
+* Réflexion sur les événements du jeu nécessitant un retour sonore.
+
+* Organisation des sons afin de pouvoir les déclencher au moment approprié.
+
+**Gestion de la musique**
+
+* Réflexion sur la manière de gérer la lecture de la musique dans les différentes parties du jeu.
+
+* Préparation d'une gestion permettant d'éviter les lectures incorrectes ou répétées.
+
+**Ajout des effets visuels**
+
+* Difficulté à déterminer quels événements nécessitent des effets visuels.
+
+* Sélection d'effets permettant d'améliorer la compréhension des actions sans surcharger l'affichage.
+
+**Mise en place des tests**
+
+* Difficulté à organiser l'ensemble des fonctionnalités à vérifier.
+
+* Création d'une liste de tests correspondant aux principales fonctionnalités du jeu.
+
+* Priorité donnée aux tests visuels afin de vérifier rapidement l'affichage et le comportement des éléments à l'écran.
+
+### 4. Options envisagées et choix effectués
+
+#### Effets sonores
+
+* Ajouter des effets sonores aux principales actions et événements du jeu.
+
+* Centraliser leur gestion afin de faciliter leur modification par la suite.
+
+* Vérifier que les sons sont déclenchés au bon moment.
+
+#### Musique
+
+* Ajouter une musique d'ambiance au jeu.
+
+* Prévoir une gestion adaptée aux différents écrans et situations du jeu.
+
+* Garder la possibilité de modifier facilement les musiques utilisées.
+
+#### Effets visuels
+
+* Ajouter progressivement des effets visuels aux événements importants.
+
+* Privilégier des effets permettant de rendre les actions plus visibles pour le joueur.
+
+* Vérifier leur cohérence avec les graphismes déjà présents.
+
+#### Batterie de tests
+
+* Commencer la vérification des fonctionnalités principales du jeu.
+
+* Tester les collisions, les vagues, les niveaux de difficulté et les bonus.
+
+* Vérifier le fonctionnement des sauvegardes, chargements, archives et du classement.
+
+* Tester les différents écrans et leurs transitions.
+
+* Effectuer principalement des tests visuels afin de vérifier l'affichage, les interactions et le comportement général du jeu.

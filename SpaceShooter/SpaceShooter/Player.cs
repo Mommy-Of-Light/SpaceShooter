@@ -154,10 +154,14 @@
             Vector2 projectilePosition = new Vector2(Position.X + Width / 2f - ProjectileTexture.Width / 2f, Position.Y);
 
             Projectiles.Add(new Projectiles(ProjectileTexture, projectilePosition, new Vector2(ProjectileTexture.Width, ProjectileTexture.Height), 500f, Damage, Pierce));
+
+            SoundEffectPlayer.Instance.PlaySnareShot();
         }
 
         private void ShootMissiles()
         {
+            SoundEffectPlayer.Instance.PlayRetroLazer();
+
             if (BossTarget != null && BossTarget.State)
             {
                 for (int i = 0; i < AutoAimMissiles; i++)

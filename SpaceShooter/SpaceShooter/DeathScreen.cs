@@ -41,6 +41,9 @@
             }
 
             SaveScore();
+
+            MusicPlayer.Instance.Stop();
+            MusicPlayer.Instance.Play("Menu");
         }
 
         private void SaveScore()

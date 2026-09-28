@@ -76,8 +76,7 @@
 
         public override void Update(GameTime gameTime, KeyboardState keyboard, Vector2 mousePosition, bool mouseClicked)
         {
-            if (keyboard.IsKeyDown(XnaKeys.Escape) && _previousKeyboard.IsKeyUp(XnaKeys.Escape)
-            )
+            if (keyboard.IsKeyDown(XnaKeys.Escape) && _previousKeyboard.IsKeyUp(XnaKeys.Escape))
             {
                 HandleButton("Return");
             }
@@ -116,8 +115,7 @@
                 }
             }
 
-            if (keyboard.IsKeyDown(XnaKeys.Up) &&
-    _previousKeyboard.IsKeyUp(XnaKeys.Up))
+            if (keyboard.IsKeyDown(XnaKeys.Up) &&_previousKeyboard.IsKeyUp(XnaKeys.Up))
             {
                 int selectedIndex = _buttons.FindIndex(b => b.IsSelected);
 
@@ -136,8 +134,7 @@
                 }
             }
 
-            if (keyboard.IsKeyDown(XnaKeys.Down) &&
-                _previousKeyboard.IsKeyUp(XnaKeys.Down))
+            if (keyboard.IsKeyDown(XnaKeys.Down) &&_previousKeyboard.IsKeyUp(XnaKeys.Down))
             {
                 int selectedIndex = _buttons.FindIndex(b => b.IsSelected);
 
@@ -156,10 +153,7 @@
                 }
             }
 
-            if ((keyboard.IsKeyDown(XnaKeys.Enter) &&
-                 _previousKeyboard.IsKeyUp(XnaKeys.Enter)) ||
-                (keyboard.IsKeyDown(XnaKeys.Space) &&
-                 _previousKeyboard.IsKeyUp(XnaKeys.Space)))
+            if ((keyboard.IsKeyDown(XnaKeys.Enter) &&_previousKeyboard.IsKeyUp(XnaKeys.Enter)) ||(keyboard.IsKeyDown(XnaKeys.Space) &&_previousKeyboard.IsKeyUp(XnaKeys.Space)))
             {
                 int selectedIndex = _buttons.FindIndex(b => b.IsSelected);
 

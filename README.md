@@ -141,6 +141,28 @@ Add screenshots of the game here.
 
 * **Mommy Of Light** — Developer - empress.mommy.of.light@gmail.com
 
+## Credits
+
+### Musics: 
+
+* Sound Effect by <a href="https://pixabay.com/users/noahbroah-53114341/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=474601">Noah Hansen</a> from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=474601">Pixabay</a> --> ["The Aliens Are Coming!"](https://pixabay.com/music/video-games-quotthe-aliens-are-comingquot-569390/)
+
+* "Nebulous" par BossLevelVGM, via [nebulous](https://opengameart.org/content/nebulous) — Licencié sous [CC-BY 3.0](https://creativecommons.org/licenses/by/3.0/)
+* "Wave After Wave!" par FoxSynergy, via [wave-after-wave](https://opengameart.org/content/wave-after-wave) — Licencié sous [CC-BY 3.0](https://creativecommons.org/licenses/by/3.0/)
+
+* "Spacey" par Joao Victor Pereira Vaz, Licencié sous [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/)
+
+### Sound effects
+
+* Lazer shot : Sound Effect by <a href="https://pixabay.com/users/freesound_community-46691455/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=96367">freesound_community</a> from <a href="https://pixabay.com/sound-effects//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=96367">Pixabay</a> --> [Retro_Laser_Gun_Shot](https://pixabay.com/sound-effects/film-special-effects-retro-laser-gun-shot-96367/)
+* Sound Effect by <a href="https://pixabay.com/users/freesound_community-46691455/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=80932">freesound_community</a> from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=80932">Pixabay</a> --> [Snare Space Shot](https://pixabay.com/sound-effects/film-special-effects-snare-space-shot-80932/)
+* Sound Effect by <a href="https://pixabay.com/users/u_zryegfa0xr-44407199/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=217411">u_zryegfa0xr</a> from <a href="https://pixabay.com/sound-effects//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=217411">Pixabay</a> --> [Space zap](https://pixabay.com/sound-effects/film-special-effects-space-zap-217411/)
+* Sound Effect by <a href="https://pixabay.com/users/freesound_community-46691455/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=80932">freesound_community</a> from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=80932">Pixabay</a> --> [Snare Space Shot](https://pixabay.com/sound-effects/film-special-effects-snare-space-shot-80932/)
+
+### Sprites 
+
+* Space Shooter (Redux, plus fonts and sounds) by Kenney Vleugels (www.kenney.nl) --> [Space Shooter Redux](https://kenney.nl/assets/space-shooter-remastered)
+
 ## License
 
 This project is licensed under the MIT License.

@@ -11,6 +11,7 @@ global using System.Windows.Forms;
 global using Microsoft.Xna.Framework;
 global using Microsoft.Xna.Framework.Graphics;
 global using Microsoft.Xna.Framework.Input;
+global using Microsoft.Xna.Framework.Media;
 
 global using XnaButtonState = Microsoft.Xna.Framework.Input.ButtonState;
 global using XnaKeys = Microsoft.Xna.Framework.Input.Keys;

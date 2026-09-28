@@ -94,6 +94,48 @@
 /processorParam:TextureFormat=Color
 /build:Icons/spaceinvaders_64_icon.ico
 
+#begin Music/Nebulous.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Music/Nebulous.mp3
+
+#begin Music/noahbroah-alien-ambush-all-engines-go-474601.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Music/noahbroah-alien-ambush-all-engines-go-474601.mp3
+
+#begin Music/Spacey.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Music/Spacey.mp3
+
+#begin Music/Wave After Wave! v0_9.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Music/Wave After Wave! v0_9.mp3
+
+#begin SoundEffects/freesound_community-retro_laser_gun_shot-96367.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/freesound_community-retro_laser_gun_shot-96367.mp3
+
+#begin SoundEffects/freesound_community-snare-space-shot-80932.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/freesound_community-snare-space-shot-80932.mp3
+
+#begin SoundEffects/u_zryegfa0xr-space-zap-217411.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/u_zryegfa0xr-space-zap-217411.mp3
+
 #begin Textures/Background/black.png
 /importer:TextureImporter
 /processor:TextureProcessor

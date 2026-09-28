@@ -107,6 +107,7 @@
             {
                 Health = 0;
                 State = false;
+                SoundEffectPlayer.Instance.PlaySpaceZap();
             }
         }
 

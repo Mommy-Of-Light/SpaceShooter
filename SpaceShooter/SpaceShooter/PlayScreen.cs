@@ -36,12 +36,14 @@
         public PlayScreen(Game1 game) : base(game)
         {
             _previousKeyboard = Keyboard.GetState();
-
             Game.ChangeScreenSize(500, 800);
         }
 
         public override void Initialize()
         {
+            MusicPlayer.Instance.Stop();
+            MusicPlayer.Instance.Play("Stage1");
+
             _font = Game.Content.Load<SpriteFont>("Fonts/SpaceInvader_12");
             _playerTexture = Game.Content.Load<Texture2D>("Textures/PNG/playerShip1_blue");
             _projectileTexture = Game.Content.Load<Texture2D>("Textures/PNG/Lazers/laserBlue01");
@@ -132,8 +134,7 @@
                     return;
                 }
 
-                if (keyboard.IsKeyDown(XnaKeys.Up) &&
-    _previousKeyboard.IsKeyUp(XnaKeys.Up))
+                if (keyboard.IsKeyDown(XnaKeys.Up) &&_previousKeyboard.IsKeyUp(XnaKeys.Up))
                 {
                     int selectedIndex = _buttons.FindIndex(b => b.IsSelected);
 
@@ -152,8 +153,7 @@
                     }
                 }
 
-                if (keyboard.IsKeyDown(XnaKeys.Down) &&
-                    _previousKeyboard.IsKeyUp(XnaKeys.Down))
+                if (keyboard.IsKeyDown(XnaKeys.Down) &&_previousKeyboard.IsKeyUp(XnaKeys.Down))
                 {
                     int selectedIndex = _buttons.FindIndex(b => b.IsSelected);
 
@@ -172,10 +172,7 @@
                     }
                 }
 
-                if ((keyboard.IsKeyDown(XnaKeys.Enter) &&
-                     _previousKeyboard.IsKeyUp(XnaKeys.Enter)) ||
-                    (keyboard.IsKeyDown(XnaKeys.Space) &&
-                     _previousKeyboard.IsKeyUp(XnaKeys.Space)))
+                if ((keyboard.IsKeyDown(XnaKeys.Enter) &&_previousKeyboard.IsKeyUp(XnaKeys.Enter)) ||(keyboard.IsKeyDown(XnaKeys.Space) &&_previousKeyboard.IsKeyUp(XnaKeys.Space)))
                 {
                     int selectedIndex = _buttons.FindIndex(b => b.IsSelected);
 
@@ -504,6 +501,9 @@
 
             UpdatePlayerTargets();
 
+            MusicPlayer.Instance.Stop();
+            MusicPlayer.Instance.Play("Stage1");
+
             _runId = Guid.NewGuid().ToString();
             _currentSave = null;
         }
@@ -637,6 +637,9 @@
 
                 data.Boss = bossData;
             }
+
+            MusicPlayer.Instance.Stop();
+            MusicPlayer.Instance.Play("Menu");
 
             _currentSave = SaveManager.Save(data, Game.PlayerPseudo, _runId);
         }
