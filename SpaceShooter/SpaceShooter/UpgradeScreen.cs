@@ -1,20 +1,75 @@
 ﻿namespace SpaceShooter
 {
+    /// <summary>
+    /// Represents the screen where the player can choose an upgrade for their ship.
+    /// </summary>
     public class UpgradeScreen : GameScreen
     {
+        /// <summary>
+        /// Font used for displaying upgrade button text.
+        /// </summary>
         private SpriteFont _font;
+
+        /// <summary>
+        /// Font used for displaying the screen title.
+        /// </summary>
         private SpriteFont _titleFont;
+
+        /// <summary>
+        /// Button used to upgrade the missile attack speed.
+        /// </summary>
         private Button _fireRateButton;
+
+        /// <summary>
+        /// Button used to increase the projectile pierce value.
+        /// </summary>
         private Button _pierceButton;
+
+        /// <summary>
+        /// Button used to increase the number of auto-aim missiles.
+        /// </summary>
         private Button _missileButton;
+
+        /// <summary>
+        /// Button used to increase the player's damage.
+        /// </summary>
         private Button _damageButton;
+
+        /// <summary>
+        /// Stores the keyboard state from the previous update.
+        /// </summary>
         private KeyboardState _previousKeyboard;
+
+        /// <summary>
+        /// Reference to the current play screen.
+        /// </summary>
         private PlayScreen _playScreen;
+
+        /// <summary>
+        /// Maximum amount of pierce the player can have.
+        /// </summary>
         private const int MaxPierce = 10;
+
+        /// <summary>
+        /// Maximum number of auto-aim missiles the player can have.
+        /// </summary>
         private const int MaxMissiles = 15;
+
+        /// <summary>
+        /// Minimum number of shots until a missile can be fired.
+        /// </summary>
         private const int MaxShotsUntilMissile = 1;
+
+        /// <summary>
+        /// List containing all upgrade buttons displayed on the screen.
+        /// </summary>
         private List<Button> _buttons;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UpgradeScreen"/> class.
+        /// </summary>
+        /// <param name="game">Reference to the main game instance.</param>
+        /// <param name="playScreen">Reference to the current play screen.</param>
         public UpgradeScreen(Game1 game, PlayScreen playScreen) : base(game)
         {
             _playScreen = playScreen;
@@ -22,6 +77,9 @@
             Game.ChangeScreenSize(500, 500);
         }
 
+        /// <summary>
+        /// Loads the fonts, creates the upgrade buttons, and initializes their states.
+        /// </summary>
         public override void Initialize()
         {
             _font = Game.Content.Load<SpriteFont>("Fonts/SpaceInvader_12");
@@ -48,6 +106,13 @@
             UpdateButtonStates();
         }
 
+        /// <summary>
+        /// Updates the upgrade buttons and handles mouse and keyboard input.
+        /// </summary>
+        /// <param name="gameTime">Provides timing information for the current update.</param>
+        /// <param name="keyboard">Current keyboard state.</param>
+        /// <param name="mousePosition">Current position of the mouse cursor.</param>
+        /// <param name="mouseClicked">Indicates whether the mouse button was clicked during this update.</param>
         public override void Update(GameTime gameTime, KeyboardState keyboard, Vector2 mousePosition, bool mouseClicked)
         {
             _fireRateButton.Update(mousePosition);
@@ -153,6 +218,9 @@
             _previousKeyboard = keyboard;
         }
 
+        /// <summary>
+        /// Updates the locked state of each upgrade button based on the player's current upgrades.
+        /// </summary>
         private void UpdateButtonStates()
         {
             _fireRateButton.SetLocked(_playScreen.Player.ShotsUntilMissile <= MaxShotsUntilMissile);
@@ -160,6 +228,10 @@
             _missileButton.SetLocked(_playScreen.Player.AutoAimMissiles >= MaxMissiles);
         }
 
+        /// <summary>
+        /// Applies the selected upgrade and returns to the play screen.
+        /// </summary>
+        /// <param name="upgrade">Index of the upgrade that was selected.</param>
         private void ChooseUpgrade(int upgrade)
         {
             Game.ChangeScreenSize(500, 800);
@@ -167,6 +239,11 @@
             Game.ScreenManager.ReturnToScreen(_playScreen);
         }
 
+        /// <summary>
+        /// Draws the upgrade selection screen, including the background, title, and upgrade buttons.
+        /// </summary>
+        /// <param name="gameTime">Provides timing information for the current game frame.</param>
+        /// <param name="spriteBatch">The sprite batch used to draw the screen.</param>
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();

@@ -1,30 +1,125 @@
 ﻿namespace SpaceShooter
 {
+    /// <summary>
+    /// Represents a boss enemy with health, movement, basic projectiles,
+    /// and homing missile attacks.
+    /// </summary>
     public class Boss
     {
+        /// <summary>
+        /// Texture used to draw the boss.
+        /// </summary>
         public Texture2D Texture;
+
+        /// <summary>
+        /// Texture used for the boss's projectiles and missiles.
+        /// </summary>
         public Texture2D ProjectileTexture;
+
+        /// <summary>
+        /// Texture used to draw the boss's health bar.
+        /// </summary>
         public Texture2D HealthBarTexture;
+
+        /// <summary>
+        /// Defines the size and dimensions of the boss.
+        /// </summary>
         public XnaRectangle Size;
+
+        /// <summary>
+        /// Represents the current position of the boss on the screen.
+        /// </summary>
         public Vector2 Position;
+
+        /// <summary>
+        /// Defines the collision area of the boss.
+        /// </summary>
         public XnaRectangle Hitbox;
+
+        /// <summary>
+        /// Represents the horizontal movement speed of the boss.
+        /// </summary>
         public float Speed;
+
+        /// <summary>
+        /// Represents the maximum health of the boss.
+        /// </summary>
         public int MaxHealth;
+
+        /// <summary>
+        /// Represents the current health of the boss.
+        /// </summary>
         public int Health;
+
+        /// <summary>
+        /// Indicates whether the boss is currently active.
+        /// </summary>
         public bool State;
+
+        /// <summary>
+        /// Contains the projectiles currently fired by the boss.
+        /// </summary>
         public List<Projectiles> Projectiles;
+
+        /// <summary>
+        /// Represents the remaining time before the boss can fire a basic projectile.
+        /// </summary>
         public float ShootingCooldown;
+
+        /// <summary>
+        /// Represents the remaining time before the boss can fire homing missiles.
+        /// </summary>
         public float MissileCooldown;
+
+        /// <summary>
+        /// Represents the current game wave.
+        /// </summary>
         public int Wave;
+
+        /// <summary>
+        /// Represents the health multiplier applied to the boss.
+        /// </summary>
         public int HealthMultiplier;
+
+        /// <summary>
+        /// Represents the turning speed of the boss's homing missiles.
+        /// </summary>
         public float MissileTurnSpeed;
+
+        /// <summary>
+        /// Represents the number of homing missiles fired during an attack.
+        /// </summary>
         public int MissileCount;
 
+        /// <summary>
+        /// Random number generator used to vary attack cooldowns.
+        /// </summary>
         private static Random _random = new Random();
+
+        /// <summary>
+        /// Represents the current horizontal movement direction of the boss.
+        /// </summary>
         private float _direction = 1f;
+
+        /// <summary>
+        /// Stores the base cooldown for basic attacks.
+        /// </summary>
         private float _attackCooldownBase;
+
+        /// <summary>
+        /// Stores the base cooldown for homing missile attacks.
+        /// </summary>
         private float _missileCooldownBase;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Boss"/> class.
+        /// </summary>
+        /// <param name="texture">The texture used to draw the boss.</param>
+        /// <param name="projectileTexture">The texture used for the boss's projectiles.</param>
+        /// <param name="healthBarTexture">The texture used to draw the boss's health bar.</param>
+        /// <param name="screenWidth">The width of the game screen.</param>
+        /// <param name="wave">The current game wave.</param>
+        /// <param name="normalEnemyHealth">The base health value used to calculate the boss's health.</param>
         public Boss(Texture2D texture, Texture2D projectileTexture, Texture2D healthBarTexture, int screenWidth, int wave, int normalEnemyHealth)
         {
             Texture = texture;
@@ -57,6 +152,12 @@
             State = true;
         }
 
+        /// <summary>
+        /// Updates the boss's movement, attacks, projectiles, and health state.
+        /// </summary>
+        /// <param name="gameTime">Provides timing information for the current game update.</param>
+        /// <param name="game">The main game instance used to access game and screen information.</param>
+        /// <param name="playerPosition">The current position of the player, used as the target for homing missiles.</param>
         public void Update(GameTime gameTime, Game game, Vector2 playerPosition)
         {
             if (!State)
@@ -122,16 +223,27 @@
             }
         }
 
+        /// <summary>
+        /// Calculates a randomized cooldown duration for the boss's basic attack.
+        /// </summary>
+        /// <returns>The duration in seconds before the next basic attack.</returns>
         private float GetAttackCooldown()
         {
             return Math.Max(0.25f, _attackCooldownBase * (0.85f + (float)_random.NextDouble() * 0.3f));
         }
 
+        /// <summary>
+        /// Calculates a randomized cooldown duration for the boss's homing missile attack.
+        /// </summary>
+        /// <returns>The duration in seconds before the next missile attack.</returns>
         private float GetMissileCooldown()
         {
             return Math.Max(0.75f, _missileCooldownBase * (0.9f + (float)_random.NextDouble() * 0.2f));
         }
 
+        /// <summary>
+        /// Fires a basic projectile from the boss toward the player.
+        /// </summary>
         private void ShootBasic()
         {
             Vector2 projectilePosition = new Vector2(Position.X + Size.Width / 2f - ProjectileTexture.Width / 2f, Position.Y - ProjectileTexture.Height);
@@ -139,6 +251,10 @@
             Projectiles.Add(new Projectiles(ProjectileTexture, projectilePosition, new Vector2(ProjectileTexture.Width, ProjectileTexture.Height), 300f, 1));
         }
 
+        /// <summary>
+        /// Fires a group of homing missiles toward the player's current position.
+        /// </summary>
+        /// <param name="playerPosition">The current position of the player used as the missile target.</param>
         private void ShootHomingMissiles(Vector2 playerPosition)
         {
             for (int i = 0; i < MissileCount; i++)
@@ -171,6 +287,10 @@
             }
         }
 
+        /// <summary>
+        /// Applies damage to the boss and deactivates it when its health reaches zero.
+        /// </summary>
+        /// <param name="damage">The amount of damage to inflict on the boss.</param>
         public void TakeDamage(int damage)
         {
             Health -= damage;
@@ -182,6 +302,11 @@
             }
         }
 
+        /// <summary>
+        /// Draws the boss, its projectiles, and its health bar.
+        /// </summary>
+        /// <param name="gameTime">Provides timing information for the current game draw operation.</param>
+        /// <param name="spriteBatch">Used to draw the boss and its associated visual elements.</param>
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             if (!State || Texture == null)

@@ -1,21 +1,59 @@
 ﻿namespace SpaceShooter
 {
+    /// <summary>
+    /// Represents the screen used to display the player's saved game archives.
+    /// </summary>
     public class ArchiveScreen : GameScreen
     {
+        /// <summary>
+        /// Font used to display archive information and other screen text.
+        /// </summary>
         private SpriteFont _font;
+
+        /// <summary>
+        /// Font used to display the screen title.
+        /// </summary>
         private SpriteFont _font_title;
+
+        /// <summary>
+        /// Stores the previous keyboard state to detect individual key presses.
+        /// </summary>
         private KeyboardState _previousKeyboard;
+
+        /// <summary>
+        /// Contains the saved game archives for the current player.
+        /// </summary>
         private List<ArchiveData> _archives;
+
+        /// <summary>
+        /// Button used to return to the main menu.
+        /// </summary>
         private Button _returnButton;
+
+        /// <summary>
+        /// Indicates the index of the first archive currently displayed.
+        /// </summary>
         private int _scrollIndex;
+
+        /// <summary>
+        /// Defines the maximum number of archives displayed at once.
+        /// </summary>
         private int _visibleArchives = 7;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ArchiveScreen"/> class.
+        /// </summary>
+        /// <param name="game">The main game instance associated with this screen.</param>
         public ArchiveScreen(Game1 game) : base(game)
         {
             _previousKeyboard = Keyboard.GetState();
             Game.ChangeScreenSize(500, 500);
         }
 
+        /// <summary>
+        /// Initializes the screen resources, loads the required fonts,
+        /// retrieves the player's saved archives, and creates the return button.
+        /// </summary>
         public override void Initialize()
         {
             _font = Game.Content.Load<SpriteFont>("Fonts/SpaceInvader_12");
@@ -25,6 +63,9 @@
             _returnButton = new Button("Return", new XnaRectangle(100, 430, 300, 45));
         }
 
+        /// <summary>
+        /// Scrolls the archive list up by one entry when possible.
+        /// </summary>
         private void ScrollUp()
         {
             if (_scrollIndex <= 0)
@@ -33,6 +74,9 @@
             _scrollIndex--;
         }
 
+        /// <summary>
+        /// Scrolls the archive list down by one entry when more archives are available.
+        /// </summary>
         private void ScrollDown()
         {
             if (_scrollIndex + _visibleArchives >= _archives.Count)
@@ -41,6 +85,13 @@
             _scrollIndex++;
         }
 
+        /// <summary>
+        /// Updates the screen based on keyboard and mouse input.
+        /// </summary>
+        /// <param name="gameTime">Provides timing information for the current game update.</param>
+        /// <param name="keyboard">The current state of the keyboard.</param>
+        /// <param name="mousePosition">The current position of the mouse cursor.</param>
+        /// <param name="mouseClicked">Indicates whether the mouse button was clicked during this update.</param>
         public override void Update(GameTime gameTime, KeyboardState keyboard, Vector2 mousePosition, bool mouseClicked)
         {
             _returnButton.Update(mousePosition);
@@ -70,6 +121,12 @@
             _previousKeyboard = keyboard;
         }
 
+        /// <summary>
+        /// Draws the archive screen, including the player's saved games,
+        /// navigation indicators, and return button.
+        /// </summary>
+        /// <param name="gameTime">Provides timing information for the current game draw operation.</param>
+        /// <param name="spriteBatch">Used to draw the screen elements.</param>
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();

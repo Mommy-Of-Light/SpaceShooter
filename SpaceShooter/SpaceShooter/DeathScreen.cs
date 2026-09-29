@@ -1,17 +1,62 @@
 ﻿namespace SpaceShooter
 {
+    /// <summary>
+    /// Represents the screen displayed when the player loses the game.
+    /// Provides options to restart the game or return to the new game screen.
+    /// </summary>
     public class DeathScreen : GameScreen
     {
+        /// <summary>
+        /// Font used to display general screen text.
+        /// </summary>
         private SpriteFont _font;
+
+        /// <summary>
+        /// Font used to display the game over title.
+        /// </summary>
         private SpriteFont _titleFont;
+
+        /// <summary>
+        /// Button used to restart the game.
+        /// </summary>
         private Button _restartButton;
+
+        /// <summary>
+        /// Button used to exit the current game.
+        /// </summary>
         private Button _exitButton;
+
+        /// <summary>
+        /// Stores the previous keyboard state to detect individual key presses.
+        /// </summary>
         private KeyboardState _previousKeyboard;
+
+        /// <summary>
+        /// Stores the wave reached by the player before the game ended.
+        /// </summary>
         private int _wave;
+
+        /// <summary>
+        /// Stores the player's final score.
+        /// </summary>
         private int _score;
+
+        /// <summary>
+        /// Indicates whether the final score has already been saved.
+        /// </summary>
         private bool _scoreSaved;
+
+        /// <summary>
+        /// Contains the buttons available on the death screen.
+        /// </summary>
         private List<Button> _buttons;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DeathScreen"/> class.
+        /// </summary>
+        /// <param name="game">The main game instance associated with this screen.</param>
+        /// <param name="wave">The wave reached by the player before the game ended.</param>
+        /// <param name="score">The player's final score.</param>
         public DeathScreen(Game1 game, int wave, int score) : base(game)
         {
             _wave = wave;
@@ -21,6 +66,10 @@
             Game.ChangeScreenSize(500, 500);
         }
 
+        /// <summary>
+        /// Initializes the screen resources, buttons, score saving,
+        /// and menu music.
+        /// </summary>
         public override void Initialize()
         {
             _font = Game.Content.Load<SpriteFont>("Fonts/SpaceInvader_12");
@@ -46,6 +95,9 @@
             MusicPlayer.Instance.Play("Menu");
         }
 
+        /// <summary>
+        /// Saves the player's final score if it has not already been saved.
+        /// </summary>
         private void SaveScore()
         {
             if (_scoreSaved)
@@ -55,6 +107,13 @@
             MariaDbManager.SaveScore(Game.PlayerPseudo, _score, _wave, Game.Difficulty);
         }
 
+        /// <summary>
+        /// Updates the screen based on mouse and keyboard input.
+        /// </summary>
+        /// <param name="gameTime">Provides timing information for the current game update.</param>
+        /// <param name="keyboard">The current state of the keyboard.</param>
+        /// <param name="mousePosition">The current position of the mouse cursor.</param>
+        /// <param name="mouseClicked">Indicates whether the mouse button was clicked during this update.</param>
         public override void Update(GameTime gameTime, KeyboardState keyboard, Vector2 mousePosition, bool mouseClicked)
         {
             _restartButton.Update(mousePosition);
@@ -125,6 +184,10 @@
             _previousKeyboard = keyboard;
         }
 
+        /// <summary>
+        /// Handles the action associated with the selected button.
+        /// </summary>
+        /// <param name="button">The name of the button whose action should be handled.</param>
         private void HandleButton(string button)
         {
             switch (button)
@@ -139,6 +202,12 @@
             }
         }
 
+        /// <summary>
+        /// Draws the game over screen, including the player's score,
+        /// reached wave, and available buttons.
+        /// </summary>
+        /// <param name="gameTime">Provides timing information for the current game draw operation.</param>
+        /// <param name="spriteBatch">Used to draw the screen elements.</param>
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();

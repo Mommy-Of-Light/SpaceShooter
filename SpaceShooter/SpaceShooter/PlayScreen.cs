@@ -1,44 +1,160 @@
 ﻿namespace SpaceShooter
 {
+    /// <summary>
+    /// Represents the main gameplay screen where the player controls the spaceship,
+    /// fights enemies and bosses, progresses through waves, and manages saved game data.
+    /// </summary>
     public class PlayScreen : GameScreen
     {
+        /// <summary>
+        /// Represents the player-controlled spaceship.
+        /// </summary>
         private Player _player;
+
+        /// <summary>
+        /// Texture used to draw the player spaceship.
+        /// </summary>
         private Texture2D _playerTexture;
+
+        /// <summary>
+        /// Texture used for the player's projectiles.
+        /// </summary>
         private Texture2D _projectileTexture;
+
+        /// <summary>
+        /// List of enemies currently active in the game.
+        /// </summary>
         private List<Enemy> _enemies;
+
+        /// <summary>
+        /// Represents the current boss, if a boss wave is active.
+        /// </summary>
         private Boss _boss;
+
+        /// <summary>
+        /// Texture used to draw enemies.
+        /// </summary>
         private Texture2D _enemyTexture;
+
+        /// <summary>
+        /// Texture used for enemy projectiles.
+        /// </summary>
         private Texture2D _enemyProjectileTexture;
+
+        /// <summary>
+        /// One-pixel texture used for drawing simple graphical elements.
+        /// </summary>
         private Texture2D _pixelTexture;
+
+        /// <summary>
+        /// Manages enemy waves and determines when boss waves occur.
+        /// </summary>
         private WaveManager _waveManager;
+
+        /// <summary>
+        /// Font used to draw text on the gameplay screen.
+        /// </summary>
         private SpriteFont _font;
+
+        /// <summary>
+        /// List of buttons displayed during gameplay.
+        /// </summary>
         private List<Button> _buttons;
+
+        private Button _pauseButton;
+
+        /// <summary>
+        /// Button used to continue a paused game.
+        /// </summary>
         private Button _continueButton;
+
+        /// <summary>
+        /// Button used to restart the current game.
+        /// </summary>
         private Button _restartButton;
+
+        /// <summary>
+        /// Button used to exit the current game.
+        /// </summary>
         private Button _exitButton;
+
+        /// <summary>
+        /// Stores the previous keyboard state for detecting key presses.
+        /// </summary>
         private KeyboardState _previousKeyboard;
+
+        /// <summary>
+        /// Indicates whether the game is currently paused.
+        /// </summary>
         private bool _isPaused;
+
+        /// <summary>
+        /// Stores the player's current score.
+        /// </summary>
         private int _score;
+
+        /// <summary>
+        /// Stores the wave at which the last upgrade was given.
+        /// </summary>
         private int _lastUpgradeWave;
+
+        /// <summary>
+        /// Defines the first wave at which an upgrade can be offered.
+        /// </summary>
         private int startingUpgradeWave = 1;
+
+        /// <summary>
+        /// Stores the next wave at which an upgrade will be offered.
+        /// </summary>
         private int nextUpgradeWave = 1;
+
+        /// <summary>
+        /// Stores the amount added to the interval between upgrade waves.
+        /// </summary>
         private int upgradeWaveIncrement = 2;
+
+        /// <summary>
+        /// Stores the current saved game data.
+        /// </summary>
         private SaveData _currentSave;
+
+        /// <summary>
+        /// Unique identifier of the current game run.
+        /// </summary>
         private string _runId;
+
+        /// <summary>
+        /// List of buttons available while the game is paused.
+        /// </summary>
         private List<Button> _pauseButtons;
+
+        /// <summary>
+        /// Stores the current scroll position for scrollable interface elements.
+        /// </summary>
         private int _scrollIndex = 0;
 
+        /// <summary>
+        /// Gets the current player instance.
+        /// </summary>
         public Player Player
         {
             get { return _player; }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PlayScreen"/> class.
+        /// </summary>
+        /// <param name="game">The main game instance.</param>
         public PlayScreen(Game1 game) : base(game)
         {
             _previousKeyboard = Keyboard.GetState();
             Game.ChangeScreenSize(500, 800);
         }
 
+        /// <summary>
+        /// Loads game assets, creates the player, initializes the wave manager,
+        /// and prepares the gameplay interface.
+        /// </summary>
         public override void Initialize()
         {
             MusicPlayer.Instance.Stop();
@@ -66,7 +182,8 @@
             UpdatePlayerTargets();
 
             _buttons = new List<Button>();
-            _buttons.Add(new Button("||", new XnaRectangle(Game.GraphicsDevice.Viewport.Width - 60, 10, 50, 50)));
+            
+            _pauseButton = new Button("||", new XnaRectangle(Game.GraphicsDevice.Viewport.Width - 60, 10, 50, 50));
 
             _continueButton = new Button("Continue", new XnaRectangle(150, 300, 200, 50));
             _restartButton = new Button("Restart", new XnaRectangle(150, 370, 200, 50));
@@ -78,6 +195,8 @@
                 _restartButton,
                 _exitButton
             };
+
+            _buttons.AddRange(_pauseButtons);
 
             _lastUpgradeWave = 0;
             _isPaused = false;
@@ -94,6 +213,14 @@
             _currentSave = null;
         }
 
+        /// <summary>
+        /// Updates the gameplay state, including player input, enemies, bosses,
+        /// collisions, waves, buttons, and pause handling.
+        /// </summary>
+        /// <param name="gameTime">Provides timing information for the current game update.</param>
+        /// <param name="keyboard">The current keyboard state.</param>
+        /// <param name="mousePosition">The current position of the mouse cursor.</param>
+        /// <param name="mouseClicked">Indicates whether the mouse was clicked during this update.</param>
         public override void Update(GameTime gameTime, KeyboardState keyboard, Vector2 mousePosition, bool mouseClicked)
         {
             if (keyboard.IsKeyDown(XnaKeys.Escape) && _previousKeyboard.IsKeyUp(XnaKeys.Escape))
@@ -250,6 +377,10 @@
             _previousKeyboard = keyboard;
         }
 
+        /// <summary>
+        /// Handles an action selected from the gameplay or pause menu.
+        /// </summary>
+        /// <param name="button">The text identifying the selected button.</param>
         private void HandleButton(string button)
         {
             switch (button)
@@ -274,6 +405,9 @@
             }
         }
 
+        /// <summary>
+        /// Creates the next enemy wave and creates a boss when the current wave is a boss wave.
+        /// </summary>
         private void StartNextWave()
         {
             _enemies = _waveManager.CreateNextWave(Game.GraphicsDevice.Viewport.Width);
@@ -295,24 +429,37 @@
             UpdatePlayerTargets();
         }
 
+        /// <summary>
+        /// Updates the player's references to the current enemies and boss.
+        /// </summary>
         private void UpdatePlayerTargets()
         {
             _player.GameEnemyList = _enemies;
             _player.BossTarget = _boss;
         }
 
+        /// <summary>
+        /// Adds points to the player's score based on the current wave and difficulty.
+        /// </summary>
         private void AddScore()
         {
             double points = 10.0 * 1.0 * (_waveManager.CurrentWave / 10.0) * Game.DifficultyMultiplier;
             _score += (int)Math.Round(points);
         }
 
+        /// <summary>
+        /// Adds points to the player's score for defeating a boss.
+        /// </summary>
         private void AddBossScore()
         {
             double points = 100.0 * (_waveManager.CurrentWave / 10.0) * Game.DifficultyMultiplier;
             _score += (int)Math.Round(points);
         }
 
+        /// <summary>
+        /// Checks for collisions between player projectiles, enemies, bosses, and the player.
+        /// Handles damage, projectile piercing, missile targeting, and player death.
+        /// </summary>
         private void CheckCollisions()
         {
             foreach (Projectiles projectile in _player.Projectiles)
@@ -434,12 +581,18 @@
             }
         }
 
+        /// <summary>
+        /// Handles the player's death by archiving the current game and switching to the death screen.
+        /// </summary>
         private void HandleDeath()
         {
             ArchiveCurrentGame();
             Game.ScreenManager.ChangeScreen(new DeathScreen(Game, _waveManager.CurrentWave, _score));
         }
 
+        /// <summary>
+        /// Saves an archive of the current game and removes the active saved run.
+        /// </summary>
         private void ArchiveCurrentGame()
         {
             ArchiveManager.SaveGameArchive(Game.PlayerPseudo, _score, _waveManager.CurrentWave, Game.Difficulty, Game.DifficultyMultiplier);
@@ -453,6 +606,9 @@
             _runId = null;
         }
 
+        /// <summary>
+        /// Resets the game state, player, wave manager, score, upgrades, and music.
+        /// </summary>
         private void ResetGame()
         {
             _waveManager.Reset();
@@ -473,6 +629,9 @@
             _currentSave = null;
         }
 
+        /// <summary>
+        /// Creates a new player at the default starting position.
+        /// </summary>
         private void ResetPlayer()
         {
             Vector2 playerPosition = new Vector2(
@@ -484,6 +643,10 @@
             UpdatePlayerTargets();
         }
 
+        /// <summary>
+        /// Applies the selected upgrade to the player's abilities and starts the next wave.
+        /// </summary>
+        /// <param name="upgrade">The identifier of the upgrade to apply.</param>
         public void ApplyUpgrade(int upgrade)
         {
             switch (upgrade)
@@ -517,6 +680,10 @@
             StartNextWave();
         }
 
+        /// <summary>
+        /// Saves the current game state, including the player, enemies, boss, projectiles,
+        /// score, wave progression, upgrades, and difficulty settings.
+        /// </summary>
         public void SaveGame()
         {
             GameData data = new GameData();
@@ -606,6 +773,11 @@
             _currentSave = SaveManager.Save(data, Game.PlayerPseudo, _runId);
         }
 
+        /// <summary>
+        /// Loads a saved game from the supplied save data and restores its complete gameplay state.
+        /// </summary>
+        /// <param name="save">The saved game data to restore.</param>
+        /// <returns><c>true</c> if the game was successfully loaded; otherwise, <c>false</c>.</returns>
         public bool LoadGame(SaveData save)
         {
             if (save == null)
@@ -743,6 +915,10 @@
             return true;
         }
 
+        /// <summary>
+        /// Loads the most recent saved game for the current player.
+        /// </summary>
+        /// <returns><c>true</c> if a saved game was found and loaded successfully; otherwise, <c>false</c>.</returns>
         public bool LoadGame()
         {
             SaveData save = SaveManager.GetLatestSave(Game.PlayerPseudo);
@@ -753,6 +929,11 @@
             return LoadGame(save);
         }
 
+        /// <summary>
+        /// Converts an active projectile into its serializable save-data representation.
+        /// </summary>
+        /// <param name="projectile">The projectile to convert into saved data.</param>
+        /// <returns>A <see cref="ProjectileData"/> object containing the projectile's state.</returns>
         private ProjectileData CreateProjectileData(Projectiles projectile)
         {
             ProjectileData data = new ProjectileData();
@@ -794,6 +975,12 @@
             return data;
         }
 
+        /// <summary>
+        /// Creates a projectile instance from saved projectile data.
+        /// </summary>
+        /// <param name="data">The saved projectile data.</param>
+        /// <param name="projectileTexture">The texture used by the projectile.</param>
+        /// <returns>A reconstructed <see cref="Projectiles"/> instance.</returns>
         private Projectiles CreateProjectileFromData(ProjectileData data, Texture2D projectileTexture)
         {
             Projectiles projectile = new Projectiles(
@@ -827,6 +1014,12 @@
             return projectile;
         }
 
+        /// <summary>
+        /// Restores enemy and boss references for loaded projectiles,
+        /// including missile targets and previously hit enemies.
+        /// </summary>
+        /// <param name="projectiles">The projectiles whose references must be restored.</param>
+        /// <param name="savedData">The saved data corresponding to the projectiles.</param>
         private void RestoreProjectileReferences(List<Projectiles> projectiles, List<ProjectileData> savedData)
         {
             for (int i = 0; i < projectiles.Count && i < savedData.Count; i++)
@@ -862,6 +1055,12 @@
             }
         }
 
+        /// <summary>
+        /// Draws the gameplay screen, including the background, player, enemies,
+        /// boss, score, wave information, upgrades, and interface buttons.
+        /// </summary>
+        /// <param name="gameTime">Provides timing information for the current game frame.</param>
+        /// <param name="spriteBatch">The sprite batch used to draw the game elements.</param>
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
@@ -902,10 +1101,7 @@
             string nextUpgradeText = "NEXT UPGRADE " + nextUpgradeWave;
             spriteBatch.DrawString(_font, nextUpgradeText, new Vector2(10, 160), XnaColor.White);
 
-            foreach (Button button in _buttons)
-            {
-                button.Draw(spriteBatch, _font);
-            }
+            _pauseButton.Draw(spriteBatch, _font);
 
             if (_isPaused)
             {

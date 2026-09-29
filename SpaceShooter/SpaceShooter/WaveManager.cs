@@ -1,13 +1,41 @@
 ﻿namespace SpaceShooter
 {
+    /// <summary>
+    /// Manages enemy waves, including wave progression, enemy health, speed, and formation.
+    /// </summary>
     public class WaveManager
     {
+        /// <summary>
+        /// Texture used for enemy sprites.
+        /// </summary>
         private Texture2D _enemyTexture;
+
+        /// <summary>
+        /// Texture used for enemy projectile sprites.
+        /// </summary>
         private Texture2D _enemyProjectileTexture;
+
+        /// <summary>
+        /// Multiplier applied to enemy difficulty values.
+        /// </summary>
         private double _difficultyMultiplier;
+
+        /// <summary>
+        /// Stores the number of the current wave.
+        /// </summary>
         private int _currentWave = 0;
+
+        /// <summary>
+        /// Gets the number of the current wave.
+        /// </summary>
         public int CurrentWave => _currentWave;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WaveManager"/> class.
+        /// </summary>
+        /// <param name="enemyTexture">Texture used for enemy sprites.</param>
+        /// <param name="enemyProjectileTexture">Texture used for enemy projectile sprites.</param>
+        /// <param name="difficultyMultiplier">Multiplier used to scale enemy difficulty.</param>
         public WaveManager(Texture2D enemyTexture, Texture2D enemyProjectileTexture, double difficultyMultiplier)
         {
             _enemyTexture = enemyTexture;
@@ -16,11 +44,21 @@
             _currentWave = 0;
         }
 
+        /// <summary>
+        /// Determines whether the specified wave is a boss wave.
+        /// </summary>
+        /// <param name="wave">Wave number to check.</param>
+        /// <returns><c>true</c> if the wave is a boss wave; otherwise, <c>false</c>.</returns>
         public bool IsBossWave(int wave)
         {
             return wave > 0 && wave % 20 == 0;
         }
 
+        /// <summary>
+        /// Creates the enemies for the next wave and advances the current wave number.
+        /// </summary>
+        /// <param name="screenWidth">Width of the game screen used to center the enemy formation.</param>
+        /// <returns>A list containing the enemies created for the new wave.</returns>
         public List<Enemy> CreateNextWave(int screenWidth)
         {
             _currentWave++;
@@ -105,6 +143,11 @@
             return enemies;
         }
 
+        /// <summary>
+        /// Calculates the health of a normal enemy for the specified wave using the current difficulty multiplier.
+        /// </summary>
+        /// <param name="wave">Wave number used to calculate enemy health.</param>
+        /// <returns>The calculated health value for a normal enemy.</returns>
         public int GetNormalEnemyHealth(int wave)
         {
             int baseEnemyHealth = GetBaseEnemyHealth(wave);
@@ -112,16 +155,28 @@
             return Math.Max(1, (int)Math.Round(baseEnemyHealth * _difficultyMultiplier));
         }
 
+        /// <summary>
+        /// Calculates the base health of an enemy based on the wave number.
+        /// </summary>
+        /// <param name="wave">Wave number used to calculate the base health.</param>
+        /// <returns>The base health value for an enemy on the specified wave.</returns>
         private int GetBaseEnemyHealth(int wave)
         {
             return 1 + ((wave - 1) / 3);
         }
 
+        /// <summary>
+        /// Resets the current wave number back to zero.
+        /// </summary>
         public void Reset()
         {
             _currentWave = 0;
         }
 
+        /// <summary>
+        /// Sets the current wave number to the specified value.
+        /// </summary>
+        /// <param name="currentWave">Wave number to set as the current wave.</param>
         public void SetCurrentWave(int currentWave)
         {
             _currentWave = currentWave;

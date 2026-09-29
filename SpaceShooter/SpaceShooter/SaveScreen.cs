@@ -1,24 +1,74 @@
 ﻿namespace SpaceShooter
 {
+    /// <summary>
+    /// Represents the screen used to display, load, and delete saved games.
+    /// </summary>
     public class SaveScreen : GameScreen
     {
+        /// <summary>
+        /// Font used for regular text displayed on the screen.
+        /// </summary>
         private SpriteFont _font;
+
+        /// <summary>
+        /// Font used for the screen title.
+        /// </summary>
         private SpriteFont _font_title;
+
+        /// <summary>
+        /// Stores the keyboard state from the previous update.
+        /// </summary>
         private KeyboardState _previousKeyboard;
+
+        /// <summary>
+        /// List of saved games belonging to the current player.
+        /// </summary>
         private List<SaveData> _saves;
+
+        /// <summary>
+        /// Buttons used to select and load saved games.
+        /// </summary>
         private List<Button> _saveButtons;
+
+        /// <summary>
+        /// Buttons used to delete saved games.
+        /// </summary>
         private List<Button> _deleteButtons;
+
+        /// <summary>
+        /// Button used to return to the main menu.
+        /// </summary>
         private Button _returnButton;
+
+        /// <summary>
+        /// Index of the first save currently visible on the screen.
+        /// </summary>
         private int _scrollIndex;
+
+        /// <summary>
+        /// Maximum number of saves displayed at the same time.
+        /// </summary>
         private int _visibleSaves = 7;
+
+        /// <summary>
+        /// Buttons that can be selected using keyboard navigation.
+        /// </summary>
         private List<Button> _navigationButtons;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SaveScreen"/> class.
+        /// </summary>
+        /// <param name="game">Reference to the main game instance.</param>
         public SaveScreen(Game1 game) : base(game)
         {
             _previousKeyboard = Keyboard.GetState();
             Game.ChangeScreenSize(800, 500);
         }
 
+        /// <summary>
+        /// Loads the fonts, retrieves the player's saved games,
+        /// initializes the buttons, and prepares the save list.
+        /// </summary>
         public override void Initialize()
         {
             _font = Game.Content.Load<SpriteFont>("Fonts/SpaceInvader_12");
@@ -36,12 +86,17 @@
             CreateSaveButtons();
         }
 
+        /// <summary>
+        /// Creates the buttons corresponding to the currently visible saved games.
+        /// </summary>
         private void CreateSaveButtons()
         {
             _saveButtons.Clear();
             _deleteButtons.Clear();
 
             int endIndex = Math.Min(_scrollIndex + _visibleSaves, _saves.Count);
+
+            _navigationButtons = new List<Button>();
 
             for (int i = _scrollIndex; i < endIndex; i++)
             {
@@ -61,16 +116,17 @@
                     new XnaRectangle(580, 100 + displayIndex * 45, 80, 35));
 
                 _deleteButtons.Add(deleteButton);
+
+                _navigationButtons.Add(saveButton);
+                _navigationButtons.Add(deleteButton);
             }
-
-            _navigationButtons = new List<Button>();
-
-            foreach (Button button in _saveButtons)
-                _navigationButtons.Add(button);
 
             _navigationButtons.Add(_returnButton);
         }
 
+        /// <summary>
+        /// Scrolls the save list one position upward when possible.
+        /// </summary>
         private void ScrollUp()
         {
             if (_scrollIndex <= 0)
@@ -81,6 +137,9 @@
             CreateSaveButtons();
         }
 
+        /// <summary>
+        /// Scrolls the save list one position downward when more saves are available.
+        /// </summary>
         private void ScrollDown()
         {
             if (_scrollIndex + _visibleSaves >= _saves.Count)
@@ -91,6 +150,13 @@
             CreateSaveButtons();
         }
 
+        /// <summary>
+        /// Updates the save buttons, deletion controls, scrolling, and keyboard navigation.
+        /// </summary>
+        /// <param name="gameTime">Provides timing information for the current update.</param>
+        /// <param name="keyboard">Current keyboard state.</param>
+        /// <param name="mousePosition">Current position of the mouse cursor.</param>
+        /// <param name="mouseClicked">Indicates whether the mouse button was clicked during this update.</param>
         public override void Update(GameTime gameTime, KeyboardState keyboard, Vector2 mousePosition, bool mouseClicked)
         {
             for (int i = 0; i < _saveButtons.Count; i++)
@@ -203,6 +269,10 @@
             _previousKeyboard = keyboard;
         }
 
+        /// <summary>
+        /// Loads the selected saved game and switches to the game screen.
+        /// </summary>
+        /// <param name="index">Index of the save to load.</param>
         private void LoadSave(int index)
         {
             if (index < 0 || index >= _saves.Count)
@@ -220,6 +290,10 @@
             playScreen.LoadGame(save);
         }
 
+        /// <summary>
+        /// Deletes the selected saved game and refreshes the save list.
+        /// </summary>
+        /// <param name="index">Index of the save to delete.</param>
         private void DeleteSave(int index)
         {
             if (index < 0 || index >= _saves.Count)
@@ -240,6 +314,12 @@
             CreateSaveButtons();
         }
 
+        /// <summary>
+        /// Draws the saved games, navigation indicators, save information,
+        /// and return button.
+        /// </summary>
+        /// <param name="gameTime">Provides timing information for the current game frame.</param>
+        /// <param name="spriteBatch">The sprite batch used to draw the screen.</param>
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();

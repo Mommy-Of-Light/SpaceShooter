@@ -1,13 +1,39 @@
 ﻿namespace SpaceShooter
 {
+    /// <summary>
+    /// Represents the screen where the player enters their pseudo before starting the game.
+    /// </summary>
     public class PseudoScreen : GameScreen
     {
+        /// <summary>
+        /// Font used for regular text displayed on the screen.
+        /// </summary>
         private SpriteFont _font;
+
+        /// <summary>
+        /// Font used for the screen title.
+        /// </summary>
         private SpriteFont _titleFont;
+
+        /// <summary>
+        /// Button used to confirm the entered pseudo and continue.
+        /// </summary>
         private Button _continueButton;
+
+        /// <summary>
+        /// Stores the keyboard state from the previous update.
+        /// </summary>
         private KeyboardState _previousKeyboard;
+
+        /// <summary>
+        /// Pseudo currently entered by the player.
+        /// </summary>
         private string _pseudo;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PseudoScreen"/> class.
+        /// </summary>
+        /// <param name="game">Reference to the main game instance.</param>
         public PseudoScreen(Game1 game) : base(game)
         {
             _previousKeyboard = Keyboard.GetState();
@@ -15,6 +41,9 @@
             Game.ChangeScreenSize(500, 500);
         }
 
+        /// <summary>
+        /// Loads the fonts, creates the continue button, and registers the text input event.
+        /// </summary>
         public override void Initialize()
         {
             _font = Game.Content.Load<SpriteFont>("Fonts/SpaceInvader_12");
@@ -25,6 +54,11 @@
             Game.Window.TextInput += OnTextInput;
         }
 
+        /// <summary>
+        /// Handles text input from the keyboard and adds valid characters to the pseudo.
+        /// </summary>
+        /// <param name="sender">Object that raised the text input event.</param>
+        /// <param name="e">Contains information about the entered character.</param>
         private void OnTextInput(object sender, TextInputEventArgs e)
         {
             if (char.IsControl(e.Character))
@@ -37,6 +71,13 @@
                 _pseudo += e.Character;
         }
 
+        /// <summary>
+        /// Updates the pseudo input, button state, and input controls.
+        /// </summary>
+        /// <param name="gameTime">Provides timing information for the current update.</param>
+        /// <param name="keyboard">Current keyboard state.</param>
+        /// <param name="mousePosition">Current position of the mouse cursor.</param>
+        /// <param name="mouseClicked">Indicates whether the mouse button was clicked during this update.</param>
         public override void Update(GameTime gameTime, KeyboardState keyboard, Vector2 mousePosition, bool mouseClicked)
         {
             _continueButton.Update(mousePosition);
@@ -62,6 +103,9 @@
             _previousKeyboard = keyboard;
         }
 
+        /// <summary>
+        /// Starts the game after validating and storing the player's pseudo.
+        /// </summary>
         private void StartGame()
         {
             if (string.IsNullOrWhiteSpace(_pseudo))
@@ -74,11 +118,19 @@
             Game.ScreenManager.ChangeScreen(new MenuScreen(Game));
         }
 
+        /// <summary>
+        /// Unregisters the text input event when leaving the screen.
+        /// </summary>
         public override void OnExit()
         {
             Game.Window.TextInput -= OnTextInput;
         }
 
+        /// <summary>
+        /// Draws the background, title, pseudo input, instructions, and continue button.
+        /// </summary>
+        /// <param name="gameTime">Provides timing information for the current game frame.</param>
+        /// <param name="spriteBatch">The sprite batch used to draw the screen.</param>
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();

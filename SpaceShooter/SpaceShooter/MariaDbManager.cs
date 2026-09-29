@@ -3,12 +3,27 @@ using MySqlConnector;
 
 namespace SpaceShooter
 {
+    /// <summary>
+    /// Provides methods for connecting to the MariaDB database
+    /// and managing player scores.
+    /// </summary>
     public static class MariaDbManager
     {
+        /// <summary>
+        /// Connection string used to connect to the MariaDB database.
+        /// </summary>
         private static readonly string ConnectionString = BuildConnectionString();
 
+        /// <summary>
+        /// Gets the last error message encountered while performing a database operation.
+        /// </summary>
         public static string LastError { get; private set; } = "";
 
+        /// <summary>
+        /// Builds the database connection string using environment variables.
+        /// Default values are used when optional environment variables are not defined.
+        /// </summary>
+        /// <returns>The connection string used to connect to the database.</returns>
         private static string BuildConnectionString()
         {
             Env.Load();
@@ -22,6 +37,15 @@ namespace SpaceShooter
             return $"Server={server};Port={port};Database={database};User ID={user};Password={password};";
         }
 
+        /// <summary>
+        /// Saves a player's score to the database.
+        /// If a score already exists for the same pseudo and difficulty,
+        /// it is only updated when the new score is higher.
+        /// </summary>
+        /// <param name="pseudo">The player's pseudo.</param>
+        /// <param name="score">The player's score.</param>
+        /// <param name="wave">The wave reached by the player.</param>
+        /// <param name="difficulty">The difficulty level of the game.</param>
         public static void SaveScore(string pseudo, int score, int wave, string difficulty)
         {
             LastError = "";
@@ -66,6 +90,12 @@ namespace SpaceShooter
             }
         }
 
+        /// <summary>
+        /// Retrieves all player scores from the database.
+        /// Scores are ordered from highest to lowest, with earlier dates
+        /// appearing first when scores are equal.
+        /// </summary>
+        /// <returns>A list containing the retrieved player scores.</returns>
         public static List<ScoreData> GetScores()
         {
             List<ScoreData> scores = new List<ScoreData>();
@@ -106,12 +136,34 @@ namespace SpaceShooter
         }
     }
 
+    /// <summary>
+    /// Represents the data associated with a player's score.
+    /// </summary>
     public class ScoreData
     {
+        /// <summary>
+        /// Gets or sets the player's pseudo.
+        /// </summary>
         public string Pseudo { get; set; }
+
+        /// <summary>
+        /// Gets or sets the player's score.
+        /// </summary>
         public int Score { get; set; }
+
+        /// <summary>
+        /// Gets or sets the wave reached by the player.
+        /// </summary>
         public int Wave { get; set; }
+
+        /// <summary>
+        /// Gets or sets the difficulty level of the game.
+        /// </summary>
         public string Difficulty { get; set; }
+
+        /// <summary>
+        /// Gets or sets the date and time when the score was created or updated.
+        /// </summary>
         public DateTime CreatedAt { get; set; }
     }
 }

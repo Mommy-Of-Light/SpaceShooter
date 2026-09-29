@@ -2,19 +2,47 @@
 
 namespace SpaceShooter
 {
+    /// <summary>
+    /// Represents the main menu screen of the game.
+    /// Provides navigation to the different game features and allows
+    /// interaction through the mouse and keyboard.
+    /// </summary>
     public class MenuScreen : GameScreen
     {
+        /// <summary>
+        /// Font used to display menu button text.
+        /// </summary>
         private SpriteFont _font;
+
+        /// <summary>
+        /// Font used to display the menu title.
+        /// </summary>
         private SpriteFont _font_title;
+
+        /// <summary>
+        /// Collection of buttons displayed on the menu.
+        /// </summary>
         private List<Button> _buttons;
+
+        /// <summary>
+        /// Stores the keyboard state from the previous update.
+        /// Used to detect individual key presses.
+        /// </summary>
         private KeyboardState _previousKeyboard;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MenuScreen"/> class.
+        /// </summary>
+        /// <param name="game">The main game instance associated with this screen.</param>
         public MenuScreen(Game1 game) : base(game)
         {
             _previousKeyboard = Microsoft.Xna.Framework.Input.Keyboard.GetState();
             Game.ChangeScreenSize(500, 500);
         }
 
+        /// <summary>
+        /// Initializes the fonts and creates the buttons displayed on the menu.
+        /// </summary>
         public override void Initialize()
         {
             _font = Game.Content.Load<SpriteFont>("Fonts/SpaceInvader_12");
@@ -44,6 +72,14 @@ namespace SpaceShooter
             }
         }
 
+        /// <summary>
+        /// Updates the menu, processes keyboard and mouse input,
+        /// and handles navigation between menu options.
+        /// </summary>
+        /// <param name="gameTime">Provides timing information for the update.</param>
+        /// <param name="keyboard">The current keyboard state.</param>
+        /// <param name="mousePosition">The current position of the mouse cursor.</param>
+        /// <param name="mouseClicked">Indicates whether the mouse was clicked during this update.</param>
         public override void Update(GameTime gameTime, KeyboardState keyboard, Vector2 mousePosition, bool mouseClicked)
         {
             if (keyboard.IsKeyDown(XnaKeys.Escape) && _previousKeyboard.IsKeyUp(XnaKeys.Escape))
@@ -108,6 +144,10 @@ namespace SpaceShooter
             _previousKeyboard = keyboard;
         }
 
+        /// <summary>
+        /// Handles the action associated with the selected menu button.
+        /// </summary>
+        /// <param name="button">The text of the selected button.</param>
         private void HandleButton(string button)
         {
             switch (button)
@@ -134,6 +174,11 @@ namespace SpaceShooter
             }
         }
 
+        /// <summary>
+        /// Draws the menu background, title, and buttons.
+        /// </summary>
+        /// <param name="gameTime">Provides timing information for the draw operation.</param>
+        /// <param name="spriteBatch">The sprite batch used to draw the menu.</param>
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();

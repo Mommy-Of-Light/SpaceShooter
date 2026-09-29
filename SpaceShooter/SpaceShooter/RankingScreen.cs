@@ -1,39 +1,94 @@
 ﻿namespace SpaceShooter
 {
+    /// <summary>
+    /// Represents the screen used to display and filter the game's ranking scores.
+    /// </summary>
     public class RankingScreen : GameScreen
     {
+        /// <summary>
+        /// Font used for regular text displayed on the ranking screen.
+        /// </summary>
         private SpriteFont _font;
+
+        /// <summary>
+        /// Font used for the ranking screen title.
+        /// </summary>
         private SpriteFont _font_title;
 
+        /// <summary>
+        /// Button used to return to the main menu.
+        /// </summary>
         private Button _returnButton;
+
+        /// <summary>
+        /// Button used to display scores from the Easy difficulty.
+        /// </summary>
         private Button _easyButton;
+
+        /// <summary>
+        /// Button used to display scores from the Medium difficulty.
+        /// </summary>
         private Button _normalButton;
+
+        /// <summary>
+        /// Button used to display scores from the Hard difficulty.
+        /// </summary>
         private Button _hardButton;
+
+        /// <summary>
+        /// Button used to display scores from all difficulties.
+        /// </summary>
         private Button _allButton;
 
+        /// <summary>
+        /// Stores the keyboard state from the previous update.
+        /// </summary>
         private KeyboardState _previousKeyboard;
+
+        /// <summary>
+        /// Contains all scores retrieved from the database.
+        /// </summary>
         private List<ScoreData> _scores;
+
+        /// <summary>
+        /// Contains the scores currently displayed after applying the selected difficulty filter.
+        /// </summary>
         private List<ScoreData> _filteredScores;
 
+        /// <summary>
+        /// Index of the first score currently visible in the ranking list.
+        /// </summary>
         private int _scrollIndex;
+
+        /// <summary>
+        /// Maximum number of scores displayed at the same time.
+        /// </summary>
         private int _visibleScores = 7;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RankingScreen"/> class.
+        /// </summary>
+        /// <param name="game">Reference to the main game instance.</param>
         public RankingScreen(Game1 game) : base(game)
         {
             _previousKeyboard = Keyboard.GetState();
             Game.ChangeScreenSize(500, 500);
         }
 
+        /// <summary>
+        /// Loads the fonts, creates the ranking buttons, retrieves the scores,
+        /// and initializes the default ranking filter.
+        /// </summary>
         public override void Initialize()
         {
             _font = Game.Content.Load<SpriteFont>("Fonts/SpaceInvader_12");
             _font_title = Game.Content.Load<SpriteFont>("Fonts/SpaceInvader_16");
 
             _returnButton = new Button("Return", new XnaRectangle(100, 430, 300, 45));
-            _allButton = new Button("All", new XnaRectangle(20, 75, 100, 35));
-            _easyButton = new Button("Easy", new XnaRectangle(140, 75, 100, 35));
-            _normalButton = new Button("Medium", new XnaRectangle(260, 75, 100, 35));
-            _hardButton = new Button("Hard", new XnaRectangle(380, 75, 100, 35));
+            _allButton = new Button("All 1", new XnaRectangle(10, 75, 100, 35));
+            _easyButton = new Button("Easy 2", new XnaRectangle(130, 75, 100, 35));
+            _normalButton = new Button("Medium 3", new XnaRectangle(240, 75, 130, 35));
+            _hardButton = new Button("Hard 4", new XnaRectangle(390, 75, 100, 35));
 
             _scores = MariaDbManager.GetScores();
             _filteredScores = _scores.ToList();
@@ -46,6 +101,10 @@
             _hardButton.SetSelected(false);
         }
 
+        /// <summary>
+        /// Filters the ranking scores according to the selected difficulty.
+        /// </summary>
+        /// <param name="difficulty">Difficulty used to filter the scores.</param>
         private void SortByDifficulty(string difficulty)
         {
             _filteredScores = _scores
@@ -55,6 +114,9 @@
             _scrollIndex = 0;
         }
 
+        /// <summary>
+        /// Scrolls the ranking list one position upward when possible.
+        /// </summary>
         private void ScrollUp()
         {
             if (_scrollIndex <= 0)
@@ -63,6 +125,9 @@
             _scrollIndex--;
         }
 
+        /// <summary>
+        /// Scrolls the ranking list one position downward when more scores are available.
+        /// </summary>
         private void ScrollDown()
         {
             if (_scrollIndex + _visibleScores >= _filteredScores.Count)
@@ -71,6 +136,13 @@
             _scrollIndex++;
         }
 
+        /// <summary>
+        /// Updates the ranking buttons, filters, scrolling controls, and keyboard input.
+        /// </summary>
+        /// <param name="gameTime">Provides timing information for the current update.</param>
+        /// <param name="keyboard">Current keyboard state.</param>
+        /// <param name="mousePosition">Current position of the mouse cursor.</param>
+        /// <param name="mouseClicked">Indicates whether the mouse button was clicked during this update.</param>
         public override void Update(GameTime gameTime, KeyboardState keyboard, Vector2 mousePosition, bool mouseClicked)
         {
             _returnButton.Update(mousePosition);
@@ -79,7 +151,7 @@
             _hardButton.Update(mousePosition);
             _allButton.Update(mousePosition);
 
-            if (_allButton.IsClicked(mousePosition, mouseClicked) || (keyboard.IsKeyDown(XnaKeys.D1) && _previousKeyboard.IsKeyUp(XnaKeys.D1)))
+            if (_allButton.IsClicked(mousePosition, mouseClicked) || (keyboard.IsKeyDown(XnaKeys.D1) && _previousKeyboard.IsKeyUp(XnaKeys.D1)) || (keyboard.IsKeyDown(XnaKeys.NumPad1) && _previousKeyboard.IsKeyUp(XnaKeys.D0)))
             {
                 _filteredScores = _scores.ToList();
                 _scrollIndex = 0;
@@ -96,7 +168,7 @@
                 return;
             }
 
-            if (_easyButton.IsClicked(mousePosition, mouseClicked) || (keyboard.IsKeyDown(XnaKeys.D2) && _previousKeyboard.IsKeyUp(XnaKeys.D2)))
+            if (_easyButton.IsClicked(mousePosition, mouseClicked) || (keyboard.IsKeyDown(XnaKeys.D2) && _previousKeyboard.IsKeyUp(XnaKeys.D2)) || (keyboard.IsKeyDown(XnaKeys.NumPad2) && _previousKeyboard.IsKeyUp(XnaKeys.NumPad2)))
             {
                 SortByDifficulty("Easy");
 
@@ -106,7 +178,7 @@
                 _hardButton.SetSelected(false);
             }
 
-            if (_normalButton.IsClicked(mousePosition, mouseClicked) || (keyboard.IsKeyDown(XnaKeys.D3) && _previousKeyboard.IsKeyUp(XnaKeys.D3)))
+            if (_normalButton.IsClicked(mousePosition, mouseClicked) || (keyboard.IsKeyDown(XnaKeys.D3) && _previousKeyboard.IsKeyUp(XnaKeys.D3)) || (keyboard.IsKeyDown(XnaKeys.NumPad3) && _previousKeyboard.IsKeyUp(XnaKeys.NumPad3)))
             {
                 SortByDifficulty("Medium");
 
@@ -116,7 +188,7 @@
                 _hardButton.SetSelected(false);
             }
 
-            if (_hardButton.IsClicked(mousePosition, mouseClicked) || (keyboard.IsKeyDown(XnaKeys.D4) && _previousKeyboard.IsKeyUp(XnaKeys.D4)))
+            if (_hardButton.IsClicked(mousePosition, mouseClicked) || (keyboard.IsKeyDown(XnaKeys.D4) && _previousKeyboard.IsKeyUp(XnaKeys.D4)) || (keyboard.IsKeyDown(XnaKeys.NumPad4) && _previousKeyboard.IsKeyUp(XnaKeys.NumPad4)))
             {
                 SortByDifficulty("Hard");
 
@@ -145,6 +217,12 @@
             _previousKeyboard = keyboard;
         }
 
+        /// <summary>
+        /// Draws the ranking title, difficulty filters, scores, navigation indicators,
+        /// database error messages, and return button.
+        /// </summary>
+        /// <param name="gameTime">Provides timing information for the current game frame.</param>
+        /// <param name="spriteBatch">The sprite batch used to draw the screen.</param>
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
