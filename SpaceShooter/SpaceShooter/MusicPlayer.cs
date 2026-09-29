@@ -15,7 +15,7 @@
             MediaPlayer.Volume = 0.7f;
 
             LoadTrack(game, "Menu", "Music/Spacey", 0, 109);
-            LoadTrack(game, "Stage1", "Music/Wave After Wave! v0_9", 0, 10, 230 );
+            LoadTrack(game, "Stage1", "Music/Wave After Wave! v0_9", 0, 10, 230);
         }
 
         private void LoadTrack(Game1 game, string name, string assetPath, double startSec, double loopEndSec)
@@ -54,7 +54,8 @@
 
         public void Update()
         {
-            if (_currentTrack == null) return;
+            if (_currentTrack == null)
+                return;
 
             if (MediaPlayer.PlayPosition >= _currentTrack.LoopEnd)
             {

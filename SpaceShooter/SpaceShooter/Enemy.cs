@@ -19,20 +19,14 @@
         {
             Texture = texture;
             ProjectileTexture = projectileTexture;
-
             Position = position;
             Speed = speed;
             Size = size;
-
             MaxHealth = health;
             Health = health;
-
             Hitbox = new XnaRectangle((int)position.X, (int)position.Y, Size.Width, Size.Height);
-
             Projectiles = new List<Projectiles>();
-
             ShootingCooldown = GetRandomCooldown();
-
             State = true;
         }
 
@@ -46,7 +40,6 @@
             if (State)
             {
                 Position.Y += Speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
-
                 ShootingCooldown -= (float)gameTime.ElapsedGameTime.TotalSeconds;
 
                 if (ShootingCooldown <= 0)
@@ -68,12 +61,7 @@
 
             foreach (Projectiles projectile in Projectiles)
             {
-                projectile.Update(
-                    gameTime,
-                    game.GraphicsDevice.Viewport.Width,
-                    game.GraphicsDevice.Viewport.Height,
-                    1
-                );
+                projectile.Update(gameTime, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height, 1);
             }
 
             Projectiles.RemoveAll(projectile => !projectile.State);
@@ -115,16 +103,7 @@
         {
             if (State && Texture != null)
             {
-                spriteBatch.Draw(
-                    Texture,
-                    new XnaRectangle(
-                        (int)Position.X,
-                        (int)Position.Y,
-                        Size.Width,
-                        Size.Height
-                    ),
-                    XnaColor.White
-                );
+                spriteBatch.Draw(Texture, new XnaRectangle((int)Position.X, (int)Position.Y, Size.Width, Size.Height), XnaColor.White);
             }
 
             foreach (Projectiles projectile in Projectiles)

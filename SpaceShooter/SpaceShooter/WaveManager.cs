@@ -56,7 +56,6 @@
             }
 
             int totalEnemies = (7 * (int)Math.Floor((float)_currentWave / 5.0f)) + additionalEnemies;
-            //totalEnemies = 1; // just one to test boss waves
 
             totalEnemies = Math.Min(totalEnemies, 50);
 
@@ -76,8 +75,6 @@
             float enemySpeed = 25f + ((_currentWave - 1) / 4) * 5f;
             enemySpeed = Math.Min(enemySpeed, 100f);
 
-            //enemySpeed = 200f; // just to test boss waves
-
             int totalRows = (int)Math.Ceiling(totalEnemies / (float)enemiesPerRow);
 
             for (int i = 0; i < totalEnemies; i++)
@@ -93,7 +90,7 @@
                 float x = startX + column * (enemyWidth + horizontalSpacing);
 
                 int reversedRow = (totalRows - 1) - row;
-                float y = -(reversedRow) * (enemyHeight + verticalSpacing);
+                float y = -reversedRow * (enemyHeight + verticalSpacing);
 
                 enemies.Add(new Enemy(
                     _enemyTexture,

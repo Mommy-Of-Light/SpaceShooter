@@ -39,7 +39,6 @@
         {
             Texture = texture;
             ProjectileTexture = projectileTexture;
-
             Position = position;
             Speed = speed;
 
@@ -49,11 +48,8 @@
             Height = (int)(texture.Height * scale);
 
             Hitbox = new XnaRectangle((int)position.X, (int)position.Y, Width, Height);
-
             Projectiles = new List<Projectiles>();
-
             _shotCount = 0;
-
             _previousKeyboard = Keyboard.GetState();
         }
 
@@ -101,25 +97,27 @@
 
             _shootCooldown -= deltaTime;
 
-            if(debugAutoShoot && _shootCooldown <= 0f)
+            if (debugAutoShoot && _shootCooldown <= 0f)
             {
                 ShootNormal();
                 _shotCount++;
+
                 if (_shotCount >= ShotsUntilMissile)
                 {
                     if (AutoAimMissiles > 0)
                     {
                         ShootMissiles();
                     }
+
                     _shotCount = 0;
                 }
+
                 _shootCooldown = ShootCooldown;
             }
 
             if (keyboard.IsKeyDown(XnaKeys.Space) && _shootCooldown <= 0f)
             {
                 ShootNormal();
-
                 _shotCount++;
 
                 if (_shotCount >= ShotsUntilMissile)
@@ -145,7 +143,6 @@
             Projectiles.RemoveAll(projectile => !projectile.State);
 
             Position += movement * Speed * deltaTime;
-
             Position.X = MathHelper.Clamp(Position.X, 0, game.GraphicsDevice.Viewport.Width - Width);
         }
 
@@ -198,7 +195,10 @@
                 return;
             }
 
-            List<Enemy> availableEnemies = GameEnemyList.Where(enemy => enemy.State).OrderBy(enemy => Vector2.Distance(Position, enemy.Position)).ToList();
+            List<Enemy> availableEnemies = GameEnemyList
+                .Where(enemy => enemy.State)
+                .OrderBy(enemy => Vector2.Distance(Position, enemy.Position))
+                .ToList();
 
             if (availableEnemies.Count == 0)
                 return;
@@ -219,21 +219,21 @@
                 Vector2 missilePosition = new Vector2(Position.X + Width / 2f - ProjectileTexture.Width / 2f, Position.Y);
 
                 Projectiles.Add(new Projectiles(
-                     ProjectileTexture,
-                     missilePosition,
-                     new Vector2(ProjectileTexture.Width, ProjectileTexture.Height),
-                     350f,
-                     Damage,
-                     Pierce,
-                     true,
-                     target,
-                     GameEnemyList,
-                     null,
-                     false,
-                     default,
-                     5f,
-                     false,
-                     new Vector2(0, -1)
+                    ProjectileTexture,
+                    missilePosition,
+                    new Vector2(ProjectileTexture.Width, ProjectileTexture.Height),
+                    350f,
+                    Damage,
+                    Pierce,
+                    true,
+                    target,
+                    GameEnemyList,
+                    null,
+                    false,
+                    default,
+                    5f,
+                    false,
+                    new Vector2(0, -1)
                 ));
             }
         }
@@ -243,37 +243,17 @@
             if (Texture == null)
                 return;
 
-            spriteBatch.Draw(
-                Texture,
-                new XnaRectangle((int)Position.X, (int)Position.Y, Width, Height),
-                XnaColor.White
-            );
+            spriteBatch.Draw(Texture, new XnaRectangle((int)Position.X, (int)Position.Y, Width, Height), XnaColor.White);
 
-            // Draw hitbox
             Texture2D pixel = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
             pixel.SetData(new[] { XnaColor.White });
 
             int thickness = 2;
 
-            // Top
-            spriteBatch.Draw(pixel,
-                new XnaRectangle(Hitbox.X, Hitbox.Y, Hitbox.Width, thickness),
-                XnaColor.Red);
-
-            // Bottom
-            spriteBatch.Draw(pixel,
-                new XnaRectangle(Hitbox.X, Hitbox.Bottom - thickness, Hitbox.Width, thickness),
-                XnaColor.Red);
-
-            // Left
-            spriteBatch.Draw(pixel,
-                new XnaRectangle(Hitbox.X, Hitbox.Y, thickness, Hitbox.Height),
-                XnaColor.Red);
-
-            // Right
-            spriteBatch.Draw(pixel,
-                new XnaRectangle(Hitbox.Right - thickness, Hitbox.Y, thickness, Hitbox.Height),
-                XnaColor.Red);
+            spriteBatch.Draw(pixel, new XnaRectangle(Hitbox.X, Hitbox.Y, Hitbox.Width, thickness), XnaColor.Red);
+            spriteBatch.Draw(pixel, new XnaRectangle(Hitbox.X, Hitbox.Bottom - thickness, Hitbox.Width, thickness), XnaColor.Red);
+            spriteBatch.Draw(pixel, new XnaRectangle(Hitbox.X, Hitbox.Y, thickness, Hitbox.Height), XnaColor.Red);
+            spriteBatch.Draw(pixel, new XnaRectangle(Hitbox.Right - thickness, Hitbox.Y, thickness, Hitbox.Height), XnaColor.Red);
 
             foreach (Projectiles projectile in Projectiles)
             {

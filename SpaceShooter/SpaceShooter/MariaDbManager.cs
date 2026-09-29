@@ -38,17 +38,15 @@ namespace SpaceShooter
                 {
                     if (score > existingScore.Score && existingScore.Difficulty == difficulty)
                     {
-                        query =
-                            "UPDATE scores " +
-                            "SET score = @score, created_at = NOW(), wave = @wave " +
-                            "WHERE pseudo = @pseudo AND difficulty = @difficulty";
+                        query = "UPDATE scores " +
+                                "SET score = @score, created_at = NOW(), wave = @wave " +
+                                "WHERE pseudo = @pseudo AND difficulty = @difficulty";
                     }
                 }
                 else
                 {
-                    query =
-                        "INSERT INTO scores (pseudo, score, wave, difficulty, created_at) " +
-                        "VALUES (@pseudo, @score, @wave, @difficulty, NOW())";
+                    query = "INSERT INTO scores (pseudo, score, wave, difficulty, created_at) " +
+                            "VALUES (@pseudo, @score, @wave, @difficulty, NOW())";
                 }
 
                 connection.Open();
@@ -80,10 +78,9 @@ namespace SpaceShooter
 
                 connection.Open();
 
-                string query =
-                    "SELECT pseudo, score, difficulty, wave, created_at " +
-                    "FROM scores " +
-                    "ORDER BY score DESC, created_at ASC";
+                string query = "SELECT pseudo, score, difficulty, wave, created_at " +
+                               "FROM scores " +
+                               "ORDER BY score DESC, created_at ASC";
 
                 using MySqlCommand command = new MySqlCommand(query, connection);
                 using MySqlDataReader reader = command.ExecuteReader();

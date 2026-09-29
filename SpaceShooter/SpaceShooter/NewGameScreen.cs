@@ -25,12 +25,9 @@
             _buttons = new List<Button>();
 
             int screenWidth = Game.GraphicsDevice.Viewport.Width;
-
             int buttonWidth = 350;
             int buttonHeight = 60;
-
             int x = (screenWidth - buttonWidth) / 2;
-
             int startY = 100;
             int spacing = 75;
 
@@ -40,32 +37,24 @@
             }
 
             int difficultyY = startY + spacing;
-
             int difficultyButtonWidth = 105;
             int difficultySpacing = 10;
-
             int difficultyTotalWidth = (difficultyButtonWidth * 3) + (difficultySpacing * 2);
-
             int difficultyX = (screenWidth - difficultyTotalWidth) / 2;
 
             _easyButton = new Button("Easy", new XnaRectangle(difficultyX, difficultyY, difficultyButtonWidth, buttonHeight));
-
             _easyButton.SetSelected(false);
 
             _mediumButton = new Button("Medium", new XnaRectangle(difficultyX + difficultyButtonWidth + difficultySpacing, difficultyY, difficultyButtonWidth, buttonHeight));
-
             _mediumButton.SetSelected(true);
 
             _hardButton = new Button("Hard", new XnaRectangle(difficultyX + (difficultyButtonWidth + difficultySpacing) * 2, difficultyY, difficultyButtonWidth, buttonHeight));
-
             _hardButton.SetSelected(false);
 
             int newGameY = difficultyY + spacing;
-
             _buttons.Add(new Button("Create a new game", new XnaRectangle(x, newGameY, buttonWidth, buttonHeight)));
 
             int returnY = newGameY + spacing;
-
             _buttons.Add(new Button("Return", new XnaRectangle(x, returnY, buttonWidth, buttonHeight)));
 
             if (_buttons.Count > 0)
@@ -85,20 +74,20 @@
             _mediumButton.Update(mousePosition);
             _hardButton.Update(mousePosition);
 
-            if (_easyButton.IsClicked(mousePosition, mouseClicked) || 
-                (keyboard.IsKeyDown(XnaKeys.D1) && _previousKeyboard.IsKeyUp(XnaKeys.D1)) || 
+            if (_easyButton.IsClicked(mousePosition, mouseClicked) ||
+                (keyboard.IsKeyDown(XnaKeys.D1) && _previousKeyboard.IsKeyUp(XnaKeys.D1)) ||
                 (keyboard.IsKeyDown(XnaKeys.NumPad1) && _previousKeyboard.IsKeyUp(XnaKeys.NumPad1)))
             {
                 HandleButton("Easy");
             }
-            else if (_mediumButton.IsClicked(mousePosition, mouseClicked) || 
-                     (keyboard.IsKeyDown(XnaKeys.D2) && _previousKeyboard.IsKeyUp(XnaKeys.D2)) || 
+            else if (_mediumButton.IsClicked(mousePosition, mouseClicked) ||
+                     (keyboard.IsKeyDown(XnaKeys.D2) && _previousKeyboard.IsKeyUp(XnaKeys.D2)) ||
                      (keyboard.IsKeyDown(XnaKeys.NumPad2) && _previousKeyboard.IsKeyUp(XnaKeys.NumPad2)))
             {
                 HandleButton("Medium");
             }
-            else if (_hardButton.IsClicked(mousePosition, mouseClicked) || 
-                     (keyboard.IsKeyDown(XnaKeys.D3) && _previousKeyboard.IsKeyUp(XnaKeys.D3)) || 
+            else if (_hardButton.IsClicked(mousePosition, mouseClicked) ||
+                     (keyboard.IsKeyDown(XnaKeys.D3) && _previousKeyboard.IsKeyUp(XnaKeys.D3)) ||
                      (keyboard.IsKeyDown(XnaKeys.NumPad3) && _previousKeyboard.IsKeyUp(XnaKeys.NumPad3)))
             {
                 HandleButton("Hard");
@@ -115,7 +104,7 @@
                 }
             }
 
-            if (keyboard.IsKeyDown(XnaKeys.Up) &&_previousKeyboard.IsKeyUp(XnaKeys.Up))
+            if (keyboard.IsKeyDown(XnaKeys.Up) && _previousKeyboard.IsKeyUp(XnaKeys.Up))
             {
                 int selectedIndex = _buttons.FindIndex(b => b.IsSelected);
 
@@ -126,15 +115,12 @@
                 else
                 {
                     _buttons[selectedIndex].SetSelected(false);
-
-                    int newIndex =
-                        (selectedIndex - 1 + _buttons.Count) % _buttons.Count;
-
+                    int newIndex = (selectedIndex - 1 + _buttons.Count) % _buttons.Count;
                     _buttons[newIndex].SetSelected(true);
                 }
             }
 
-            if (keyboard.IsKeyDown(XnaKeys.Down) &&_previousKeyboard.IsKeyUp(XnaKeys.Down))
+            if (keyboard.IsKeyDown(XnaKeys.Down) && _previousKeyboard.IsKeyUp(XnaKeys.Down))
             {
                 int selectedIndex = _buttons.FindIndex(b => b.IsSelected);
 
@@ -145,15 +131,13 @@
                 else
                 {
                     _buttons[selectedIndex].SetSelected(false);
-
-                    int newIndex =
-                        (selectedIndex + 1) % _buttons.Count;
-
+                    int newIndex = (selectedIndex + 1) % _buttons.Count;
                     _buttons[newIndex].SetSelected(true);
                 }
             }
 
-            if ((keyboard.IsKeyDown(XnaKeys.Enter) &&_previousKeyboard.IsKeyUp(XnaKeys.Enter)) ||(keyboard.IsKeyDown(XnaKeys.Space) &&_previousKeyboard.IsKeyUp(XnaKeys.Space)))
+            if ((keyboard.IsKeyDown(XnaKeys.Enter) && _previousKeyboard.IsKeyUp(XnaKeys.Enter)) ||
+                (keyboard.IsKeyDown(XnaKeys.Space) && _previousKeyboard.IsKeyUp(XnaKeys.Space)))
             {
                 int selectedIndex = _buttons.FindIndex(b => b.IsSelected);
 
@@ -177,16 +161,13 @@
                     if (save != null)
                     {
                         PlayScreen playScreen = new PlayScreen(Game);
-
                         Game.ScreenManager.ChangeScreen(playScreen);
-
                         playScreen.LoadGame(save);
                     }
                     break;
 
                 case "Easy":
                     _selectedDifficulty = "Easy";
-
                     _easyButton.SetSelected(true);
                     _mediumButton.SetSelected(false);
                     _hardButton.SetSelected(false);
@@ -194,7 +175,6 @@
 
                 case "Medium":
                     _selectedDifficulty = "Medium";
-
                     _easyButton.SetSelected(false);
                     _mediumButton.SetSelected(true);
                     _hardButton.SetSelected(false);
@@ -202,7 +182,6 @@
 
                 case "Hard":
                     _selectedDifficulty = "Hard";
-
                     _easyButton.SetSelected(false);
                     _mediumButton.SetSelected(false);
                     _hardButton.SetSelected(true);
@@ -240,9 +219,7 @@
             spriteBatch.Draw(Game.Content.Load<Texture2D>("Textures/Background/black"), Vector2.Zero, XnaColor.White);
 
             int screenWidth = Game.GraphicsDevice.Viewport.Width;
-
             string title = "NEW GAME";
-
             Vector2 titleSize = _font_title.MeasureString(title);
 
             spriteBatch.DrawString(_font_title, title, new Vector2((screenWidth - titleSize.X) / 2, 50), XnaColor.White);
@@ -253,9 +230,7 @@
             }
 
             _easyButton.Draw(spriteBatch, _font);
-
             _mediumButton.Draw(spriteBatch, _font);
-
             _hardButton.Draw(spriteBatch, _font);
 
             spriteBatch.End();

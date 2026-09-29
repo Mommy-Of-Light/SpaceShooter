@@ -24,25 +24,19 @@ namespace SpaceShooter
         public void PlayRetroLazer()
         {
             if (Retro_lazer != null)
-            {
                 Retro_lazer.Play(0.2f, 0.5f, 0);
-            }
         }
 
         public void PlaySnareShot()
         {
             if (Snare_shot != null)
-            {
                 Snare_shot.Play(0.5f, 0.5f, 0);
-            }
         }
 
         public void PlaySpaceZap()
         {
             if (Space_zap != null)
-            {
                 Space_zap.Play(1f, 1f, 1f);
-            }
         }
     }
 }

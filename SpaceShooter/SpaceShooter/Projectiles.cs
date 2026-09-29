@@ -25,55 +25,32 @@
             get { return _bossHitCooldown <= 0f; }
             set { _bossHitCooldown = value ? 0f : BossHitCooldownDuration; }
         }
+
         public float Rotation;
         public float TurnSpeed = 1f;
         public Vector2 Velocity => _velocity;
         private Vector2 _velocity;
         private bool _limitBossMissileAngle;
 
-        public Projectiles(
-            Texture2D texture,
-            Vector2 position,
-            Vector2 size,
-            float speed,
-            int damage = 1,
-            int pierce = 0,
-            bool isMissile = false,
-            Enemy target = null,
-            List<Enemy> enemyList = null,
-            Boss bossTarget = null,
-            bool hasPositionTarget = false,
-            Vector2 targetPosition = default,
-            float turnSpeed = 5f,
-            bool limitBossMissileAngle = false,
-            Vector2 initialVelocity = default)
+        public Projectiles(Texture2D texture, Vector2 position, Vector2 size, float speed, int damage = 1, int pierce = 0, bool isMissile = false, Enemy target = null, List<Enemy> enemyList = null, Boss bossTarget = null, bool hasPositionTarget = false, Vector2 targetPosition = default, float turnSpeed = 5f, bool limitBossMissileAngle = false, Vector2 initialVelocity = default)
         {
             Texture = texture;
             Position = position;
             Size = size;
             Speed = speed;
-
             Damage = damage;
             Pierce = pierce;
-
             IsMissile = isMissile;
             Target = target;
             BossTarget = bossTarget;
             EnemyList = enemyList;
             HasPositionTarget = hasPositionTarget;
             TargetPosition = targetPosition;
-
             Rotation = 0f;
             TurnSpeed = turnSpeed;
-
             _limitBossMissileAngle = limitBossMissileAngle;
 
-            Hitbox = new XnaRectangle(
-                (int)position.X,
-                (int)position.Y,
-                (int)size.X,
-                (int)size.Y
-            );
+            Hitbox = new XnaRectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y);
 
             State = true;
 
@@ -124,9 +101,7 @@
             Hitbox.Width = (int)Size.X;
             Hitbox.Height = (int)Size.Y;
 
-            if (Position.Y < -Size.Y || Position.Y > screenHeight + Size.Y
-            //|| Position.X < -Size.X || Position.X > screenWidth + Size.X
-            )
+            if (Position.Y < -Size.Y || Position.Y > screenHeight + Size.Y)
             {
                 State = false;
             }
@@ -153,11 +128,7 @@
                         return;
                     }
 
-                    targetCenter = BossTarget.Position +
-                        new Vector2(
-                            BossTarget.Size.Width / 2f,
-                            BossTarget.Size.Height / 2f
-                        );
+                    targetCenter = BossTarget.Position + new Vector2(BossTarget.Size.Width / 2f, BossTarget.Size.Height / 2f);
                 }
                 else
                 {
@@ -172,11 +143,7 @@
                         }
                     }
 
-                    targetCenter = Target.Position +
-                        new Vector2(
-                            Target.Size.Width / 2f,
-                            Target.Size.Height / 2f
-                        );
+                    targetCenter = Target.Position + new Vector2(Target.Size.Width / 2f, Target.Size.Height / 2f);
                 }
             }
 
@@ -189,83 +156,34 @@
 
                 Vector2 currentDirection = _velocity;
 
-                float currentAngle = (float)Math.Atan2(
-                    currentDirection.Y,
-                    currentDirection.X
-                );
-
-                float targetAngle = (float)Math.Atan2(
-                    desiredDirection.Y,
-                    desiredDirection.X
-                );
-
-                float angleDifference = MathHelper.WrapAngle(
-                    targetAngle - currentAngle
-                );
+                float currentAngle = (float)Math.Atan2(currentDirection.Y, currentDirection.X);
+                float targetAngle = (float)Math.Atan2(desiredDirection.Y, desiredDirection.X);
+                float angleDifference = MathHelper.WrapAngle(targetAngle - currentAngle);
 
                 float maxTurn = TurnSpeed * deltaTime;
-                float turnAmount = MathHelper.Clamp(
-                    angleDifference,
-                    -maxTurn,
-                    maxTurn
-                );
+                float turnAmount = MathHelper.Clamp(angleDifference, -maxTurn, maxTurn);
 
                 currentAngle += turnAmount;
 
-                _velocity = new Vector2(
-                    (float)Math.Cos(currentAngle),
-                    (float)Math.Sin(currentAngle)
-                );
+                _velocity = new Vector2((float)Math.Cos(currentAngle), (float)Math.Sin(currentAngle));
 
-                /*
-                 * Boss homing missiles are limited to a 20 degree
-                 * angle from the vertical downward direction.
-                 *
-                 * Straight down:
-                 *      90 degrees
-                 *
-                 * Maximum left:
-                 *      120 degrees
-                 *
-                 * Maximum right:
-                 *      60 degrees
-                 */
                 if (_limitBossMissileAngle && _velocity.Y > 0)
                 {
                     float maxAngle = MathHelper.ToRadians(20f);
-
                     float verticalAngle = MathHelper.PiOver2;
-
                     float minimumAngle = verticalAngle - maxAngle;
                     float maximumAngle = verticalAngle + maxAngle;
 
-                    float currentVerticalAngle = (float)Math.Atan2(
-                        _velocity.Y,
-                        _velocity.X
-                    );
+                    float currentVerticalAngle = (float)Math.Atan2(_velocity.Y, _velocity.X);
 
-                    currentVerticalAngle = MathHelper.WrapAngle(
-                        currentVerticalAngle
-                    );
+                    currentVerticalAngle = MathHelper.WrapAngle(currentVerticalAngle);
+                    currentVerticalAngle = MathHelper.Clamp(currentVerticalAngle, minimumAngle, maximumAngle);
 
-                    currentVerticalAngle = MathHelper.Clamp(
-                        currentVerticalAngle,
-                        minimumAngle,
-                        maximumAngle
-                    );
-
-                    _velocity = new Vector2(
-                        (float)Math.Cos(currentVerticalAngle),
-                        (float)Math.Sin(currentVerticalAngle)
-                    );
-
+                    _velocity = new Vector2((float)Math.Cos(currentVerticalAngle), (float)Math.Sin(currentVerticalAngle));
                     _velocity.Normalize();
                 }
 
-                Rotation = (float)Math.Atan2(
-                    _velocity.Y,
-                    _velocity.X
-                ) + MathHelper.PiOver2;
+                Rotation = (float)Math.Atan2(_velocity.Y, _velocity.X) + MathHelper.PiOver2;
             }
 
             Position += _velocity * Speed * deltaTime;
@@ -327,38 +245,14 @@
 
             if (!IsMissile)
             {
-                spriteBatch.Draw(
-                    Texture,
-                    new XnaRectangle(
-                        (int)Position.X,
-                        (int)Position.Y,
-                        (int)Size.X,
-                        (int)Size.Y
-                    ),
-                    XnaColor.White
-                );
-
+                spriteBatch.Draw(Texture, new XnaRectangle((int)Position.X, (int)Position.Y, (int)Size.X, (int)Size.Y), XnaColor.White);
                 return;
             }
 
-            Vector2 origin = new Vector2(
-                Texture.Width / 2f,
-                Texture.Height / 2f
-            );
-
+            Vector2 origin = new Vector2(Texture.Width / 2f, Texture.Height / 2f);
             Vector2 drawPosition = Position + Size / 2f;
 
-            spriteBatch.Draw(
-                Texture,
-                drawPosition,
-                null,
-                XnaColor.White,
-                Rotation,
-                origin,
-                1f,
-                SpriteEffects.None,
-                0f
-            );
+            spriteBatch.Draw(Texture, drawPosition, null, XnaColor.White, Rotation, origin, 1f, SpriteEffects.None, 0f);
         }
     }
 }

@@ -19,6 +19,7 @@
         public int HealthMultiplier;
         public float MissileTurnSpeed;
         public int MissileCount;
+
         private static Random _random = new Random();
         private float _direction = 1f;
         private float _attackCooldownBase;
@@ -32,14 +33,11 @@
             Wave = wave;
 
             float scale = 2.5f;
-
             int width = (int)(texture.Width * 0.6f * scale);
             int height = (int)(texture.Height * 0.6f * scale);
 
             Size = new XnaRectangle(0, 0, width, height);
-
             Position = new Vector2((screenWidth - width) / 2f, 70f);
-
             Hitbox = new XnaRectangle((int)Position.X, (int)Position.Y, width, height);
 
             int attackTier = wave / 100;
@@ -47,20 +45,15 @@
             HealthMultiplier = wave % 50 == 0 ? 100 : 100;
             MaxHealth = Math.Max(1, normalEnemyHealth * HealthMultiplier);
             Health = MaxHealth;
-
             Speed = 80f + attackTier * 10f;
-
             _attackCooldownBase = Math.Max(0.35f, 1.5f - attackTier * 0.2f);
             _missileCooldownBase = Math.Max(1f, 4f - attackTier * 0.4f);
-
             MissileTurnSpeed = 1.5f + attackTier * 0.75f;
             MissileCount = 1 + attackTier / 2;
 
             Projectiles = new List<Projectiles>();
-
             ShootingCooldown = GetAttackCooldown();
             MissileCooldown = GetMissileCooldown();
-
             State = true;
         }
 
@@ -141,18 +134,9 @@
 
         private void ShootBasic()
         {
-            Vector2 projectilePosition = new Vector2(
-                Position.X + Size.Width / 2f - ProjectileTexture.Width / 2f,
-                Position.Y - ProjectileTexture.Height
-            );
+            Vector2 projectilePosition = new Vector2(Position.X + Size.Width / 2f - ProjectileTexture.Width / 2f, Position.Y - ProjectileTexture.Height);
 
-            Projectiles.Add(new Projectiles(
-                ProjectileTexture,
-                projectilePosition,
-                new Vector2(ProjectileTexture.Width, ProjectileTexture.Height),
-                300f,
-                1
-            ));
+            Projectiles.Add(new Projectiles(ProjectileTexture, projectilePosition, new Vector2(ProjectileTexture.Width, ProjectileTexture.Height), 300f, 1));
         }
 
         private void ShootHomingMissiles(Vector2 playerPosition)
@@ -161,10 +145,7 @@
             {
                 float spread = (i - (MissileCount - 1) / 2f) * 20f;
 
-                Vector2 missilePosition = new Vector2(
-                    Position.X + Size.Width / 2f - ProjectileTexture.Width / 2f + spread,
-                    Position.Y - ProjectileTexture.Height
-                );
+                Vector2 missilePosition = new Vector2(Position.X + Size.Width / 2f - ProjectileTexture.Width / 2f + spread, Position.Y - ProjectileTexture.Height);
 
                 Projectiles missile;
 
@@ -206,11 +187,7 @@
             if (!State || Texture == null)
                 return;
 
-            spriteBatch.Draw(
-                Texture,
-                new XnaRectangle((int)Position.X, (int)Position.Y, Size.Width, Size.Height),
-                XnaColor.White
-            );
+            spriteBatch.Draw(Texture, new XnaRectangle((int)Position.X, (int)Position.Y, Size.Width, Size.Height), XnaColor.White);
 
             foreach (Projectiles projectile in Projectiles)
             {
@@ -226,22 +203,14 @@
                 if (barY < 0)
                     barY = (int)Position.Y + Size.Height + 8;
 
-                spriteBatch.Draw(
-                    HealthBarTexture,
-                    new XnaRectangle((int)Position.X, barY, barWidth, barHeight),
-                    XnaColor.DarkRed
-                );
+                spriteBatch.Draw(HealthBarTexture, new XnaRectangle((int)Position.X, barY, barWidth, barHeight), XnaColor.DarkRed);
 
                 float healthRatio = MaxHealth > 0 ? Health / (float)MaxHealth : 0f;
                 int currentWidth = (int)(barWidth * MathHelper.Clamp(healthRatio, 0f, 1f));
 
                 if (currentWidth > 0)
                 {
-                    spriteBatch.Draw(
-                        HealthBarTexture,
-                        new XnaRectangle((int)Position.X, barY, currentWidth, barHeight),
-                        XnaColor.LimeGreen
-                    );
+                    spriteBatch.Draw(HealthBarTexture, new XnaRectangle((int)Position.X, barY, currentWidth, barHeight), XnaColor.LimeGreen);
                 }
             }
         }

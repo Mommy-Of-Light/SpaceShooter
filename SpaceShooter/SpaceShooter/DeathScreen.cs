@@ -52,7 +52,6 @@
                 return;
 
             _scoreSaved = true;
-
             MariaDbManager.SaveScore(Game.PlayerPseudo, _score, _wave, Game.Difficulty);
         }
 
@@ -73,8 +72,7 @@
                 return;
             }
 
-            if (keyboard.IsKeyDown(XnaKeys.Up) &&
-                _previousKeyboard.IsKeyUp(XnaKeys.Up))
+            if (keyboard.IsKeyDown(XnaKeys.Up) && _previousKeyboard.IsKeyUp(XnaKeys.Up))
             {
                 int selectedIndex = _buttons.FindIndex(b => b.IsSelected);
 
@@ -85,16 +83,12 @@
                 else
                 {
                     _buttons[selectedIndex].SetSelected(false);
-
-                    int newIndex =
-                        (selectedIndex - 1 + _buttons.Count) % _buttons.Count;
-
+                    int newIndex = (selectedIndex - 1 + _buttons.Count) % _buttons.Count;
                     _buttons[newIndex].SetSelected(true);
                 }
             }
 
-            if (keyboard.IsKeyDown(XnaKeys.Down) &&
-                _previousKeyboard.IsKeyUp(XnaKeys.Down))
+            if (keyboard.IsKeyDown(XnaKeys.Down) && _previousKeyboard.IsKeyUp(XnaKeys.Down))
             {
                 int selectedIndex = _buttons.FindIndex(b => b.IsSelected);
 
@@ -105,18 +99,13 @@
                 else
                 {
                     _buttons[selectedIndex].SetSelected(false);
-
-                    int newIndex =
-                        (selectedIndex + 1) % _buttons.Count;
-
+                    int newIndex = (selectedIndex + 1) % _buttons.Count;
                     _buttons[newIndex].SetSelected(true);
                 }
             }
 
-            if ((keyboard.IsKeyDown(XnaKeys.Enter) &&
-                 _previousKeyboard.IsKeyUp(XnaKeys.Enter)) ||
-                (keyboard.IsKeyDown(XnaKeys.Space) &&
-                 _previousKeyboard.IsKeyUp(XnaKeys.Space)))
+            if ((keyboard.IsKeyDown(XnaKeys.Enter) && _previousKeyboard.IsKeyUp(XnaKeys.Enter)) ||
+                (keyboard.IsKeyDown(XnaKeys.Space) && _previousKeyboard.IsKeyUp(XnaKeys.Space)))
             {
                 int selectedIndex = _buttons.FindIndex(b => b.IsSelected);
 
@@ -143,6 +132,7 @@
                 case "Restart":
                     Game.ScreenManager.ChangeScreen(new PlayScreen(Game));
                     break;
+
                 case "Exit":
                     Game.ScreenManager.ChangeScreen(new NewGameScreen(Game));
                     break;
@@ -158,22 +148,18 @@
 
             string title = "GAME OVER";
             Vector2 titleSize = _titleFont.MeasureString(title);
-
             spriteBatch.DrawString(_titleFont, title, new Vector2((Game.GraphicsDevice.Viewport.Width - titleSize.X) / 2f, 70), XnaColor.White);
 
             string pseudoText = "Player: " + Game.PlayerPseudo;
             Vector2 pseudoSize = _font.MeasureString(pseudoText);
-
             spriteBatch.DrawString(_font, pseudoText, new Vector2((Game.GraphicsDevice.Viewport.Width - pseudoSize.X) / 2f, 140), XnaColor.White);
 
             string waveText = "Wave " + _wave;
             Vector2 waveSize = _font.MeasureString(waveText);
-
             spriteBatch.DrawString(_font, waveText, new Vector2((Game.GraphicsDevice.Viewport.Width - waveSize.X) / 2f, 180), XnaColor.White);
 
             string scoreText = "Score " + _score;
             Vector2 scoreSize = _font.MeasureString(scoreText);
-
             spriteBatch.DrawString(_font, scoreText, new Vector2((Game.GraphicsDevice.Viewport.Width - scoreSize.X) / 2f, 220), XnaColor.White);
 
             _restartButton.Draw(spriteBatch, _font);

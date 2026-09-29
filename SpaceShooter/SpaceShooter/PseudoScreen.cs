@@ -68,7 +68,6 @@
                 return;
 
             Game.PlayerPseudo = _pseudo.Trim();
-
             Game.Difficulty = "Medium";
             Game.DifficultyMultiplier = 1.0;
 

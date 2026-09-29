@@ -27,10 +27,10 @@
             _font = Game.Content.Load<SpriteFont>("Fonts/SpaceInvader_12");
             _titleFont = Game.Content.Load<SpriteFont>("Fonts/SpaceInvader_16");
 
-            _fireRateButton = new Button("MISSILE ATK SPD ++ (1)", new XnaRectangle(100, 130, 300, 50));
-            _pierceButton = new Button("PIERCE +1 (2)", new XnaRectangle(100, 200, 300, 50));
-            _missileButton = new Button("MISSILE +1 (3)", new XnaRectangle(100, 270, 300, 50));
-            _damageButton = new Button("DAMAGE +1 (4)", new XnaRectangle(100, 340, 300, 50));
+            _fireRateButton = new Button("MISSILE ATK SPD ++ (1)", new XnaRectangle(50, 130, 400, 50));
+            _pierceButton = new Button("PIERCE +1 (2)", new XnaRectangle(50, 200, 400, 50));
+            _missileButton = new Button("MISSILE +1 (3)", new XnaRectangle(50, 270, 400, 50));
+            _damageButton = new Button("DAMAGE +1 (4)", new XnaRectangle(50, 340, 400, 50));
 
             _buttons = new List<Button>
             {
@@ -79,32 +79,31 @@
                 return;
             }
 
-            if ((keyboard.IsKeyDown(XnaKeys.D1) &&_previousKeyboard.IsKeyUp(XnaKeys.D1)) || (keyboard.IsKeyDown(XnaKeys.NumPad1) &&_previousKeyboard.IsKeyUp(XnaKeys.NumPad1)) &&!_fireRateButton.IsLocked)
+            if ((keyboard.IsKeyDown(XnaKeys.D1) && _previousKeyboard.IsKeyUp(XnaKeys.D1)) || (keyboard.IsKeyDown(XnaKeys.NumPad1) && _previousKeyboard.IsKeyUp(XnaKeys.NumPad1)) && !_fireRateButton.IsLocked)
             {
                 ChooseUpgrade(0);
                 return;
             }
 
-            if ((keyboard.IsKeyDown(XnaKeys.D2) &&_previousKeyboard.IsKeyUp(XnaKeys.D2)) || (keyboard.IsKeyDown(XnaKeys.NumPad2) &&_previousKeyboard.IsKeyUp(XnaKeys.NumPad2)) &&!_pierceButton.IsLocked)
+            if ((keyboard.IsKeyDown(XnaKeys.D2) && _previousKeyboard.IsKeyUp(XnaKeys.D2)) || (keyboard.IsKeyDown(XnaKeys.NumPad2) && _previousKeyboard.IsKeyUp(XnaKeys.NumPad2)) && !_pierceButton.IsLocked)
             {
                 ChooseUpgrade(1);
                 return;
             }
 
-            if ((keyboard.IsKeyDown(XnaKeys.D3) && _previousKeyboard.IsKeyUp(XnaKeys.D3)) || (keyboard.IsKeyDown(XnaKeys.NumPad3) && _previousKeyboard.IsKeyUp(XnaKeys.NumPad3)) &&!_missileButton.IsLocked)
+            if ((keyboard.IsKeyDown(XnaKeys.D3) && _previousKeyboard.IsKeyUp(XnaKeys.D3)) || (keyboard.IsKeyDown(XnaKeys.NumPad3) && _previousKeyboard.IsKeyUp(XnaKeys.NumPad3)) && !_missileButton.IsLocked)
             {
                 ChooseUpgrade(2);
                 return;
             }
 
-            if ((keyboard.IsKeyDown(XnaKeys.D4) && _previousKeyboard.IsKeyUp(XnaKeys.D4)) || (keyboard.IsKeyDown(XnaKeys.NumPad4) && _previousKeyboard.IsKeyUp(XnaKeys.NumPad4)) &&!_damageButton.IsLocked)
+            if ((keyboard.IsKeyDown(XnaKeys.D4) && _previousKeyboard.IsKeyUp(XnaKeys.D4)) || (keyboard.IsKeyDown(XnaKeys.NumPad4) && _previousKeyboard.IsKeyUp(XnaKeys.NumPad4)) && !_damageButton.IsLocked)
             {
                 ChooseUpgrade(3);
                 return;
             }
 
-            if (keyboard.IsKeyDown(XnaKeys.Up) &&
-    _previousKeyboard.IsKeyUp(XnaKeys.Up))
+            if (keyboard.IsKeyDown(XnaKeys.Up) && _previousKeyboard.IsKeyUp(XnaKeys.Up))
             {
                 int selectedIndex = _buttons.FindIndex(b => b.IsSelected);
 
@@ -116,15 +115,13 @@
                 {
                     _buttons[selectedIndex].SetSelected(false);
 
-                    int newIndex =
-                        (selectedIndex - 1 + _buttons.Count) % _buttons.Count;
+                    int newIndex = (selectedIndex - 1 + _buttons.Count) % _buttons.Count;
 
                     _buttons[newIndex].SetSelected(true);
                 }
             }
 
-            if (keyboard.IsKeyDown(XnaKeys.Down) &&
-                _previousKeyboard.IsKeyUp(XnaKeys.Down))
+            if (keyboard.IsKeyDown(XnaKeys.Down) && _previousKeyboard.IsKeyUp(XnaKeys.Down))
             {
                 int selectedIndex = _buttons.FindIndex(b => b.IsSelected);
 
@@ -136,22 +133,17 @@
                 {
                     _buttons[selectedIndex].SetSelected(false);
 
-                    int newIndex =
-                        (selectedIndex + 1) % _buttons.Count;
+                    int newIndex = (selectedIndex + 1) % _buttons.Count;
 
                     _buttons[newIndex].SetSelected(true);
                 }
             }
 
-            if ((keyboard.IsKeyDown(XnaKeys.Enter) &&
-                 _previousKeyboard.IsKeyUp(XnaKeys.Enter)) ||
-                (keyboard.IsKeyDown(XnaKeys.Space) &&
-                 _previousKeyboard.IsKeyUp(XnaKeys.Space)))
+            if ((keyboard.IsKeyDown(XnaKeys.Enter) && _previousKeyboard.IsKeyUp(XnaKeys.Enter)) || (keyboard.IsKeyDown(XnaKeys.Space) && _previousKeyboard.IsKeyUp(XnaKeys.Space)))
             {
                 int selectedIndex = _buttons.FindIndex(b => b.IsSelected);
 
-                if (selectedIndex != -1 &&
-                    !_buttons[selectedIndex].IsLocked)
+                if (selectedIndex != -1 && !_buttons[selectedIndex].IsLocked)
                 {
                     ChooseUpgrade(selectedIndex);
                     return;
@@ -163,17 +155,9 @@
 
         private void UpdateButtonStates()
         {
-            _fireRateButton.SetLocked(
-                _playScreen.Player.ShotsUntilMissile <= MaxShotsUntilMissile
-            );
-
-            _pierceButton.SetLocked(
-                _playScreen.Player.Pierce >= MaxPierce
-            );
-
-            _missileButton.SetLocked(
-                _playScreen.Player.AutoAimMissiles >= MaxMissiles
-            );
+            _fireRateButton.SetLocked(_playScreen.Player.ShotsUntilMissile <= MaxShotsUntilMissile);
+            _pierceButton.SetLocked(_playScreen.Player.Pierce >= MaxPierce);
+            _missileButton.SetLocked(_playScreen.Player.AutoAimMissiles >= MaxMissiles);
         }
 
         private void ChooseUpgrade(int upgrade)

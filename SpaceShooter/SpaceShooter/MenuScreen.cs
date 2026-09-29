@@ -8,6 +8,7 @@ namespace SpaceShooter
         private SpriteFont _font_title;
         private List<Button> _buttons;
         private KeyboardState _previousKeyboard;
+
         public MenuScreen(Game1 game) : base(game)
         {
             _previousKeyboard = Microsoft.Xna.Framework.Input.Keyboard.GetState();
@@ -16,7 +17,8 @@ namespace SpaceShooter
 
         public override void Initialize()
         {
-            _font = Game.Content.Load<SpriteFont>("Fonts/SpaceInvader_12"); _font_title = Game.Content.Load<SpriteFont>("Fonts/SpaceInvader_16");
+            _font = Game.Content.Load<SpriteFont>("Fonts/SpaceInvader_12");
+            _font_title = Game.Content.Load<SpriteFont>("Fonts/SpaceInvader_16");
 
             _buttons = new List<Button>();
 
@@ -49,21 +51,6 @@ namespace SpaceShooter
                 Game.Exit();
             }
 
-            if (keyboard.IsKeyDown(XnaKeys.NumPad1) && _previousKeyboard.IsKeyUp(XnaKeys.NumPad1))
-            {
-                SoundEffectPlayer.Instance.PlayRetroLazer();
-            }
-
-            if (keyboard.IsKeyDown(XnaKeys.NumPad2) && _previousKeyboard.IsKeyUp(XnaKeys.NumPad2))
-            {
-                SoundEffectPlayer.Instance.PlaySnareShot();
-            }
-
-            if (keyboard.IsKeyDown(XnaKeys.NumPad3) && _previousKeyboard.IsKeyUp(XnaKeys.NumPad3))
-            {
-                SoundEffectPlayer.Instance.PlaySpaceZap();
-            }
-
             foreach (Button button in _buttons)
             {
                 button.Update(mousePosition);
@@ -78,6 +65,7 @@ namespace SpaceShooter
             if (keyboard.IsKeyDown(XnaKeys.Up) && _previousKeyboard.IsKeyUp(XnaKeys.Up))
             {
                 int selectedIndex = _buttons.FindIndex(b => b.IsSelected);
+
                 if (selectedIndex == -1)
                 {
                     _buttons[0].SetSelected(true);
@@ -93,6 +81,7 @@ namespace SpaceShooter
             if (keyboard.IsKeyDown(XnaKeys.Down) && _previousKeyboard.IsKeyUp(XnaKeys.Down))
             {
                 int selectedIndex = _buttons.FindIndex(b => b.IsSelected);
+
                 if (selectedIndex == -1)
                 {
                     _buttons[0].SetSelected(true);
@@ -105,9 +94,11 @@ namespace SpaceShooter
                 }
             }
 
-            if ((keyboard.IsKeyDown(XnaKeys.Enter) && _previousKeyboard.IsKeyUp(XnaKeys.Enter)) || (keyboard.IsKeyDown(XnaKeys.Space) && _previousKeyboard.IsKeyUp(XnaKeys.Space)))
+            if ((keyboard.IsKeyDown(XnaKeys.Enter) && _previousKeyboard.IsKeyUp(XnaKeys.Enter)) ||
+                (keyboard.IsKeyDown(XnaKeys.Space) && _previousKeyboard.IsKeyUp(XnaKeys.Space)))
             {
                 int selectedIndex = _buttons.FindIndex(b => b.IsSelected);
+
                 if (selectedIndex != -1)
                 {
                     HandleButton(_buttons[selectedIndex].Text);
@@ -152,7 +143,6 @@ namespace SpaceShooter
             int screenWidth = Game.GraphicsDevice.Viewport.Width;
 
             string title = "SPACE SHOOTER";
-
             Vector2 titleSize = _font_title.MeasureString(title);
 
             spriteBatch.DrawString(_font_title, title, new Vector2((screenWidth - titleSize.X) / 2, 50), XnaColor.White);

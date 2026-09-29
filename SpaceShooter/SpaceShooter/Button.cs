@@ -85,39 +85,19 @@
                 int barWidth = 5;
                 int barHeight = 22;
                 int gap = 6;
-
                 int totalWidth = (barWidth * 2) + gap;
-
                 int x = Bounds.X + (Bounds.Width - totalWidth) / 2;
                 int y = Bounds.Y + (Bounds.Height - barHeight) / 2;
 
-                spriteBatch.Draw(
-                    _pixel,
-                    new XnaRectangle(x, y, barWidth, barHeight),
-                    XnaColor.White
-                );
-
-                spriteBatch.Draw(
-                    _pixel,
-                    new XnaRectangle(x + barWidth + gap, y, barWidth, barHeight),
-                    XnaColor.White
-                );
+                spriteBatch.Draw(_pixel, new XnaRectangle(x, y, barWidth, barHeight), XnaColor.White);
+                spriteBatch.Draw(_pixel, new XnaRectangle(x + barWidth + gap, y, barWidth, barHeight), XnaColor.White);
             }
             else
             {
                 Vector2 textSize = font.MeasureString(displayText);
+                Vector2 textPosition = new Vector2(Bounds.X + (Bounds.Width - textSize.X) / 2f, Bounds.Y + (Bounds.Height - textSize.Y) / 2f);
 
-                Vector2 textPosition = new Vector2(
-                    Bounds.X + (Bounds.Width - textSize.X) / 2f,
-                    Bounds.Y + (Bounds.Height - textSize.Y) / 2f
-                );
-
-                spriteBatch.DrawString(
-                    font,
-                    displayText,
-                    textPosition,
-                    XnaColor.White
-                );
+                spriteBatch.DrawString(font, displayText, textPosition, XnaColor.White);
             }
         }
     }

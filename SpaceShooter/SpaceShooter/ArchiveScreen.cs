@@ -75,17 +75,14 @@
             spriteBatch.Begin();
 
             Texture2D background = Game.Content.Load<Texture2D>("Textures/Background/black");
-
             spriteBatch.Draw(background, Vector2.Zero, XnaColor.White);
 
             string title = "ARCHIVE";
-
             Vector2 titleSize = _font_title.MeasureString(title);
 
             spriteBatch.DrawString(_font_title, title, new Vector2((Game.GraphicsDevice.Viewport.Width - titleSize.X) / 2f, 30), XnaColor.White);
 
             string pseudoText = "Player: " + Game.PlayerPseudo;
-
             Vector2 pseudoSize = _font.MeasureString(pseudoText);
 
             spriteBatch.DrawString(_font, pseudoText, new Vector2((Game.GraphicsDevice.Viewport.Width - pseudoSize.X) / 2f, 70), XnaColor.White);
@@ -93,7 +90,6 @@
             if (_archives.Count == 0)
             {
                 string text = "NO PLAYED GAMES";
-
                 Vector2 textSize = _font.MeasureString(text);
 
                 spriteBatch.DrawString(_font, text, new Vector2((Game.GraphicsDevice.Viewport.Width - textSize.X) / 2f, 180), XnaColor.White);
@@ -105,9 +101,7 @@
                 for (int i = _scrollIndex; i < endIndex; i++)
                 {
                     ArchiveData archive = _archives[i];
-
                     int displayIndex = i - _scrollIndex;
-
                     string line = (i + 1) + ". Wave " + archive.Wave + "  Score " + archive.Score;
 
                     spriteBatch.DrawString(_font, line, new Vector2(45, 105 + displayIndex * 42), XnaColor.White);
@@ -122,14 +116,12 @@
                     spriteBatch.DrawString(_font, "UP", new Vector2(10, 20), XnaColor.White);
                 }
 
-                if (_scrollIndex + _visibleArchives < _archives.Count
-                )
+                if (_scrollIndex + _visibleArchives < _archives.Count)
                 {
                     spriteBatch.DrawString(_font, "DOWN", new Vector2(10, 35), XnaColor.White);
                 }
 
                 string counter = (_scrollIndex + 1) + "-" + Math.Min(_scrollIndex + _visibleArchives, _archives.Count) + " / " + _archives.Count;
-
                 Vector2 counterSize = _font.MeasureString(counter);
 
                 spriteBatch.DrawString(_font, counter, new Vector2((Game.GraphicsDevice.Viewport.Width - counterSize.X) / 2f, 405), XnaColor.White);

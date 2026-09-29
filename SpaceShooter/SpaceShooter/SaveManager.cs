@@ -2,8 +2,7 @@
 {
     public static class SaveManager
     {
-        private static readonly string SaveDirectory =
-            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "SpaceShooter");
+        private static readonly string SaveDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "SpaceShooter");
 
         public static string GetSaveDirectory()
         {
@@ -16,20 +15,13 @@
             Directory.CreateDirectory(SaveDirectory);
 
             if (string.IsNullOrEmpty(runId))
-            {
                 runId = Guid.NewGuid().ToString();
-            }
 
             DateTime now = DateTime.Now;
-
             string timestamp = now.ToString("yyyyMMdd_HHmmss_fff");
-
             string safePseudo = MakeSafeFileName(pseudo);
-
             string saveId = safePseudo + "_" + timestamp;
-
             string fileName = "save_" + safePseudo + "_" + timestamp + ".json";
-
             string filePath = Path.Combine(SaveDirectory, fileName);
 
             gameData.RunId = runId;
@@ -63,7 +55,6 @@
             try
             {
                 string json = File.ReadAllText(filePath);
-
                 return JsonSerializer.Deserialize<SaveData>(json);
             }
             catch
@@ -79,9 +70,7 @@
             List<SaveData> saves = new List<SaveData>();
 
             string safePseudo = MakeSafeFileName(pseudo);
-
             string searchPattern = "save_" + safePseudo + "_*.json";
-
             string[] files = Directory.GetFiles(SaveDirectory, searchPattern);
 
             foreach (string file in files)
@@ -128,14 +117,10 @@
             string filePath = null;
 
             if (!string.IsNullOrEmpty(save.FileName))
-            {
                 filePath = Path.Combine(SaveDirectory, save.FileName);
-            }
 
             if (!string.IsNullOrEmpty(filePath) && File.Exists(filePath))
-            {
                 File.Delete(filePath);
-            }
         }
 
         public static void Delete(string filePath)
@@ -173,9 +158,7 @@
             Directory.CreateDirectory(SaveDirectory);
 
             string safePseudo = MakeSafeFileName(pseudo);
-
             string searchPattern = "save_" + safePseudo + "_*.json";
-
             string[] files = Directory.GetFiles(SaveDirectory, searchPattern);
 
             foreach (string file in files)
@@ -196,9 +179,7 @@
                 return "Unknown";
 
             foreach (char invalidCharacter in Path.GetInvalidFileNameChars())
-            {
                 value = value.Replace(invalidCharacter.ToString(), "");
-            }
 
             if (string.IsNullOrWhiteSpace(value))
                 return "Unknown";

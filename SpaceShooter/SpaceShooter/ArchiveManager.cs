@@ -7,11 +7,8 @@
         public static void SaveGameArchive(string pseudo, int score, int wave, string difficulty, double difficultyMultiplier)
         {
             Directory.CreateDirectory(ArchiveDirectory);
-
             string timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
-
             string safePseudo = MakeSafeFileName(pseudo);
-
             string archiveId = safePseudo + "_" + timestamp;
 
             ArchiveData archiveData = new ArchiveData
@@ -27,9 +24,7 @@
             };
 
             string fileName = "archive_" + safePseudo + "_" + timestamp + ".json";
-
             string filePath = Path.Combine(ArchiveDirectory, fileName);
-
             string json = JsonSerializer.Serialize(archiveData, new JsonSerializerOptions
             {
                 WriteIndented = true
@@ -41,13 +36,9 @@
         public static List<ArchiveData> GetArchives(string pseudo)
         {
             List<ArchiveData> archives = new List<ArchiveData>();
-
             Directory.CreateDirectory(ArchiveDirectory);
-
             string safePseudo = MakeSafeFileName(pseudo);
-
             string searchPattern = "archive_" + safePseudo + "_*.json";
-
             string[] files = Directory.GetFiles(ArchiveDirectory, searchPattern);
 
             foreach (string file in files)
@@ -55,7 +46,6 @@
                 try
                 {
                     string json = File.ReadAllText(file);
-
                     ArchiveData archive = JsonSerializer.Deserialize<ArchiveData>(json);
 
                     if (archive == null)
@@ -72,7 +62,6 @@
             }
 
             archives = archives.OrderByDescending(archive => archive.FinishedAt).ToList();
-
             return archives;
         }
 

@@ -22,11 +22,9 @@
             _graphics.PreferredBackBufferWidth = WINDOW_WIDTH;
             _graphics.PreferredBackBufferHeight = WINDOW_HEIGHT;
             Window.Title = WINDOW_TITLE;
-
             PlayerPseudo = "";
             Difficulty = "Medium";
             DifficultyMultiplier = 1.0;
-
             ScreenManager = new ScreenManager(this);
         }
 
@@ -40,9 +38,7 @@
         protected override void Initialize()
         {
             ScreenManager.ChangeScreen(new PseudoScreen(this));
-
             IsMouseVisible = false;
-
             base.Initialize();
         }
 
@@ -52,12 +48,9 @@
             _cursorTexture = Content.Load<Texture2D>("Textures/PNG/UI/cursor");
             IsMouseVisible = false;
             _cursorPosition = new Vector2(_graphics.PreferredBackBufferWidth / 2f, _graphics.PreferredBackBufferHeight / 2f);
-
             SoundEffectPlayer.Instance.Initialize(this);
             MusicPlayer.Instance.Initialize(this);
-
             MusicPlayer.Instance.Play("Menu");
-
             CenterMouse();
         }
 

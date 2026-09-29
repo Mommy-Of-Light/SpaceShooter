@@ -342,12 +342,12 @@ Sure. Since these are tasks for **today (14/09/2026)** and you’ll fill in the 
 
 | Catégorie     | Tâche                                    |  Temps consacré |
 | ------------- | ---------------------------------------- | --------------: |
-| Développement | Créer les ennemis                        |     30 minutes |
-| Développement | Ajouter le déplacement des ennemis       |     10 minutes |
-| Développement | Ajouter les tirs ennemis                 |    20 minutes |
-| Développement | Gérer les collisions                     |     45 minutes |
-| Développement | Créer le système de vagues               |    50 minutes |
-| Développement | Ajouter la condition de victoire/défaite |     25 minutes |
+| Développement | Créer les ennemis                        |      30 minutes |
+| Développement | Ajouter le déplacement des ennemis       |      10 minutes |
+| Développement | Ajouter les tirs ennemis                 |      20 minutes |
+| Développement | Gérer les collisions                     |      45 minutes |
+| Développement | Créer le système de vagues               |      50 minutes |
+| Développement | Ajouter la condition de victoire/défaite |      25 minutes |
 | **Total**     |                                          | **180 minutes** |
 
 ### 3. Problèmes rencontrés et solutions apportées
@@ -877,3 +877,157 @@ Bien sûr. Voici l’entrée du **15/09/2026**, en gardant le même style que le
 * Tester les différents écrans et leurs transitions.
 
 * Effectuer principalement des tests visuels afin de vérifier l'affichage, les interactions et le comportement général du jeu.
+
+## 29/09/2026
+
+### 1. Étapes réalisées
+
+#### Tests
+
+**Tests des déplacements**
+
+* Poursuite des tests concernant les déplacements du joueur.
+
+* Vérification du fonctionnement des commandes et de la fluidité des déplacements.
+
+* Vérification du comportement du joueur dans les différentes situations de jeu.
+
+**Tests des tirs**
+
+* Poursuite des tests du système de tir.
+
+* Vérification de la création et du déplacement des projectiles.
+
+* Vérification du comportement des tirs lors des interactions avec les autres éléments du jeu.
+
+**Tests des vagues**
+
+* Vérification du fonctionnement des différentes vagues d'ennemis.
+
+* Contrôle de l'apparition des ennemis et du passage d'une vague à la suivante.
+
+**Tests des niveaux de difficulté**
+
+* Vérification du comportement du jeu selon les différents niveaux de difficulté.
+
+* Contrôle des paramètres modifiés par le niveau sélectionné.
+
+**Tests des bonus**
+
+* Vérification de l'apparition et de la récupération des bonus.
+
+* Contrôle du fonctionnement des effets associés aux différents bonus.
+
+**Tests des sauvegardes et chargements**
+
+* Vérification de l'enregistrement d'une partie.
+
+* Test du chargement d'une sauvegarde existante.
+
+* Vérification de la restauration correcte de l'état de la partie.
+
+**Tests de l'archive**
+
+* Vérification de l'enregistrement des parties dans l'archive.
+
+* Contrôle de l'affichage des parties archivées.
+
+**Tests du classement**
+
+* Vérification de l'enregistrement des scores.
+
+* Contrôle de l'affichage des scores dans le classement.
+
+**Tests des différents écrans**
+
+* Vérification de l'affichage des différents écrans du jeu.
+
+* Test des transitions et de la navigation entre les écrans.
+
+#### Préparation finale
+
+**Préparation de la version finale**
+
+* Début de la préparation de la version finale du jeu.
+
+* Vérification de l'état général du projet avant la livraison.
+
+* Identification des derniers éléments devant être corrigés ou vérifiés avant la version finale.
+
+**Préparation de la présentation finale**
+
+* Début de la préparation de la présentation du projet.
+
+* Organisation des différents éléments à présenter : fonctionnalités, développement, choix techniques et résultat final.
+
+* Préparation du contenu nécessaire pour expliquer l'évolution du projet.
+
+---
+
+### 2. Temps consacré aux différentes tâches
+
+| Catégorie    | Tâche                                |  Temps consacré |
+| ------------ | ------------------------------------ | --------------: |
+| Tests        | Tests des déplacements               |      20 minutes |
+| Tests        | Tests des tirs                       |      15 minutes |
+| Tests        | Tests des colisions                  |      10 minutes |
+| Tests        | Tests des vagues                     |      10 minutes |
+| Tests        | Tests des difficultés                |      15 minutes |
+| Tests        | Tests des bonus                      |      15 minutes |
+| Tests        | Tests des sauvegardes et chargements |      20 minutes |
+| Tests        | Tests de l'archive                   |      15 minutes |
+| Tests        | Tests du classement                  |      15 minutes |
+| Tests        | Tests des différents écrans          |      15 minutes |
+| Finalisation | Préparer la version finale           |      15 minutes |
+| Finalisation | Préparer la présentation finale      |      15 minutes |
+| **Total**    |                                      | **180 minutes** |
+
+### 3. Problèmes rencontrés et solutions apportées
+
+**Vérification de l'ensemble des fonctionnalités**
+
+* Plusieurs fonctionnalités doivent être vérifiées dans différentes situations afin de s'assurer de leur bon fonctionnement.
+
+* Réalisation de tests ciblés sur chaque fonctionnalité afin d'identifier les éventuels problèmes.
+
+**Tests visuels**
+
+* Vérification de l'affichage des différents éléments du jeu.
+
+* Contrôle des transitions entre les écrans et de la cohérence générale de l'interface.
+
+**Préparation de la version finale**
+
+* Vérification des derniers éléments nécessaires avant la finalisation du projet.
+
+* Organisation des corrections et des ajustements à effectuer avant la version finale.
+
+### 4. Options envisagées et choix effectués
+
+#### Tests
+
+* Continuer les tests fonctionnalité par fonctionnalité.
+
+* Vérifier les interactions entre les différents systèmes du jeu.
+
+* Effectuer des tests visuels afin de contrôler l'affichage et l'interface.
+
+* Vérifier les fonctionnalités de sauvegarde, d'archive et de classement.
+
+#### Version finale
+
+* Préparer une version stable du jeu.
+
+* Effectuer une dernière vérification générale avant la livraison.
+
+* Corriger les éventuels problèmes identifiés pendant la phase de tests.
+
+#### Présentation finale
+
+* Présenter le contexte et les objectifs du projet.
+
+* Présenter les principales fonctionnalités développées.
+
+* Expliquer les choix techniques effectués durant le développement.
+
+* Présenter le résultat final et l'avancement du projet.

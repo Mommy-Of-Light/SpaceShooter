@@ -54,7 +54,6 @@
             _pixelTexture.SetData(new[] { XnaColor.White });
 
             _waveManager = new WaveManager(_enemyTexture, _enemyProjectileTexture, Game.DifficultyMultiplier);
-
             _enemies = _waveManager.CreateNextWave(Game.GraphicsDevice.Viewport.Width);
             _boss = null;
 
@@ -67,20 +66,11 @@
             UpdatePlayerTargets();
 
             _buttons = new List<Button>();
-
             _buttons.Add(new Button("||", new XnaRectangle(Game.GraphicsDevice.Viewport.Width - 60, 10, 50, 50)));
 
-            _continueButton = new Button(
-                "Continue",
-                new XnaRectangle(150, 300, 200, 50));
-
-            _restartButton = new Button(
-                "Restart",
-                new XnaRectangle(150, 370, 200, 50));
-
-            _exitButton = new Button(
-                "Exit",
-                new XnaRectangle(150, 440, 200, 50));
+            _continueButton = new Button("Continue", new XnaRectangle(150, 300, 200, 50));
+            _restartButton = new Button("Restart", new XnaRectangle(150, 370, 200, 50));
+            _exitButton = new Button("Exit", new XnaRectangle(150, 440, 200, 50));
 
             _pauseButtons = new List<Button>
             {
@@ -129,12 +119,11 @@
                 else if (_exitButton.IsClicked(mousePosition, mouseClicked))
                 {
                     SaveGame();
-
                     Game.ScreenManager.ChangeScreen(new NewGameScreen(Game));
                     return;
                 }
 
-                if (keyboard.IsKeyDown(XnaKeys.Up) &&_previousKeyboard.IsKeyUp(XnaKeys.Up))
+                if (keyboard.IsKeyDown(XnaKeys.Up) && _previousKeyboard.IsKeyUp(XnaKeys.Up))
                 {
                     int selectedIndex = _buttons.FindIndex(b => b.IsSelected);
 
@@ -145,15 +134,12 @@
                     else
                     {
                         _buttons[selectedIndex].SetSelected(false);
-
-                        int newIndex =
-                            (selectedIndex - 1 + _buttons.Count) % _buttons.Count;
-
+                        int newIndex = (selectedIndex - 1 + _buttons.Count) % _buttons.Count;
                         _buttons[newIndex].SetSelected(true);
                     }
                 }
 
-                if (keyboard.IsKeyDown(XnaKeys.Down) &&_previousKeyboard.IsKeyUp(XnaKeys.Down))
+                if (keyboard.IsKeyDown(XnaKeys.Down) && _previousKeyboard.IsKeyUp(XnaKeys.Down))
                 {
                     int selectedIndex = _buttons.FindIndex(b => b.IsSelected);
 
@@ -164,15 +150,13 @@
                     else
                     {
                         _buttons[selectedIndex].SetSelected(false);
-
-                        int newIndex =
-                            (selectedIndex + 1) % _buttons.Count;
-
+                        int newIndex = (selectedIndex + 1) % _buttons.Count;
                         _buttons[newIndex].SetSelected(true);
                     }
                 }
 
-                if ((keyboard.IsKeyDown(XnaKeys.Enter) &&_previousKeyboard.IsKeyUp(XnaKeys.Enter)) ||(keyboard.IsKeyDown(XnaKeys.Space) &&_previousKeyboard.IsKeyUp(XnaKeys.Space)))
+                if ((keyboard.IsKeyDown(XnaKeys.Enter) && _previousKeyboard.IsKeyUp(XnaKeys.Enter)) ||
+                    (keyboard.IsKeyDown(XnaKeys.Space) && _previousKeyboard.IsKeyUp(XnaKeys.Space)))
                 {
                     int selectedIndex = _buttons.FindIndex(b => b.IsSelected);
 
@@ -207,11 +191,7 @@
 
             if (_boss != null)
             {
-                _boss.Update(
-                    gameTime,
-                    Game,
-                    _player.Position + new Vector2(_player.Width / 2f, _player.Height / 2f)
-                );
+                _boss.Update(gameTime, Game, _player.Position + new Vector2(_player.Width / 2f, _player.Height / 2f));
 
                 if (!_boss.State)
                 {
@@ -220,7 +200,6 @@
                     UpdatePlayerTargets();
 
                     Game.ScreenManager.ChangeScreen(new UpgradeScreen(Game, this));
-
                     return;
                 }
             }
@@ -239,13 +218,10 @@
                 if (completedWave >= nextUpgradeWave && completedWave != _lastUpgradeWave)
                 {
                     _lastUpgradeWave = completedWave;
-
                     nextUpgradeWave += upgradeWaveIncrement;
-
                     upgradeWaveIncrement++;
 
                     Game.ScreenManager.ChangeScreen(new UpgradeScreen(Game, this));
-
                     return;
                 }
 
@@ -281,13 +257,16 @@
                 case "||":
                     _isPaused = true;
                     break;
+
                 case "Continue":
                     _isPaused = false;
                     break;
+
                 case "Restart":
                     ResetGame();
                     _isPaused = false;
                     break;
+
                 case "Exit":
                     SaveGame();
                     Game.ScreenManager.ChangeScreen(new NewGameScreen(Game));
@@ -325,14 +304,12 @@
         private void AddScore()
         {
             double points = 10.0 * 1.0 * (_waveManager.CurrentWave / 10.0) * Game.DifficultyMultiplier;
-
             _score += (int)Math.Round(points);
         }
 
         private void AddBossScore()
         {
             double points = 100.0 * (_waveManager.CurrentWave / 10.0) * Game.DifficultyMultiplier;
-
             _score += (int)Math.Round(points);
         }
 
@@ -417,9 +394,7 @@
                     if (projectile.Hitbox.Intersects(_player.Hitbox))
                     {
                         projectile.State = false;
-
                         HandleDeath();
-
                         return;
                     }
                 }
@@ -435,9 +410,7 @@
                     if (projectile.Hitbox.Intersects(_player.Hitbox))
                     {
                         projectile.State = false;
-
                         HandleDeath();
-
                         return;
                     }
                 }
@@ -456,7 +429,6 @@
                 if (enemy.Hitbox.Intersects(_player.Hitbox))
                 {
                     HandleDeath();
-
                     return;
                 }
             }
@@ -465,7 +437,6 @@
         private void HandleDeath()
         {
             ArchiveCurrentGame();
-
             Game.ScreenManager.ChangeScreen(new DeathScreen(Game, _waveManager.CurrentWave, _score));
         }
 
@@ -485,20 +456,14 @@
         private void ResetGame()
         {
             _waveManager.Reset();
-
             _lastUpgradeWave = 0;
-
             _score = 0;
-
             nextUpgradeWave = startingUpgradeWave;
-
             upgradeWaveIncrement = 2;
-
             _boss = null;
             _enemies = _waveManager.CreateNextWave(Game.GraphicsDevice.Viewport.Width);
 
             ResetPlayer();
-
             UpdatePlayerTargets();
 
             MusicPlayer.Instance.Stop();
@@ -516,7 +481,6 @@
             );
 
             _player = new Player(_playerTexture, _projectileTexture, playerPosition, 300f);
-
             UpdatePlayerTargets();
         }
 
@@ -558,9 +522,7 @@
             GameData data = new GameData();
 
             data.RunId = _runId;
-
             data.CurrentWave = _waveManager.CurrentWave;
-
             data.LastUpgradeWave = _lastUpgradeWave;
             data.NextUpgradeWave = nextUpgradeWave;
             data.UpgradeWaveIncrement = upgradeWaveIncrement;
@@ -662,7 +624,6 @@
             }
 
             _currentSave = save;
-
             _score = data.Score;
 
             if (!string.IsNullOrEmpty(data.Difficulty))

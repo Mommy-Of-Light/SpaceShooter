@@ -4,6 +4,7 @@
     {
         private Game1 _game;
         private GameScreen _currentScreen;
+
         public GameScreen CurrentScreen => _currentScreen;
 
         public ScreenManager(Game1 game)
