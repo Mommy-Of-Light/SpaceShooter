@@ -1031,3 +1031,73 @@ Bien sûr. Voici l’entrée du **15/09/2026**, en gardant le même style que le
 * Expliquer les choix techniques effectués durant le développement.
 
 * Présenter le résultat final et l'avancement du projet.
+
+## 05/10/2026
+
+### 1. Étapes réalisées
+
+#### Documentation
+
+**README**
+
+* Création et rédaction du fichier README du projet.
+* Présentation du projet et de ses principales fonctionnalités.
+* Ajout des informations nécessaires pour comprendre et utiliser le projet.
+* Organisation de la documentation afin de faciliter la consultation du projet.
+
+#### Livraison
+
+**Release v1.0.0**
+
+* Préparation de la première version stable du jeu.
+* Création de la release `V1.0.0` sur GitHub.
+* Création et ajout du tag `V1.0.0`.
+* Préparation de l'archive contenant la version finale du jeu.
+* Ajout des captures d'écran du projet dans le dépôt afin d'illustrer les différentes fonctionnalités et interfaces.
+* Vérification des éléments nécessaires à la livraison du projet.
+
+### 2. Temps consacré aux différentes tâches
+
+| Catégorie     | Tâche                     |  Temps consacré |
+| ------------- | ------------------------- | --------------: |
+| Documentation | Création du README        |     135 minutes |
+| Livraison     | Préparation de la release |      25 minutes |
+| Livraison     | Création du tag `V1.0.0`  |      20 minutes |
+| **Total**     |                           | **À compléter** |
+
+### 3. Problèmes rencontrés et solutions apportées
+
+**Organisation de la documentation**
+
+* Réflexion sur la manière de présenter clairement les informations du projet.
+* Organisation du README afin de permettre une compréhension rapide du jeu, de ses fonctionnalités et de son utilisation.
+
+**Préparation de la release**
+
+* Vérification des fichiers nécessaires à la livraison.
+* Organisation des éléments du projet afin de disposer d'une version finale propre et identifiable.
+* Utilisation d'un tag `V1.0.0` afin d'identifier précisément la première version stable du projet.
+
+### 4. Options envisagées et choix effectués
+
+#### README
+
+* Créer une documentation centralisée permettant de présenter le projet.
+* Présenter les fonctionnalités principales du jeu.
+* Ajouter les informations nécessaires à l'utilisation et à la compréhension du projet.
+* Ajouter des liens vers les captures d'écran du projet.
+
+#### Release
+
+* Publier une première version stable sous la version `V1.0.0`.
+* Utiliser un tag afin de conserver une référence précise vers cette version.
+* Fournir une archive du jeu permettant de récupérer la version finale.
+* Conserver les captures d'écran directement dans le dépôt plutôt que de les ajouter comme fichiers supplémentaires à la release.
+
+### 5. Résultat
+
+* README finalisé.
+* Release `V1.0.0` créée.
+* Tag `V1.0.0` créé.
+* Version finale du jeu préparée pour la livraison.
+* Captures d'écran intégrées au dépôt.
