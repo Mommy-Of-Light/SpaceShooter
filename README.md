@@ -350,6 +350,8 @@ SpaceShooter/
 │       ├── UpgradeScreen.cs
 │       └── WaveManager.cs
 ├── Sprites/
+├── Version Archive/
+│   └── SpaceShooter V1.0.0.zip
 ├── .gitignore
 ├── Cahier des charges.md
 ├── DATABASE.sql
@@ -464,7 +466,7 @@ SpaceShooter/
 * [x] Testing
 * [x] Additional difficulty modes
 * [x] Boss fights
-* [ ] Release
+* [x] Release
 
 ---
 
