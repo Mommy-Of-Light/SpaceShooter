@@ -326,7 +326,7 @@
                     _player.Projectiles.Clear();
                     UpdatePlayerTargets();
 
-                    Game.ScreenManager.ChangeScreen(new UpgradeScreen(Game, this));
+                    Game.ScreenManager.ChangeScreen(new UpgradeScreen(Game, this, _player.ShotsUntilMissile, _player.Pierce, _player.AutoAimMissiles, _player.Damage));
                     return;
                 }
             }
@@ -348,7 +348,7 @@
                     nextUpgradeWave += upgradeWaveIncrement;
                     upgradeWaveIncrement++;
 
-                    Game.ScreenManager.ChangeScreen(new UpgradeScreen(Game, this));
+                    Game.ScreenManager.ChangeScreen(new UpgradeScreen(Game, this, _player.ShotsUntilMissile, _player.Pierce, _player.AutoAimMissiles, _player.Damage));
                     return;
                 }
 

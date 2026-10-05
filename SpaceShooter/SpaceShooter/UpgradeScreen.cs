@@ -61,20 +61,53 @@
         private const int MaxShotsUntilMissile = 1;
 
         /// <summary>
+        /// Starting number of shots until a missile can be fired.
+        /// </summary>
+        private const int StartShotsUntilMissile = 5;
+
+        /// <summary>
         /// List containing all upgrade buttons displayed on the screen.
         /// </summary>
         private List<Button> _buttons;
+
+        /// <summary>
+        /// The current missile fire rate of the player's ship.
+        /// </summary>
+        private int missileFireRate;
+
+        /// <summary>
+        /// The current pierce value of the player's projectiles.
+        /// </summary>
+        private int pierce;
+
+        /// <summary>
+        /// The current number of auto-aim missiles available to the player.
+        /// </summary>
+        private int missiles;
+
+        /// <summary>
+        /// The current damage value of the player's ship.
+        /// </summary>
+        private int damage;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UpgradeScreen"/> class.
         /// </summary>
         /// <param name="game">Reference to the main game instance.</param>
         /// <param name="playScreen">Reference to the current play screen.</param>
-        public UpgradeScreen(Game1 game, PlayScreen playScreen) : base(game)
+        /// <param name="missileFireRate">The current missile fire rate.</param>
+        /// <param name="pierce">The current pierce value.</param>
+        /// <param name="missiles">The current number of auto-aim missiles.</param>
+        /// <param name="damage">The current damage value.</param>
+        public UpgradeScreen(Game1 game, PlayScreen playScreen, int missileFireRate, int pierce, int missiles, int damage) : base(game)
         {
             _playScreen = playScreen;
             _previousKeyboard = Keyboard.GetState();
             Game.ChangeScreenSize(500, 500);
+            this.missileFireRate = missileFireRate;
+            this.pierce = pierce;
+            this.missiles = missiles;
+            this.damage = damage;
         }
 
         /// <summary>
@@ -85,10 +118,10 @@
             _font = Game.Content.Load<SpriteFont>("Fonts/SpaceInvader_12");
             _titleFont = Game.Content.Load<SpriteFont>("Fonts/SpaceInvader_16");
 
-            _fireRateButton = new Button("MISSILE ATK SPD ++ (1)", new XnaRectangle(50, 130, 400, 50));
-            _pierceButton = new Button("PIERCE +1 (2)", new XnaRectangle(50, 200, 400, 50));
-            _missileButton = new Button("MISSILE +1 (3)", new XnaRectangle(50, 270, 400, 50));
-            _damageButton = new Button("DAMAGE +1 (4)", new XnaRectangle(50, 340, 400, 50));
+            _fireRateButton = new Button("MISSILE ATK SPD " + (StartShotsUntilMissile - missileFireRate + 1) + "/" + StartShotsUntilMissile  + " (1)", new XnaRectangle(50, 130, 400, 50));
+            _pierceButton = new Button("PIERCE +1 " + pierce + "/" + MaxPierce + " (2)", new XnaRectangle(50, 200, 400, 50));
+            _missileButton = new Button("MISSILE +1 " + missiles + "/" + MaxMissiles + " (3)", new XnaRectangle(50, 270, 400, 50));
+            _damageButton = new Button("DAMAGE +1 " + damage + " (4)", new XnaRectangle(50, 340, 400, 50));
 
             _buttons = new List<Button>
             {
