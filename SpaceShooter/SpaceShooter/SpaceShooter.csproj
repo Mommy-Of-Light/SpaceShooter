@@ -8,13 +8,10 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>disable</ImplicitUsings>
   </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
-    <ApplicationIcon>Content/Icons/spaceinvaders_32_icon.ico</ApplicationIcon>
-  </PropertyGroup>
-  <ItemGroup>
-    <Compile Remove="Screens.cs" />
-  </ItemGroup>
+	<PropertyGroup>
+		<ApplicationManifest>app.manifest</ApplicationManifest>
+		<ApplicationIcon>Content/Icons/spaceinvaders_32_icon.ico</ApplicationIcon>
+	</PropertyGroup>
   <ItemGroup>
     <PackageReference Include="DotNetEnv" Version="3.2.0" />
     <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.*" />
