@@ -18,10 +18,11 @@ I will go for the base but add more features if needed or wanted.
 * Enemies
 * Collision system
 * Score system
-* Health system
 * Sound effects and music
 * Main menu
-* Settings
+* Saves
+* Archive
+* Leaderboard
 
 ## Technologies
 
@@ -33,7 +34,7 @@ I will go for the base but add more features if needed or wanted.
 ## Requirements
 
 * Windows
-* .NET SDK
+* .NET SDK 8 or higher
 * MonoGame
 * Visual Studio 2022 or newer
 
