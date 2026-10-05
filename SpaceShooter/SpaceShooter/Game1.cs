@@ -32,14 +32,9 @@
         private Vector2 _cursorPosition;
 
         /// <summary>
-        /// Stores the center position of the game window.
+        /// Stores whether the left mouse button was pressed during the previous update.
         /// </summary>
-        private XnaPoint _windowCenter;
-
-        /// <summary>
-        /// Controls the sensitivity of mouse movement.
-        /// </summary>
-        private float _mouseSensitivity = 3.0f;
+        private bool _previousLeftMouseButton;
 
         /// <summary>
         /// Gets or sets the player's pseudo.
@@ -57,11 +52,6 @@
         public double DifficultyMultiplier { get; set; }
 
         /// <summary>
-        /// Stores whether the left mouse button was pressed during the previous update.
-        /// </summary>
-        private bool _previousLeftMouseButton;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="Game1"/> class.
         /// Configures the graphics settings, game window, default difficulty,
         /// and screen manager.
@@ -70,7 +60,7 @@
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            IsMouseVisible = true;
+            IsMouseVisible = false;
             _graphics.PreferredBackBufferWidth = WINDOW_WIDTH;
             _graphics.PreferredBackBufferHeight = WINDOW_HEIGHT;
             Window.Title = WINDOW_TITLE;
@@ -111,25 +101,19 @@
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             _cursorTexture = Content.Load<Texture2D>("Textures/PNG/UI/cursor");
             IsMouseVisible = false;
+
             _cursorPosition = new Vector2(_graphics.PreferredBackBufferWidth / 2f, _graphics.PreferredBackBufferHeight / 2f);
+
             SoundEffectPlayer.Instance.Initialize(this);
             MusicPlayer.Instance.Initialize(this);
             MusicPlayer.Instance.Play("Menu");
-            CenterMouse();
-        }
 
-        /// <summary>
-        /// Centers the mouse cursor within the game window.
-        /// </summary>
-        private void CenterMouse()
-        {
-            _windowCenter = new XnaPoint(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
-            Mouse.SetPosition(_windowCenter.X, _windowCenter.Y);
+            Mouse.SetPosition((int)_cursorPosition.X, (int)_cursorPosition.Y);
         }
 
         /// <summary>
         /// Updates the game state, processes mouse input, updates the active screen,
-        /// and keeps the mouse cursor centered for relative movement.
+        /// and handles mouse button clicks.
         /// </summary>
         /// <param name="gameTime">Provides timing information for the update.</param>
         protected override void Update(GameTime gameTime)
@@ -138,21 +122,29 @@
 
             MouseState mouseState = Mouse.GetState();
 
-            int deltaX = mouseState.X - _windowCenter.X;
-            int deltaY = mouseState.Y - _windowCenter.Y;
+            int maxX = _graphics.PreferredBackBufferWidth - _cursorTexture.Width;
+            int maxY = _graphics.PreferredBackBufferHeight - _cursorTexture.Height;
 
-            _cursorPosition.X += deltaX * _mouseSensitivity;
-            _cursorPosition.Y += deltaY * _mouseSensitivity;
+            int mouseX = mouseState.X;
+            int mouseY = mouseState.Y;
 
-            _cursorPosition.X = Math.Clamp(_cursorPosition.X, 0, _graphics.PreferredBackBufferWidth - _cursorTexture.Width);
-            _cursorPosition.Y = Math.Clamp(_cursorPosition.Y, 0, _graphics.PreferredBackBufferHeight - _cursorTexture.Height);
+            if (mouseX >= 0 && mouseX <= maxX && mouseY >= 0 && mouseY <= maxY)
+            {
+                _cursorPosition = new Vector2(mouseX, mouseY);
+            }
+            else
+            {
+                _cursorPosition.X = Math.Clamp(_cursorPosition.X, 0, maxX);
+                _cursorPosition.Y = Math.Clamp(_cursorPosition.Y, 0, maxY);
+
+                Mouse.SetPosition((int)_cursorPosition.X, (int)_cursorPosition.Y);
+            }
 
             bool mouseClicked = mouseState.LeftButton == XnaButtonState.Pressed && !_previousLeftMouseButton;
+
             _previousLeftMouseButton = mouseState.LeftButton == XnaButtonState.Pressed;
 
             ScreenManager.Update(gameTime, Keyboard.GetState(), _cursorPosition, mouseClicked);
-
-            Mouse.SetPosition(_windowCenter.X, _windowCenter.Y);
 
             base.Update(gameTime);
         }
