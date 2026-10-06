@@ -1101,3 +1101,61 @@ Bien sûr. Voici l’entrée du **15/09/2026**, en gardant le même style que le
 * Tag `V1.0.0` créé.
 * Version finale du jeu préparée pour la livraison.
 * Captures d'écran intégrées au dépôt.
+
+## **06/10/2026**
+
+### 1. Étapes réalisées
+
+#### Présentation finale
+
+**Préparation du contenu**
+
+* Définition de la structure générale de la présentation finale.
+* Sélection des éléments importants à présenter concernant le projet.
+* Organisation des différentes parties de la présentation afin de suivre l'évolution du projet.
+* Sélection des principales fonctionnalités à mettre en avant.
+
+**Préparation du support**
+
+* Début de la création du support de présentation.
+* Organisation des diapositives selon les différentes étapes du projet.
+* Ajout des informations concernant le contexte, les objectifs et les fonctionnalités du jeu.
+* Ajout des captures d'écran permettant d'illustrer le résultat final.
+
+**Présentation du développement**
+
+* Préparation des éléments permettant d'expliquer les choix techniques effectués.
+* Préparation de la présentation de l'utilisation de C# et de MonoGame.
+* Organisation des informations concernant les différents systèmes développés.
+
+### 2. Temps consacré aux différentes tâches
+
+| Catégorie    | Tâche                              |  Temps consacré |
+| ------------ | ---------------------------------- | --------------: |
+| Présentation | Préparation du contenu             |      60 minutes |
+| Présentation | Création du support                |      75 minutes |
+| Présentation | Préparation de la partie technique |      45 minutes |
+| **Total**    |                                    | **180 minutes** |
+
+### 3. Problèmes rencontrés et solutions apportées
+
+**Organisation des informations à présenter**
+
+* Difficulté à déterminer quelles informations doivent être présentées en priorité.
+* Sélection des éléments les plus importants du projet afin de garder une présentation claire et concise.
+* Organisation des informations selon l'ordre logique du développement du projet.
+
+**Création du support**
+
+* Réflexion sur la quantité d'informations à placer sur chaque diapositive.
+* Utilisation principalement de captures d'écran et de points clés afin de rendre la présentation plus lisible.
+
+### 4. Options envisagées et choix effectués
+
+#### Présentation finale
+
+* Présenter d'abord le contexte et les objectifs du projet.
+* Présenter ensuite les principales fonctionnalités développées.
+* Expliquer les principaux choix techniques réalisés.
+* Utiliser des captures d'écran pour illustrer les fonctionnalités.
+* Terminer par une démonstration et une présentation du résultat final.
