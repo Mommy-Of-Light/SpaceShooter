@@ -79,7 +79,7 @@ To build the project from source, you will need:
 
 For a published release, you do **not** need to install MonoGame separately.
 
-If the release is published as self-contained, .NET does not need to be installed either.
+Since the release is published as self-contained, .NET does not need to be installed either.
 
 ---
 
