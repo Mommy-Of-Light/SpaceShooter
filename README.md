@@ -351,7 +351,8 @@ SpaceShooter/
 │       └── WaveManager.cs
 ├── Sprites/
 ├── Version Archive/
-│   └── SpaceShooter V1.0.0.zip
+│   ├── SpaceShooter V1.0.0.zip
+│   └── SpaceShooter V1.0.1.zip
 ├── .gitignore
 ├── Cahier des charges.md
 ├── DATABASE.sql
