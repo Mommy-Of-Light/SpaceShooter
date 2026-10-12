@@ -93,11 +93,62 @@
         }
 
         /// <summary>
+        /// Sets the window icon using the provided texture.
+        /// </summary>
+        /// <param name="texture">The texture to use as the window icon.</param>
+        private void SetWindowIcon(Texture2D texture)
+        {
+            XnaColor[] pixels = new XnaColor[texture.Width * texture.Height];
+            texture.GetData(pixels);
+
+            using var bitmap = new System.Drawing.Bitmap(
+                texture.Width,
+                texture.Height,
+                System.Drawing.Imaging.PixelFormat.Format32bppArgb
+            );
+
+            for (int y = 0; y < texture.Height; y++)
+            {
+                for (int x = 0; x < texture.Width; x++)
+                {
+                    XnaColor c = pixels[y * texture.Width + x];
+
+                    bitmap.SetPixel(
+                        x, y,
+                        System.Drawing.Color.FromArgb(c.A, c.R, c.G, c.B)
+                    );
+                }
+            }
+
+            IntPtr handle = bitmap.GetHicon();
+            var icon = System.Drawing.Icon.FromHandle(handle);
+
+            var form = (System.Windows.Forms.Form)
+                System.Windows.Forms.Form.FromHandle(Window.Handle);
+
+            if (form != null)
+                form.Icon = (System.Drawing.Icon)icon.Clone();
+
+            DestroyIcon(handle);
+        }
+
+        /// <summary>
+        /// Destroys an icon handle to free up system resources.
+        /// </summary>
+        /// <param name="hIcon">The handle of the icon to destroy.</param>
+        /// <returns></returns>
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern bool DestroyIcon(IntPtr hIcon);
+
+        /// <summary>
         /// Loads the game's graphical and audio content and initializes
         /// the custom cursor and audio systems.
         /// </summary>
         protected override void LoadContent()
         {
+            Texture2D iconTexture = Content.Load<Texture2D>("Icons/spaceinvaders_128_icon");
+            SetWindowIcon(iconTexture);
+
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             _cursorTexture = Content.Load<Texture2D>("Textures/PNG/UI/cursor");
             IsMouseVisible = false;
