@@ -1102,7 +1102,7 @@ Bien sûr. Voici l’entrée du **15/09/2026**, en gardant le même style que le
 * Version finale du jeu préparée pour la livraison.
 * Captures d'écran intégrées au dépôt.
 
-## **06/10/2026**
+## **06/10/2026 - 12/10/2026**
 
 ### 1. Étapes réalisées
 
@@ -1132,10 +1132,10 @@ Bien sûr. Voici l’entrée du **15/09/2026**, en gardant le même style que le
 
 | Catégorie    | Tâche                              |  Temps consacré |
 | ------------ | ---------------------------------- | --------------: |
-| Présentation | Préparation du contenu             |      60 minutes |
-| Présentation | Création du support                |      75 minutes |
-| Présentation | Préparation de la partie technique |      45 minutes |
-| **Total**    |                                    | **180 minutes** |
+| Présentation | Préparation du contenu             |     120 minutes |
+| Présentation | Création du support                |     150 minutes |
+| Présentation | Préparation de la partie technique |      90 minutes |
+| **Total**    |                                    | **360 minutes** |
 
 ### 3. Problèmes rencontrés et solutions apportées
 
